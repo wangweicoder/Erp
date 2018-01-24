@@ -1,0 +1,67 @@
+﻿@model Model.FlowerTreatment
+@{
+    Layout = null;
+}
+
+@Styles.Render("~/bootstrap/css/bootstrap.css")
+@Scripts.Render("~/Plugins/jQuery/jquery-2.2.3.min.js")
+@*加载弹出层*@
+@Scripts.Render("~/Thems/js/layer/layer.js")
+
+<script>
+    $(function () {
+        $("#btn_add").click(function () {
+            $.ajax({
+                url: '/FlowerTreatment/EditInfo',
+                data: $("#forminfo").serialize(),
+                success: function (data)
+                {
+                    if (data == 1) {
+                        parent.layer.closeAll();
+                    }                   
+                    else {
+                        parent.layer.closeAll();
+                    }
+                }
+            })
+        })
+    })
+</script>
+<form id="forminfo">
+    <div class="box-body">
+        <br />
+        <div class="form-group" style="height:30px;">
+            <span for="inputEmail3" class="col-sm-2 control-label">
+                <span>*花卉编号</span>
+                <div class="col-sm-5">
+                    @Html.HiddenFor(m => m.id)
+                    @Html.TextBoxFor(m => m.FlowerNumber, new { @class = "form-control" })
+                </div>
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>养护人</span>
+                <div class="col-sm-6">
+                    @Html.DropDownListFor(m => m.UsersId, ViewData["GetUserInfoSelectItems"] as List<SelectListItem>, new { @class = "form-control" })
+                </div>
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>养护地址</span>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(m => m.FlowerTreatmentAddress, new { @class = "form-control" })
+                </div>
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>养护所属客户</span>
+                <div class="col-sm-6">
+                    @Html.DropDownListFor(m => m.OwnedUsersId, ViewData["GetUserInfoSelectItems"] as List<SelectListItem>, new { @class = "form-control" })
+                </div>
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>养护内容</span>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(m => m.ContentMsg, new { @class = "form-control" })
+                </div>
+        </div>
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer" style="text-align: center; margin-top:250px;">
+        <button id="btn_add" type="submit" class="btn btn-default">
+            <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>保存
+        </button>
+        <button id="btn_delete" type="button" class="btn btn-default" onclick="parent.layer.closeAll();" style="margin-left:25px;">
+            <span class="glyphicon glyphicon-random" aria-hidden="true"></span>&nbsp;&nbsp;取消
+        </button>
+    </div>
+</form>

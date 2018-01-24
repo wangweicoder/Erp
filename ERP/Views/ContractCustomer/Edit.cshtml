@@ -1,0 +1,96 @@
+﻿@model Model.ContractCustomer
+@{
+    Layout = null;
+}
+
+@Styles.Render("~/bootstrap/css/bootstrap.css")
+@Scripts.Render("~/Plugins/jQuery/jquery-2.2.3.min.js")
+@*加载弹出层*@
+@Scripts.Render("~/Thems/js/layer/layer.js")
+<script src="~/Scripts/jquery.valiedate.form.js"></script>
+@Scripts.Render("~/My97DatePicker/WdatePicker.js")
+<script>
+    function CheckFrom() {
+        if ($("#RealName").val() == "") {
+            parent.layer.msg('真实姓名不能为空');
+            return false;
+        }
+        if (!checknum($("#Phone").val())) {
+            parent.layer.msg('手机号只能是数字');
+            return false;
+        }
+        if ($("#Address").val() == "") {
+            parent.layer.msg('地址不能为空');
+            return false;
+        }
+        return true;
+    }
+
+
+    function SumbitInfo() {
+        if (CheckFrom()) {
+            $.ajax({
+                url: '/ContractCustomer/EditInfo',
+                data: $("#formmsg").serialize(),
+                success: function (data) {
+                    if (data == "1") {
+                       parent.layer.closeAll();
+                    }
+                    else {
+                        parent.layer.closeAll();
+                    }
+                }
+            })
+        }
+    }
+</script>
+<form id="formmsg">
+    <div class="box-body">
+        <br />
+        <div class="form-group" style="height:30px;">
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>真实姓名&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(m => m.RealName, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>性别</span>
+            <div class="col-sm-5">
+                @Html.DropDownListFor(m => m.Sex, ViewData["GetSexList"] as List<SelectListItem>, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>电话</span>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(m => m.phone, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>地址</span>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                @Html.HiddenFor(m=>m.ID)
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>是否签约</span>
+            <div class="col-sm-6">
+                @Html.DropDownListFor(m => m.IsSign, ViewData["GetTypeList"] as List<SelectListItem>, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>签约项目</span>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(m => m.DockingProject, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>签约项目负责人</span>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(m => m.DockingprojectLeader, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>签约日期</span>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(m => m.CooperationDate, new { @class = "form-control"})
+            </div>
+        </div>
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer" style="text-align: center;margin-top:450px;">
+        <button id="btn_add" type="button" onclick="SumbitInfo()" class="btn btn-default">
+            <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>保存
+        </button>
+        <button id="btn_delete" type="button" class="btn btn-default" onclick="parent.layer.closeAll();" style="margin-left:25px;">
+            <span class="glyphicon glyphicon-random" aria-hidden="true"></span>&nbsp;&nbsp;取消
+        </button>
+    </div>
+
+</form>

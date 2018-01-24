@@ -1,0 +1,96 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    @*加载表格*@
+    @Scripts.Render("~/plugins/jQuery/jquery-2.2.3.min.js")
+
+    @Styles.Render("~/Bootstrap/css/bootstrap.css")
+    @Scripts.Render("~/Bootstrap/js/bootstrap.js")
+
+    @Styles.Render("~/Bootstrap/bootstrap-table/bootstrap-table.css")
+    @Scripts.Render("~/Bootstrap/bootstrap-table/bootstrap-table.js")
+    @*加载弹出层*@
+    @Scripts.Render("~/Thems/js/layer/layer.js")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <script src="~/Scripts/Admin/FlowerChange.js"></script>
+
+</head>
+<body>
+    <div class="panel-body" style="padding-bottom:0px;">
+        <div class="panel panel-default">
+            <div class="panel-heading">更换花卉列表</div>
+            <div class="panel-body">
+                <form id="formSearch" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="txt_search_departmentname">
+                            更换编号
+                        </label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="ChangeNumer">
+                        </div>
+                        <label class="control-label col-sm-2" for="txt_search_departmentname">
+                            花卉编号
+                        </label>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" id="FlowerNumber">
+                        </div>
+                        <label class="control-label col-sm-2" for="txt_search_departmentname">
+                            状态
+                        </label>
+                        <div class="col-sm-2">
+                            <select id="State" class="form-control">
+                                <option value="">全部</option>
+                                <option value="未更换">未更换</option>
+                                <option value="已更换">已更换</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-4" style="text-align:left;">
+                            <button type="button" class="btn btn-default" onclick="onloadTable();">
+                                查询 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <table id="tb_departments" data-reorderable-columns="true"></table>
+    </div>
+    <div id="PhotoShowDiv" ><img src="" id="ShowPhotoImg" style="max-height:500px;max-width:400px;" /></div>
+    <script>
+        $(function () {
+            onloadTable();
+        })
+        function ShowMsg(msg) {
+            parent.layer.alert(msg, {
+                skin: 'layui-layer-lan'
+               , closeBtn: 0
+               , anim: 4 //动画类型
+            });
+        }
+        function ShowPhotoInfo(values)
+        {
+            $("#ShowPhotoImg").attr("src", values);
+                parent.layer.open({
+                type: 1,
+                shade: false,
+                title: false, //不显示标题
+                content: $('#PhotoShowDiv').html(), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                cancel: function () {
+                   
+                }
+            });
+            $("#ShowPhotoImg").attr("src", "");
+        }
+    </script>
+</body>
+</html>
+

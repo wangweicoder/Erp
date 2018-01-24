@@ -1,0 +1,120 @@
+﻿@model Model.ChangingFlowerExpenses
+@{
+    Layout = null;
+}
+
+@Styles.Render("~/bootstrap/css/bootstrap.css")
+@Scripts.Render("~/Plugins/jQuery/jquery-2.2.3.min.js")
+@*加载弹出层*@
+@Scripts.Render("~/Thems/js/layer/layer.js")
+<script src="~/Scripts/jquery.valiedate.form.js"></script>
+@Scripts.Render("~/My97DatePicker/WdatePicker.js")
+<script>
+    function CheckFrom() {
+        if ($("#FlowerName").val() == "") {
+            layer.msg('花卉种类不能为空');
+            return false;
+        }
+        if (!checknum($("#Number").val())) {
+            layer.msg('数量只能是数字');
+            return false;
+        }
+        if (!isMoney($("#CostPrice").val())) {
+            layer.msg('成本价格式不正确');
+            return false;
+        }
+        if (!isMoney($("#SalePrice").val())) {
+            layer.msg('销售价格式不正确');
+            return false;
+        }
+        return true;
+    }
+
+
+    function SumbitInfo() {
+  
+            $.ajax({
+                url: '/ChangingFlowerExpenses/AddInfo',
+                data: $("#formmsg").serialize(),
+                success: function (data) {
+                    parent.layer.closeAll();
+                }
+            })
+    
+    }
+</script>
+<form id="formmsg">
+    <div class="box-body">
+        <br />
+        <table>
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>花卉种类&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <div class="col-sm-4">
+                            @Html.TextBoxFor(m => m.FlowerName, new { @class = "form-control" })
+                        </div>
+                        <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>数量</span>
+                        <div class="col-sm-4">
+                            @Html.TextBoxFor(m => m.Number, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>成本价</span>
+                        <div class="col-sm-4">
+                            @Html.TextBoxFor(m => m.CostPrice, new { @class = "form-control" })
+                        </div>
+                        <label for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>更换原因</label>
+                        <div class="col-sm-4">
+                            @Html.TextBoxFor(m => m.ReplacementReason, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>更换人手机号</label>
+                        <div class="col-sm-4">
+
+                            @Html.TextBoxFor(m => m.ReplacementTelephone, new { @class = "form-control" })
+                        </div>
+                        <label for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>更换人姓名</label>
+                        <div class="col-sm-4">
+                            @Html.TextBoxFor(m => m.replacementName, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>所属单位</label>
+                        <div class="col-sm-4">
+                            @Html.TextBoxFor(m => m.ReplacementUnit, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;"></span></label>
+                        <div class="col-sm-4">
+
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr></tr>
+        </table>
+
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer" style="text-align: center; margin-top: 20px;">
+        <button id="btn_add" type="button" onclick="SumbitInfo()" class="btn btn-default">
+            <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>保存
+        </button>
+        <button id="btn_delete" type="button" class="btn btn-default" onclick="parent.layer.closeAll();" style="margin-left:25px;">
+            <span class="glyphicon glyphicon-random" aria-hidden="true"></span>&nbsp;&nbsp;取消
+        </button>
+    </div>
+
+</form>

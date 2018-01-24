@@ -1,0 +1,88 @@
+﻿@model Model.ServiceIntroduction
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Index</title>
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/layui/layui.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>@Scripts.Render("~/Thems/js/layer/layer.js")
+    @Styles.Render("~/bootstrap/css/bootstrap.css")
+</head>
+<body>
+    <div class="panel-body" style="padding-bottom:0px;">
+        <div class="panel panel-default">
+            <div class="panel-heading">配置服务介绍</div>
+            <div class="panel-body">
+                <form id="formSearch" class="form-horizontal">
+                    <div class="form-group">
+                        @Html.TextAreaFor(x => x.Msg, new { @class = "layui-textarea", @style = "display: none", @id = "LAY_demo1" })
+                        <div class="site-demo-button" style="margin-top: 20px;">
+                            <button class="layui-btn site-demo-layedit" data-type="content">确认保存</button>
+                            @*<button class="layui-btn site-demo-layedit" data-type="text">获取编辑器纯文本内容</button>
+            <button class="layui-btn site-demo-layedit" data-type="selection">获取编辑器选中内容</button>*@
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
+<script>
+   
+    layui.use('layedit', function () {
+        var layedit = layui.layedit
+        , $ = layui.jquery;
+        layedit.set({
+            uploadImage: {
+                url: '/ServiceIntroduction/UploadFile' //接口url
+              , type: 'POST' //默认post
+            }
+        });
+        //构建一个默认的编辑器
+        var index = layedit.build('LAY_demo1');
+
+        //编辑器外部操作
+        var active = {
+            content: function () {
+                $.ajax({
+                    url: '/ServiceIntroduction/UpdateInfo',
+                    type:'POST',
+                    data: { msg: layedit.getContent(index) },
+                    success: function (data)
+                    {
+                       parent.layer.msg('操作成功');
+                    }
+                })
+               // alert(layedit.getContent(index)); //获取编辑器内容
+            }
+          , text: function () {
+              alert(layedit.getText(index)); //获取编辑器纯文本内容
+          }
+          , selection: function () {
+              alert(layedit.getSelection(index));
+          }
+        };
+
+        $('.site-demo-layedit').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    
+        //自定义工具栏
+        layedit.build('LAY_demo2', {
+            tool: ['face', 'link', 'unlink', '|', 'left', 'center', 'right']
+          , height: 100
+        })
+      
+    });
+</script>

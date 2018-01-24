@@ -1,0 +1,302 @@
+﻿@model  Model.Flower
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>商品详情</title>
+    <meta name="description" content="三九手机网提供最新红米note3 标准双4G版报价，红米note3 标准双4G版参数，红米note3 标准双4G版怎么样，红米note3 标准双4G版多少钱，红米note3 标准双4G版价格等信息。三九手机网，是专业的手机数码类在线销售网站，为您提供正品行货手机、品牌手机以及笔记本、平板电脑销售，专业的售后及维修团队为您服务！" />
+    <meta name="Keywords" content="红米note3 标准双4G版, 红米note3 标准双4G版报价，红米note3 标准双4G版参数，红米note3 标准双4G版怎么样，红米note3 标准双4G版图片，红米note3 标准双4G版评测，红米note3 标准双4G版点评" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="location" content="province=;city=;coord=" />
+    <link rel="apple-touch-icon-precomposed" href="~/FileCss/images/screenLogo.png?debug=847" />
+    <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?debug=847" />
+    <script src="~/FileCss/js/jquery.min.js"></script>
+    <script src="~/FileCss/js/jquery.touchslider.min.js"></script>
+    <script src="~/FileCss/js/main.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&amp;ak=2E9486ae97437e84c519f008952b67ae"></script>
+    <script src="~/FileCss/js/MapWrapper.min.js"></script>
+    <link rel="apple-touch-icon-precomposed" href="images/screenLogo.png?debug=847" />
+    <script src="~/FileCss/js/zepto.min.js?debug=847" type="text/javascript"></script>
+    <script src="~/FileCss/js/main.js?debug=847" type="text/javascript"></script>
+    <script src="~/FileCss/js/distpicker.data.js"></script>
+    <script src="~/FileCss/js/distpicker.js"></script>
+    @*<link href="~/FileCss/spinner/jquery.spinner.css" rel="stylesheet" />*@
+    <script src="~/FileCss/spinner/jquery.spinner.js"></script>
+
+    <script src="~/Thems/js/layer/mobile/layer.js"></script>
+   
+</head>
+<body>
+    <style>
+        .gw_num {
+            border: 1px solid #dbdbdb;
+            width: 110px;
+            line-height: 26px;
+            overflow: hidden;
+        }
+
+            .gw_num em {
+                display: block;
+                height: 26px;
+                width: 26px;
+                float: left;
+                color: #7A7979;
+                border-right: 1px solid #dbdbdb;
+                text-align: center;
+                cursor: pointer;
+            }
+
+            .gw_num .num {
+                display: block;
+                float: left;
+                text-align: center;
+                width: 52px;
+                font-style: normal;
+                font-size: 14px;
+                line-height: 24px;
+                border: 0;
+            }
+
+            .gw_num em.add {
+                float: right;
+                border-right: 0;
+                border-left: 1px solid #dbdbdb;
+            }
+    </style>
+    <script>
+        $(document).ready(function () {
+            //加的效果
+            $(".add").click(function () {
+                var n = $(this).prev().val();
+                var num = parseInt(n) + 1;
+                if (num == 0) { return; }
+                $(this).prev().val(num);
+            });
+            //减的效果
+            $(".jian").click(function () {
+                var n = $(this).next().val();
+                var num = parseInt(n) - 1;
+                if (num == 0) { return }
+                $(this).next().val(num);
+            });
+        })
+    </script>
+
+    @Html.Partial("header")
+    <form action="/Shop/PayOrders" method="post"  id="fromInfo">
+        <div class="product" style="position:relative;">
+            <div id="bigImg">
+                <div id="pro_img" class="pro_img">
+                    <div class="pro_img_box">
+                        <ul>
+                            <li>
+                                <div class="pro_img_wrap">
+                                    <img src="@Model.FlowerWatchPhoto" /> />
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="pro_img_nav">
+                        <i class="iconfont pro_img_item cur">Ƴ</i>
+                        <i class="iconfont pro_img_item">Ƴ</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pro_tit border_bottom">
+            <h2>@Model.FlowerWatchName </h2>
+            <h3>@Model.FlowerWatchType</h3>
+
+            <p>
+                <input type="hidden" value="@Model.id" name="id" />
+                <b id="now_price">@Model.FlowerSalesPrice</b>
+                <del>
+                    ￥1099.00
+                </del>
+
+            </p>
+        </div>
+        <script>
+            $('.spinner').spinner();
+        </script>
+        <div class="pro_kc">
+            <dl class="yanse">
+                <dt>
+                    收货人：
+                </dt>
+                <dd>
+                    <input type="text" name="ConsigneeName" id="ConsigneeName" />
+                </dd>
+                <br />
+                <dt>
+                    收货人电话：
+                </dt>
+                <dd>
+                    <input type="text" name="ConsigneePhone" id="ConsigneePhone" />
+                </dd>
+                <br />
+                <dt>
+                    收货地址：
+                </dt>
+
+                <dd>
+                    <div style="width:100%" data-toggle="distpicker">
+                        <div style="width:50%;float:left">
+                            <select style="width:80px;" name="province"></select>
+                             <select style="width: 120px; " name="city"></select>
+                        </div>
+                        <div style="width:50%; padding-left:20px">
+                            <select style="width: 80px; " name="area"></select>
+                        </div>
+                    </div>
+                </dd>
+                <br />
+                <dt>
+                    详细地址：
+                </dt>
+                <dd>
+                    <input type="text" name="ConsigneAaddress" id="ConsigneAaddress" />
+                </dd>
+                <br />
+                <dt>
+                    数量：
+                </dt>
+                <dd>
+                    <div class="gw_num">
+                        <em class="jian">-</em>
+                        <input type="text" value="1" class="num" name="FlowerNum" id="FlowerNum" />
+                        <em class="add">+</em>
+                    </div>
+                </dd>
+            </dl>
+            <dl id="_address" class="yanse" style="display: none;"></dl>
+        </div>
+        <script>$('.pcfuwu').click(function () { var el = $(this), f = el.hasClass('active'), cn = 'active'; if (f) { el.removeClass(cn) } else { el.addClass(cn) }; return false; })</script>
+        <div class="btn_box border_top" >
+            @*<div style="float:left;width:108px;overflow:hidden;">
+            <a id="mybuycarer" href="javascript:void(0)" onclick="SubminInfoCart()" class="buycarerNormal" style="position: relative;display:block;float:left;"> <em style="position: absolute; top: -5px; right: 0; background: #f44623; color: #fff; display: block; height: 14px; line-height: 14px; padding: 0 3px; border-radius: 14px; display: none;" id="cartCount">0</em> <img src="~/FileCss/images/de_gouwuche.png" width="20" height="20" style="display: block; margin: 0 auto;" /> <span style="font-size: 12px; color: #2c3e50; display: block; width: 40px; height: 25px;">购物车</span> </a>
+         </div>style="margin-left:112px;"*@
+            <div >
+                <a href="javascript:void(0)" data-src="" onclick="SubmitIinfo()" class="liji_buy left">下单支付</a>
+           
+            </div> 
+
+        </div>
+    </form>
+    <div class="jb_canshu" style="margin-bottom:20px;">
+        <h4>基本信息 </h4>
+        <ul>
+            @if (!string.IsNullOrEmpty(Model.FlowerWatchType))
+            {
+                <li>花卉品种：@Model.FlowerWatchType</li>
+            }
+            @if (!string.IsNullOrEmpty(Model.XiXin))
+            {
+                <li>花卉习性：@Model.XiXin</li>
+            }
+            @if (!string.IsNullOrEmpty(Model.YangHuFangFa))
+            {
+                <li>养护方法：@Model.YangHuFangFa</li>
+            }
+            @if (!string.IsNullOrEmpty(Model.FlowerIntroduction))
+            {
+                <li>基本介绍：@Model.FlowerIntroduction</li>
+            }
+        </ul>
+    </div>
+    <script>
+        
+        function SubminInfoCart()
+        {
+            layer.open({
+                content: '您确定将此商品加入购物车吗？'
+            , btn: ['取消', '确定']
+            , no: function (index) {
+                var parms;
+                var num = $('#FlowerNum').val();
+                var ConsigneeName = $('#ConsigneeName').val();
+                var ConsigneePhone = $('#ConsigneePhone').val();
+                var ConsigneAaddress = $('#ConsigneAaddress').val();
+                if (num == '' || num == null || num == 0) {
+                    layer.open({
+                        content: '购买数量必须大于1'
+       , skin: 'msg'
+       , time: 2 //2秒后自动关闭
+                    }); return false;
+                }
+                $.ajax({
+                    url: '/BuyCart/AddInfo',
+                    data: { "ShopId": $("input[name='id']").val(), "Num": num }
+                })
+                //提示
+                layer.open({
+                    content: '添加购物车成功.特别说明:购物车商品保存有效期为一周!'
+                  , skin: 'msg'
+                  , time: 2 //2秒后自动关闭
+                });
+
+            }
+              , yes: function (index) {
+                  layer.close(index);
+              }
+            });
+
+        }
+
+        function  SubmitIinfo()
+        {
+            //询问框
+            layer.open({
+                content: '您确定要下单并支付吗？'
+              , btn: ['取消', '确定']
+              , no: function (index) {
+                  var parms;
+                  var num = $('#FlowerNum').val();
+                  var ConsigneeName = $('#ConsigneeName').val();
+                  var ConsigneePhone = $('#ConsigneePhone').val();
+                  var ConsigneAaddress = $('#ConsigneAaddress').val();
+                  if (ConsigneeName == '' || ConsigneeName == null) {
+                      layer.open({
+                          content: '收货人姓名不能为空'
+         , skin: 'msg'
+         , time: 2 //2秒后自动关闭
+                      });
+                      return false;
+                  }
+                  if (ConsigneePhone == '' || ConsigneePhone == null) {
+                      layer.open({
+                          content: '收货人电话不能为空'
+         , skin: 'msg'
+         , time: 2 //2秒后自动关闭
+                      }); return false;
+                  }
+                  if (ConsigneAaddress == '' || ConsigneeName == null) {
+                      layer.open({
+                          content: '收货人地址不能为空'
+         , skin: 'msg'
+         , time: 2 //2秒后自动关闭
+                      }); return false;
+                  }
+                  if (num == '' || num == null || num == 0) {
+                      layer.open({
+                          content: '购买数量必须大于1'
+         , skin: 'msg'
+         , time: 2 //2秒后自动关闭
+                      }); return false;
+                  }
+                  $("#fromInfo").submit();
+              }
+                , yes: function (index) {
+                    layer.close(index);
+                }
+            });
+           
+        }
+    </script>
+</body>
+</html>

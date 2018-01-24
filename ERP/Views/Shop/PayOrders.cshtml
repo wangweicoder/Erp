@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>确认支付</title>
+    <link href="~/points/css/base.css" rel="stylesheet" />
+    <link href="~/points/css/zhifu.css" rel="stylesheet" />
+    <link href="~/points/css/mui.min.css" rel="stylesheet" />
+    <link href="~/points/css/loaders.min.css" rel="stylesheet" />
+    <link href="~/points/css/loading.css" rel="stylesheet" />
+
+    <script src="~/points/js/rem.js"></script>
+    <script src="~/points/js/jquery-1.8.3.min.js"></script>
+    <script src="~/points/js/swiper.jquery.min.js"></script>
+    @*加载弹出层*@
+    @Scripts.Render("~/Thems/js/layer/layer.js")
+    <script type="text/javascript">
+
+        $(window).load(function () {
+            $(".loading").addClass("loader-chanage")
+            $(".loading").fadeOut(300)
+        })
+        $(function () {
+            //计算内容上下padding
+            reContPadding({ main: "#main", header: "#header", footer: "#footer" });
+            function reContPadding(o) {
+                var main = o.main || "#main",
+					header = o.header || null,
+					footer = o.footer || null;
+                var cont_pt = $(header).outerHeight(true),
+					cont_pb = $(footer).outerHeight(true);
+                $(main).css({ paddingTop: cont_pt, paddingBottom: cont_pb });
+            }
+        });
+
+        function CheckFrom()
+        {
+            if ($("#DetailedAddress").val()=="") {
+                layer.msg('地址不能为空');
+            }
+            if ($("#ConsigneeName").val() == "") {
+                layer.msg('联系人姓名不能为空');
+            }
+            if ($("#ConsigneePhone").val() == "") {
+                layer.msg('联系人电话不能为空');
+            }
+            $.ajax({
+                url: '/Shop/AddInfo?OrdersId=' + $("#OrdersId").val() + '&DetailedAddress=' + $("#DetailedAddress").val() + '&ConsigneeName=' + $("#ConsigneeName").val() + '&ConsigneePhone=' + $("#ConsigneePhone").val(),
+            })
+        }
+    </script>
+</head>
+
+<!--loading页结束-->
+<body>
+@using (Html.BeginForm("PayOrdersNow", "Shop", FormMethod.Post, new { onsubmit = "return  CheckFrom()" }))
+{
+    <!--loading页开始-->
+    <div class="loading">
+        <div class="loader">
+            <div class="loader-inner pacman">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+    <header class="mui-bar mui-bar-nav report-header box-s" id="header">
+        <a href="javascript:history.go(-1)"><i class="iconfont icon-fanhui fl"></i></a>
+        <p>确认支付</p>
+    </header>
+    <div id="main" class="mui-clearfix contaniner sorder">
+        <div class="warning clearfloat box-s">
+            提示：请在24小时内完成在线支付，逾期将视为订单无效
+        </div>
+        <div class="odernum clearfloat">
+            <ul>
+                <li>您的订单号：@ViewData["OrdersId"]
+                    <input type="hidden" id="OrdersId" value="@ViewData["OrdersId"]" name="OrdersId" />
+                </li>
+                <li>应付价格：<span>@ViewData["PayTotal"]
+                             <input type="hidden" value="@ViewData["PayTotal"]" name="PayTotal" /> </span></li>
+            </ul>
+        </div>
+        <div class="odernum clearfloat">
+            <ul>          
+                <li><input type="text" name="DetailedAddress" id="DetailedAddress" placeholder="请输入地址" style="width:50%"></li>
+            </ul>
+        </div>
+        <div class="odernum clearfloat">
+            <ul>
+                <li><input type="text" name="ConsigneeName" id="ConsigneeName" placeholder="联系人姓名" style="width:50%"></li>
+            </ul>
+        </div>
+        <div class="odernum clearfloat">
+            <ul>
+                <li><input type="text" name="ConsigneePhone" id="ConsigneePhone" placeholder="联系人电话" style="width:50%"></li>
+            </ul>
+        </div>
+        <button type="submit" class="address-add f">确认支付</button>
+        </div>
+}
+</body>
+</html>

@@ -1,0 +1,70 @@
+﻿@model Model.UserAdmin
+@{
+    Layout = null;
+}
+
+@Styles.Render("~/bootstrap/css/bootstrap.css")
+@Scripts.Render("~/Plugins/jQuery/jquery-2.2.3.min.js")
+@*加载弹出层*@
+@Scripts.Render("~/Thems/js/layer/layer.js")
+<script src="~/Scripts/jquery.valiedate.form.js"></script>
+<script>
+    function CheckFrom() {
+        if ($("#PassWord").val() == "") {
+            layer.msg('密码不能为空');
+            return false;
+        }
+        if ($("#OwnedCompany").val() == "") {
+            layer.msg('所属公司不能为空');
+            return false;
+        }
+        if ($("#RoleCode").find("option:selected").val() == "") {
+            layer.msg('请选择一个角色');
+            return false;
+        }
+        $.ajax({
+            url: '/UserInfo/EditInfo',
+            data: $("#formInfo").serialize(),
+            success: function (data) {
+                parent.layer.closeAll();
+            }
+        })
+        return true;
+    }
+</script>
+<form id="formInfo">
+    <div class="box-body">
+        <br />
+        <div class="form-group" style="height:30px;">
+
+                @Html.HiddenFor(m => m.ID)
+
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>密码</span>
+            <div class="col-sm-5">
+                @Html.PasswordFor(m => m.PassWord, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>真实姓名</span>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(m => m.RealName, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>所属公司</span>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(m => m.OwnedCompany, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>角色</span>
+            <div class="col-sm-6">
+                @Html.DropDownListFor(m => m.RoleCode, ViewData["deptSelectItems"] as List<SelectListItem>, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer" style="text-align: center;margin-top:250px;">
+        <button id="btn_add" type="button" onclick="CheckFrom()" class="btn btn-default">
+            <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>保存
+        </button>
+        <button id="btn_delete" type="button" class="btn btn-default" onclick="parent.layer.closeAll();" style="margin-left:25px;">
+            <span class="glyphicon glyphicon-random" aria-hidden="true"></span>&nbsp;&nbsp;取消
+        </button>
+    </div>
+
+</form>

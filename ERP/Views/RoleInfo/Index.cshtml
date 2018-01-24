@@ -1,0 +1,94 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    @*加载表格*@
+    @Scripts.Render("~/plugins/jQuery/jquery-2.2.3.min.js")
+
+    @Styles.Render("~/Bootstrap/css/bootstrap.css")
+    @Scripts.Render("~/Bootstrap/js/bootstrap.js")
+
+    @Styles.Render("~/Bootstrap/bootstrap-table/bootstrap-table.css")
+    @Scripts.Render("~/Bootstrap/bootstrap-table/bootstrap-table.js")
+    @*加载弹出层*@
+    @Scripts.Render("~/Thems/js/layer/layer.js")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <script src="~/Scripts/Admin/RoleInfo.js"></script>
+
+</head>
+<body>
+    <div class="panel-body" style="padding-bottom:0px;">
+        <div class="panel panel-default">
+            <div class="panel-heading">角色列表</div>
+            <div class="panel-body">
+                <form id="formSearch" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="txt_search_departmentname">
+                            角色
+                        </label>
+                        <div class="col-sm-2">
+                            @Html.DropDownList("deptSelectItems", ViewData["deptSelectItems"] as List<SelectListItem>, new { @class = "form-control" })
+                        </div>
+                        <div class="col-sm-4" style="text-align:left;">
+                            <button type="button" class="btn btn-default" onclick="onloadTable();">
+                                查询 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="toolbar" class="btn-group">
+            <button id="btn_add" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加
+            </button>
+        </div>
+        <table id="tb_departments" data-reorderable-columns="true"></table>
+    </div>
+    <script>
+        $(function () {
+            onloadTable();
+            $("#btn_add").click(function () {
+                parent.layer.open({
+                    type: 2,
+                    title: '增加角色',
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['300px;', '400px;'],
+                    content: '/RoleInfo/Add',
+                    end: function () { //层彻底关闭后执行的回调
+                        onloadTable();
+                    }
+                });
+            });
+
+
+        })
+
+        function EditMenuList(id)
+        {
+            var index=  parent.layer.open({
+                type: 2,
+                title: '设置菜单',
+                shadeClose: true,
+                shade: 0.8,
+                area: ['300px;', '400px;'],
+                content: '/RoleInfo/SetMenuInfo?RoleId='+id,
+                end: function () { //层彻底关闭后执行的回调
+                    onloadTable();
+                }
+            })
+            layer.iframeAuto(index);
+         }
+    </script>
+</body>
+</html>
+

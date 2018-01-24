@@ -1,0 +1,57 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SetMenuInfo</title>
+    @*加载表格*@
+    @Scripts.Render("~/plugins/jQuery/jquery-2.2.3.min.js")
+
+    @Styles.Render("~/Bootstrap/css/bootstrap.css")
+    @Scripts.Render("~/Bootstrap/js/bootstrap.js")
+
+    @Styles.Render("~/Bootstrap/bootstrap-table/bootstrap-table.css")
+    @Scripts.Render("~/Bootstrap/bootstrap-table/bootstrap-table.js")
+    @*加载弹出层*@
+    @Scripts.Render("~/Thems/js/layer/layer.js")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+</head>
+<body>
+    <script>
+        function FillCheckBox(e) {
+            if ($(e).prop("checked")) {
+                $("." + $(e).attr('class')).prop("checked", true);
+            }
+            else {
+                $("." + $(e).attr('class')).prop("checked", false);
+            }
+        }
+        function CheckBoxChilrden(e) {
+            if ($(e).prop("checked")) {
+                $("#" + $(e).attr('class')).prop("checked", true);
+            }
+            else {
+                //$("#" + $(e).attr('class')).prop("checked", false);
+            }
+        }
+    </script>
+    <form action="/RoleInfo/SetMenuInfo" method="post">
+        @Html.Raw(ViewData["MenuInfoList"])
+        <input type="hidden"  name="RoleId" value="@ViewData["RoleId"]"/>
+        <div class="box-footer" style="text-align: center;">
+            <button id="btn_add" type="submit" class="btn btn-default">
+                <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>保存
+            </button>
+            <button id="btn_delete" type="button" class="btn btn-default" onclick="parent.layer.closeAll();" style="margin-left:25px;">
+                <span class="glyphicon glyphicon-random" aria-hidden="true"></span>&nbsp;&nbsp;取消
+            </button>
+        </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+</head>
+<body>
+    <div style="position:relative;">
+        <input type="text" id="City" style="position: absolute; width: 100px; left: 0px; height: 22px;" value="请选择...">
+        <span style="margin-left:100px;width:18px;overflow:hidden;">
+            <select style="width:118px;margin-left:-100px;" onchange="document.getElementById('City').value=this.options[this.selectedIndex].text;">
+                <option value="-1">请选择城市...</option>
+                <option value="1">北京</option>
+                <option value="2">上海</option>
+                <option value="3">广州</option>
+            </select>
+        </span>
+    </div>
+</body>
+</html>

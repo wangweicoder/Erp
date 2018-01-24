@@ -1,0 +1,148 @@
+﻿@model  List<Model.Flower>
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>首页</title>
+
+    <link href="~/points/css/base.css" rel="stylesheet" />
+    <link href="~/points/css/index.css" rel="stylesheet" />
+    <link href="~/points/css/mui.min.css" rel="stylesheet" />
+    <link href="~/points/css/loaders.min.css" rel="stylesheet" />
+    <link href="~/points/css/loading.css" rel="stylesheet" />
+    <link href="~/points/css/swiper.min.css" rel="stylesheet" />
+
+    <script src="~/points/js/rem.js"></script>
+    <script src="~/points/js/jquery-1.8.3.min.js"></script>
+    <script src="~/points/js/swiper.jquery.min.js"></script>
+    <script src="~/points/js/others.js"></script>
+    @*加载弹出层*@
+    @Scripts.Render("~/Thems/js/layer/layer.js")
+    <script type="text/javascript">
+        $(window).load(function () {
+            $(".loading").addClass("loader-chanage")
+            $(".loading").fadeOut(300)
+        })
+
+        $(function () {
+            $("#down").click(function () {
+                var count = $("#count").html();
+                if (count > 1) {
+                    $("#count").html($("#count").html() - 1);
+                } else {
+                    $("#count").html(1);
+                }
+            })
+        })
+        function jian()
+        {
+            var count = $("#count").html();
+            if (count > 1) {
+                $("#count").html($("#count").html() - 1);
+            } else {
+                $("#count").html(1);
+            }
+        }
+        
+      
+    </script>
+</head>
+
+<!--loading页结束-->
+<body>
+    <!--loading页开始-->
+    <div class="loading">
+        <div class="loader">
+            <div class="loader-inner pacman">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+    <!--头部区域-->
+    <header class="mui-bar mui-bar-nav" id="header">
+        <h4>淘花运</h4>
+
+    </header>
+    <div id="main" class="clearfloat warp">
+        <div class="mui-content">
+            <div class="theme clearfloat">
+                <div class="boutit clearfloat">
+                    <span></span>
+                    <samp>花卉列表</samp>
+                </div>
+                <div class="content clearfloat">
+                    @foreach (var item in Model)
+                    {
+                        <div class="list clearfloat fl">
+                            @if (item.FlowerStock > 0)
+                            {   
+                                <a href="javascript:void(0);" onclick="window.location.href = '/Shop/Details?id=' + @item.id">
+                                    <div class="tu clearfloat fr">
+                                        <span></span>
+                                        <img src="@item.FlowerWatchPhoto" />
+                                    </div>
+                                    <div class="shang clearfloat fl box-s">
+                                        <p class="tit over">@item.FlowerWatchName</p>
+                                        <p><span>价格:</span><span class="over db red">@item.FlowerSalesPrice</span></p>
+                                    </div>
+                                </a>
+                            }
+                            @if (item.FlowerStock < 0)
+                            {
+                                <a href="javascript:void(0);">
+                                    <div class="tu clearfloat fr">
+                                        <span></span>
+                                        <img src="@item.FlowerWatchPhoto" />
+                                    </div>
+                                    <div class="shang clearfloat fl box-s">
+                                        <p class="tit over">@item.FlowerWatchName</p>
+                                        <p><span>价格:</span><span class="over db red">@item.FlowerSalesPrice</span><span class="over db red">(库存不足)</span></p>
+                                    </div>
+                                </a>
+                            }
+
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--footer star-->
+    @*<footer class="page-footer fixed-footer" id="footer">
+            <ul>
+                <li class="active">
+                    <a href="/MMIndex/Index">
+                        <i class="iconfont icon-shouye"></i>
+                        <p>首页</p>
+                    </a>
+                </li>
+                <li>
+                        <a href="cation.html">
+                            <i class="iconfont icon-icon04"></i>
+                            <p>分类</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="shopcar.html">
+                            <i class="iconfont icon-gouwuche"></i>
+                            <p>购物车</p>
+                        </a>
+                    </li>
+                <li>
+                    <a href="center.html">
+                        <i class="iconfont icon-yonghuming"></i>
+                        <p>我的订单</p>
+                    </a>
+                </li>
+            </ul>
+        </footer>*@
+    <!--footer end-->
+
+</body>
+</html>

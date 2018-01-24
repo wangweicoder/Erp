@@ -1,0 +1,34 @@
+﻿
+@{
+    Layout = null;
+}
+
+@Styles.Render("~/bootstrap/css/bootstrap.css")
+@Scripts.Render("~/Plugins/jQuery/jquery-2.2.3.min.js")
+@*加载弹出层*@
+@Scripts.Render("~/Thems/js/layer/layer.js")
+<script src="~/Scripts/jquery.valiedate.form.js"></script>
+@using (Html.BeginForm("SetRoleInfo", "UserInfo", FormMethod.Post))
+{
+    <div class="box-body">
+        <br />
+        <div class="form-group" style="height:30px;">
+            <input type="hidden"  name="SetRoleInfoId"  id="SetRoleInfoId"  value="@ViewData["SetRoleInfoId"]"/>
+            <label class="control-label col-sm-2" for="txt_search_departmentname">
+                角色
+            </label>
+            <div class="col-sm-2">
+                @Html.DropDownList("deptSelectItems", ViewData["deptSelectItems"] as List<SelectListItem>, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+                    <!-- /.box-body -->
+    <div class="box-footer" style="text-align: center;margin-top:50px;">
+        <button id="btn_add" type="submit" class="btn btn-default">
+            <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>保存
+        </button>
+        <button id="btn_delete" type="button" class="btn btn-default" onclick="parent.layer.closeAll();" style="margin-left:25px;">
+            <span class="glyphicon glyphicon-random" aria-hidden="true"></span>&nbsp;&nbsp;取消
+        </button>
+    </div>
+}

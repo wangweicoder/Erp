@@ -1,0 +1,168 @@
+﻿@model Model.FlowerArrangement
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.3, maximum-scale=1.0, user-scalable=0" />
+    <title></title>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <link href="~/FileCss/css/Buttons.css" rel="stylesheet" />
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/layui/layui.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    @Scripts.Render("~/Thems/js/layer/layer.js")
+    @Styles.Render("~/bootstrap/css/bootstrap.css")
+</head>
+<body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family:"宋体";
+                
+        }
+        ul li {
+            margin: 20px 0;
+        }
+        .leftpadding {
+            margin-left: 10px;
+        }
+        .cover {
+            position: relative;           
+            overflow: hidden;
+        }
+        .spanstyle {
+            font-weight: 900;
+        }
+         .cover img {
+            position: relative;
+            top: 0;
+            width: 100%;
+            /*padding-left: 3px;height: 300px;*/
+        }
+        /*tr {
+            display: block; 
+            margin: 2px 0; 
+        }*/
+        /*将tr设置为块体元素*/
+        /*设置tr间距为2px*/
+    </style>
+        <div id="wrapper" style="background-color:#ddfdba;margin:5px 8px;">
+            <table>
+                <tr>
+                    <td>
+                        <div class="cover">
+                            <img src="@Model.Photo" />
+                        </div></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="leftpadding">
+                            <ul style="list-style-type: none; text-align: left;  ">
+                                <li>
+                                    <span class="spanstyle">单位:</span> @Model.OwnedCompany
+                                </li>
+                                <li>
+                                    <span class="spanstyle">每周</span><span id="kly">@Model.Weekly</span>养护
+                                </li>
+                                <li>
+                                    <span class="spanstyle">花卉名称: </span>@Model.FlowerWatchName
+                                </li>
+                                <li>
+                                    <span class="spanstyle">习性:</span>@Model.XiXin
+                                </li>
+                                <li>
+                                    <span class="spanstyle">养护方法:</span>@Model.YangHuFangFa
+                                </li>
+                                <li>
+                                    <span class="spanstyle"> 规格:</span> @Model.Specifications
+                                </li>
+                                <li>
+                                    <span class="spanstyle">运费:</span>满300免费送,不满加50元
+                                </li>
+                                <li>
+                                    <span class="spanstyle">提示:</span> 当天上午11:00之前付款最晚次日专车送达，11:00后付款最晚隔日专车送达
+                                </li>                                
+                            </ul>
+                        </div>
+                    </td>
+                </tr>                
+                <tr>
+                    <td colspan="2">
+                        @if (ViewData["IsTourist"] == null)
+                        {
+                            if (ViewData["IsAllower"].ToString() == "1")
+                            {   <div class="leftpadding">
+                                <span class="spanstyle" style="margin: 20px 0;">更换花卉:</span>
+                                </div>
+                                <div class="layui-upload" style="text-align:center;">
+                                    <button type="button" class="layui-btn" id="test8">上传图片</button>
+                                    @* <input type="button" id="test8" style="background-color:#97d159;width:40%;height:30px;" value="上传图片" />*@
+                                    <input type="button" id="test9" style="float:right; background-color:#97d159;width:32%;
+                                border-radius:2px;height: 38px;line-height: 38px;border:none;margin-right:32px;color:#fff;" value="提交花卉" />
+                                </div>                        
+                                  <br />
+                            }
+                            }
+                                <div class="leftpadding">
+                                    备注:
+                                    <br />
+                                </div>
+                                <div style="text-align: center;">
+                                    <textarea style="margin: 0px auto;text-align:center; height: 50px; width: 80%; border: solid #77c302; background-color: #ddfdba"></textarea>
+                                </div>
+                         </td>
+                    </tr>
+                    <tr>
+
+                        <td colspan="2">
+                            <br />
+                            <div style="text-align:center;">
+                                <input type="hidden" id="FlowerArrangementId" value="@Model.id" />
+                                <input type="button" onclick="location='/Shop/Details?id=@Model.ShopId'"
+                              style="height: 30px; background-color: #97d159; color:#fff;
+                                width: 50%;border-radius:5px; " value="立即购买" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <script>
+                layui.use('upload', function () {
+                    var upload = layui.upload;
+
+                    //执行实例
+                    var uploadInst = upload.render({
+                        elem: '#test8' //绑定元素
+                      , url: '/FlowerArrangement/Upload' //上传接口
+                      , bindAction: '#test9'
+                      , auto: false
+                      , data: { "FlowerArrangementId": $("#FlowerArrangementId").val() }
+                      , done: function (res) {
+                          //layer.alert('提交成功');
+                          layer.msg('提交成功');
+                          //location.reload();
+                      }
+                      , error: function () {
+                          //请求异常回调
+                      }
+                    });
+                });
+                //
+                $(function () {
+                    //图片正方形
+                   var width= $(".cover img").width();
+                   $(".cover img").height(width);
+                    //数字转换星期
+                   var oldv = $("#kly").text().trim();
+                   var show_day = new Array('一', '二', '三', '四', '五', '六', '日');
+                   $("#kly").text(show_day[oldv-1]);
+                });
+            </script>
+    </body>
+     </html>
+

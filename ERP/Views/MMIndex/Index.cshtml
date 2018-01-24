@@ -1,0 +1,149 @@
+﻿@model Model.UserAdmin
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8" />
+    <title>个人中心 - 首页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="description" content="淘花运" />
+    <meta name="Keywords" content="淘花运" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="location" content="province=;city=;coord=" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="apple-touch-icon-precomposed" href="~/FileCss/images/screenLogo.png?debug=847" />
+    <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?debug=89559" />
+    @*<link href="~/points/css/base.css" rel="stylesheet" />*@
+    <link href="~/points/css/UserIndexfoot.css" rel="stylesheet" />
+    <script src="~/FileCss/js/zepto.min.js?debug=847" type="text/javascript"></script>
+    <script src="~/FileCss/js/main.js?debug=847" type="text/javascript"></script>
+   <style type="text/css">
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    html, body {
+        height: 100%;
+    }
+
+    body {
+        /*box-sizing可以取消因为添加border而出现的滚动条*/
+        box-sizing: border-box;
+        background-color: #ffffff;
+    }
+       .border_bottom {
+           background-color: #97d159;
+           border-bottom: 3px solid #ffffff;
+       }
+       .FontMenu {
+      color:#ffffff;
+       }
+    </style >
+</head>
+<html>
+<body>   @*style="background-color: #f0f0f0;height:100%;border:1px solid red"</span><span>*@
+    @Html.Partial("header")
+
+    <div class="vip-header">
+            <dl>
+                <dt>
+                    <img src="@Model.LogoPhoto" />
+                    @*<img src="~/FileCss/images/user.png"  height="400"/>*@
+                </dt>
+                <dd>
+                    <h4><span>@Utility.ChangeText.GetUserName()  VIP</span></h4>
+                    <p><span>积分：<i>30</i></span>&nbsp;&nbsp;<span>红包：<i>0</i></span></p>
+                </dd>
+            </dl>
+        @*<ul>https://www.cnblogs.com/darrenji/archive/2015/01/29/4260201.html
+        <li><a href="orderlist.aspx?type=1"><span>1</span><p>待付款</p> </a></li>
+        <li><a href="orderlist.aspx?type=2"><span>0</span><p>待收货</p> </a></li>
+        <li><a href="orderlist.aspx?pj=1"><span>0</span><p>待评价</p> </a></li>
+    </ul>*@
+    </div>
+    @*<div class="vip-club border_top_bottom">
+        <div class="vip-club-title border_bottom">
+            <span><i class="iconfont"></i>订单信息</span>*@
+            @*<a href="vipclub.aspx">每日签到领积分<i class="iconfont"></i></a>*@
+        @*</div>
+        <ul>
+            <li><a href="orderlist.aspx"><i class="iconfont"></i><p>全部订单</p> </a></li>
+            <li><a href="LimitBuyProduct.aspx"><i class="iconfont"></i><p>待付款</p> </a></li>
+            <li><a href="crowdlist.aspx"><i class="iconfont" style="font-size: 28px;"></i><p>已付款</p> </a></li>
+            <li><a href="mybooking.aspx"><i class="iconfont"></i><p>已完成</p> </a></li>
+        </ul>
+    </div>*@
+
+    @*<div class="vip-club border_top_bottom vip-account">
+            <div class="vip-club-title border_bottom">
+                <span><i class="iconfont"></i>我的账户</span>
+                <a href="vipclub.aspx#tabList">积分兑换商品<i class="iconfont"></i></a>
+            </div>
+            <ul>
+                <li><a href="myyue.aspx"><i class="color_f44623">0</i><p>账户余额</p> </a></li>
+                <li><a href="myyue.aspx?act=jf"><i class="color_f4a425">30</i><p>我的积分</p> </a></li>
+                <li><a href="redpaper.aspx"><i class="color_45a1de">0</i><p>我的礼券</p> </a></li>
+                <li><a href="collection.aspx"><i class="color_1dccaa">1</i><p>宝贝收藏</p> </a></li>
+            </ul>
+        </div>*@
+    <div class="vip-list-icon border_top_bottom">
+        <ul>
+            <li class="border_bottom"> 
+            <a href="/MMain/ClockAttendance" class="border_right"><i class="iconfont" style="font-size:22px;">
+                </i><span class="FontMenu"><em>考勤打卡</em></span></a>
+             <a href="/MFlower/ConservationFlowers"><i class="iconfont" style="font-size:24px;">
+                 </i><span class="FontMenu"><em>养护花卉</em></span></a> </li>
+            <li class="border_bottom"> <a href="/MFlower/ChangeFlowers" class="border_right"><i class="iconfont" style="font-size:24px;"></i><span class="FontMenu"><em>更换花卉</em></span></a> <a href="/MMain/ProblemsAndSuggestions"><i class="iconfont" style="font-size:24px;"></i><span class="FontMenu"><em>问题建议</em></span></a> </li>
+            <li class="border_bottom"> <a href="/MMain/CustomRequirements" class="border_right"><i class="iconfont"></i><span class="FontMenu"><em>定制需求</em></span></a> <a href="/ServiceIntroduction/ShowInfo"><i class="iconfont" style="font-size:20px; text-indent:2px;"></i><span class="FontMenu"><em>服务介绍</em></span></a> </li>
+            <li class="border_bottom"> <a href="/FlowerTreatment/MIndex" class="border_right"><i class="iconfont"></i><span class="FontMenu"><em>养护记录</em></span></a> <a href="/FlowerChange/MIndex"><i class="iconfont" style="font-size:20px; text-indent:2px;"></i><span class="FontMenu"><em>更换记录</em></span></a> </li>
+         </ul>
+    </div>
+
+
+    @*为推荐商品模块*@
+
+    @*<div class="vip-club vip-like border_top_bottom">
+            <div class="vip-club-title  border_bottom">
+                <span><i class="iconfont"></i>猜你喜欢</span>
+                <a style="" href="http://m.ch999.com/">去逛逛<i class="iconfont"></i></a>
+            </div>
+            <div class="pj_box">
+                <ul>
+                    <li><a href="/product/33912.html"><img src="images/20150910052509882.jpg" width="80" height="80" alt="img" /><em>iPhone 6s（A1700）国行版</em><b>￥4788.00</b></a></li>
+                    <li><a href="/product/25313.html"><img src="images/20140911155536539.jpg" width="80" height="80" alt="img" /><em>iPhone 6（A1586）国行版</em><b>￥4130.00</b></a></li>
+                    <li><a href="/product/35440.html"><img src="images/2015102718274073.jpg" width="80" height="80" alt="img" /><em>乐视 超级手机 乐1s 通用版</em><b>￥1199.00</b></a></li>
+                    <li><a href="/product/33340.html"><img src="images/20150813183752967.jpg" width="80" height="80" alt="img" /><em>红米Note2 标准移动版</em><b>￥780.00</b></a></li>
+                    <li><a href="/product/35552.html"><img src="images/20151014150146295.jpg" width="80" height="80" alt="img" /><em>OPPO R7s 移动4G版</em><b>￥2498.00</b></a></li>
+                    <li><a href="/product/30926.html"><img src="images/20150507143344584.jpg" width="80" height="80" alt="img" /><em>华为 P8（ALE-TL00）移动4G青春版</em><b>￥1260.00</b></a></li>
+                    <li><a href="/product/31578.html"><img src="images/20150603130933769.jpg" width="80" height="80" alt="img" /><em>魅族 魅蓝note2（M571）公开版</em><b>￥880.00</b></a></li>
+                </ul>
+            </div>
+        </div>*@
+    <script>
+        var num_li = Number($(".pj_box li").length);
+        $(".pj_box ul").css("width", (num_li * 100));
+    </script>
+    @Html.Partial("FootView")
+    <footer id="footer" >
+        <div class="footbar" id="noLogin">
+            <a id="f1_btnLogin" href="/MLogin/Index" class="login_btn">退出</a>
+            @*<a href="http://m.ch999.com/register.aspx">注册</a>*@
+            <a href="#" class="backtop_btn">↑回顶部</a>
+        </div>
+    </footer>
+    <script>var url = location.href; var platfomrs = ["360ad", "goad", "juxad", "zhtad", "ttad", "tead", "snswxtsad", "snswxgnad", "snsxlad", "snstxad", "snsqzad", "snstbzad", "snstbwad", "snsblad", "snshzad", "snsqtad", "mgzhad", "mttad"]; for (index in platfomrs) { if (url.indexOf(platfomrs[index]) > 0) { Cookie.Set("sem", "on", 60 * 60 * 3); } }</script>
+    <!--将以下代码放在Footer文件中-->
+    <div  style ="position: fixed; bottom: 0; width: 100%;">
+        <div class="UserIndex_menu" id="hMenu">
+            <a href="/Shop/Index"><i class="iconfont">Ő</i><span>我要买花</span></a>
+            <a href="/MFlower/ConservationFlowers"><i class="iconfont">Ɔ</i><span>养护花卉</span></a>
+            <a href="/MFlower/ChangeFlowers"><i class="iconfont">ŭ</i><span>更换花卉</span></a>
+            <a href="/MLogin/Index"><i class="iconfont">Œ</i><span>退出</span></a>
+        </div>
+    </div>
+</body>
+</html>

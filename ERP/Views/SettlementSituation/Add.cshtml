@@ -1,0 +1,143 @@
+﻿@model Model.SettlementSituation
+@{
+    Layout = null;
+}
+
+@Styles.Render("~/bootstrap/css/bootstrap.css")
+@Scripts.Render("~/Plugins/jQuery/jquery-2.2.3.min.js")
+@*加载弹出层*@
+@Scripts.Render("~/Thems/js/layer/layer.js")
+<script src="~/Scripts/jquery.valiedate.form.js"></script>
+@Scripts.Render("~/My97DatePicker/WdatePicker.js")
+<script>
+    function CheckFrom() {
+        if ($("#CompanyName").val() == "") {
+            layer.msg('公司名称不能为空');
+            return false;
+        }
+        if (!checknum($("#Phone").val())) {
+            layer.msg('手机号只能是数字');
+            return false;
+        }
+        if ($("#Address").val() == "") {
+            layer.msg('地址不能为空');
+            return false;
+        }
+        return true;
+    }
+
+
+    function SumbitInfo() {
+        if (CheckFrom()) {
+            $.ajax({
+                url: '/SettlementSituation/AddInfo',
+                data: $("#formmsg").serialize(),
+                success: function (data) {
+                    parent.layer.closeAll();
+                }
+            })
+        }
+    }
+</script>
+<form id="formmsg">
+    <div class="box-body">
+        <br />
+        <table>
+            <tr>
+                <td colspan="2">
+                    <div class="form-group">
+
+                        <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>公司名称</span>
+                        <div class="col-sm-4">
+                            @Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control" })
+                        </div>
+                        <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>开票信息</span>
+                        <div class="col-sm-4">
+                            @Html.TextAreaFor(m => m.BillingInformation, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-group" >
+                        <label for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>应付金额</label>
+                        <div class="col-sm-4">
+                            @Html.TextBoxFor(m => m.AmountPayable, new { @class = "form-control" })
+                        </div>
+                        <label for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>实付金额</label>
+                        <div class="col-sm-4">
+                            @Html.TextBoxFor(m => m.AmountPaid, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group" >
+                        <label for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>票据类型</label>
+                        <div class="col-sm-4">
+                            @Html.DropDownListFor(m => m.BillType,  ViewData["GetBillTypeTypeList"] as List<SelectListItem>, new { @class = "form-control" })
+                          
+                        </div>
+                        <label for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>月租金</label>
+                        <div class="col-sm-4">
+                            @Html.TextBoxFor(m => m.MonthlyRent, new { @class = "form-control" })
+                            @Html.HiddenFor(m => m.ID)
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>续费月份</label>
+                        <div class="col-sm-4">
+                            @Html.DropDownListFor(m => m.WhatMonth, ViewData["GetWhatMonthTypeList"] as List<SelectListItem>, new { @class = "form-control" })
+                        </div>
+                        <label for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>结算日</label>
+                        <div class="col-sm-4">
+                            @Html.TextBoxFor(m => m.SettlementDay, new { @class = "form-control", onclick = "WdatePicker({ startDate: '%y-%M-%d ', dateFmt: 'yyyy-MM-dd ',  readOnly: true,alwaysUseStartDate: true })" })
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>结算方式</label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(m => m.PayType, new { @class = "form-control" })
+                            </div>
+                            <label for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>是否续费</label>
+                            <div class="col-sm-4">
+                                @Html.DropDownListFor(m => m.Isrenew, ViewData["GetIsrenewTypeList"] as List<SelectListItem>, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>备注</label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(m => m.Remark, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer" style="text-align: center; margin-top: 20px;">
+        <button id="btn_add" type="button" onclick="SumbitInfo()" class="btn btn-default">
+            <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>保存
+        </button>
+        <button id="btn_delete" type="button" class="btn btn-default" onclick="parent.layer.closeAll();" style="margin-left:25px;">
+            <span class="glyphicon glyphicon-random" aria-hidden="true"></span>&nbsp;&nbsp;取消
+        </button>
+    </div>
+
+</form>

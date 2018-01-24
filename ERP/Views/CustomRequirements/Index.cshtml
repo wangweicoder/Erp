@@ -1,0 +1,91 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    @*加载表格*@
+    @Scripts.Render("~/plugins/jQuery/jquery-2.2.3.min.js")
+
+    @Styles.Render("~/Bootstrap/css/bootstrap.css")
+    @Scripts.Render("~/Bootstrap/js/bootstrap.js")
+
+    @Styles.Render("~/Bootstrap/bootstrap-table/bootstrap-table.css")
+    @Scripts.Render("~/Bootstrap/bootstrap-table/bootstrap-table.js")
+    @*加载弹出层*@
+    @Scripts.Render("~/Thems/js/layer/layer.js")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <script src="~/Scripts/Admin/CustomRequirements.js"></script>
+
+</head>
+<body>
+    <div class="panel-body" style="padding-bottom:0px;">
+        <div class="panel panel-default">
+            <div class="panel-heading">定制需求列表</div>
+            <div class="panel-body">
+                <form id="formSearch" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="txt_search_departmentname">
+                            状态
+                        </label>
+                        <div class="col-sm-2">
+                            <select id="State" name="State" class="form-control">
+                                <option value="0">待处理</option>
+                                <option value="1">已处理</option>
+                            </select>
+                        </div>
+                        <label class="control-label col-sm-2" for="txt_search_departmentname">
+                            花卉类别
+                        </label>
+                        <div class="col-sm-2">
+                            @Html.DropDownList("deptSelectItems", ViewData["deptSelectItems"] as List<SelectListItem>, new { @class = "form-control" })
+                        </div>
+                        <div class="col-sm-4" style="text-align:left;">
+                            <button type="button" class="btn btn-default" onclick="onloadTable();">
+                                查询 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="toolbar" class="btn-group">
+            <button id="btn_edit" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 修改
+            </button>
+        </div>
+        <table id="tb_departments" data-reorderable-columns="true"></table>
+    </div>
+    <script>
+        $(function () {
+            onloadTable();
+            $("#btn_edit").click(function () {
+                var ids = $("#tb_departments").bootstrapTable('getSelections');
+                if (ids.length == 0) {
+                    parent.layer.msg('请先选中一行');
+                    return false;
+                }
+                parent.layer.open({
+                    type: 2,
+                    title: '修改状态',
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['250px;', '400px;'],
+                    content: '/CustomRequirements/EditState?id=' + ids[0].id,
+                    end: function () { //层彻底关闭后执行的回调
+                        onloadTable();
+                    }
+                });
+            });
+        })
+    </script>
+</body>
+</html>
+

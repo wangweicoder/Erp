@@ -1,0 +1,4 @@
+﻿.UserIndex_menu{height:60px;border-bottom:solid 1px #dadada;-webkit-border-image: url(../images/border.gif) 2 0 round;border-image: url(../images/border.gif) 2 0 round;border-width: 0 0 1px 0;}
+.UserIndex_menu a{width:25%;height:50px;display:block;text-align:center;padding:5px 0;float:left;text-shadow: 0 1px 0 #fff;}
+.UserIndex_menu a i{font-size:20px;color:#2c3e50;display:block;}
+.UserIndex_menu a span{font-size:12px;color:#2c3e50;}

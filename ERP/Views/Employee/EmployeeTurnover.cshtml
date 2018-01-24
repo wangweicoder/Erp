@@ -1,0 +1,234 @@
+﻿@model Model.EmployeeTurnover
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    @*加载表格*@
+    @Scripts.Render("~/plugins/jQuery/jquery-2.2.3.min.js")
+
+    @Styles.Render("~/Bootstrap/css/bootstrap.css")
+    @Scripts.Render("~/Bootstrap/js/bootstrap.js")
+
+    @Styles.Render("~/Bootstrap/bootstrap-table/bootstrap-table.css")
+    @Scripts.Render("~/Bootstrap/bootstrap-table/bootstrap-table.js")
+    @*加载弹出层*@
+    @Scripts.Render("~/Thems/js/layer/layer.js")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    @Scripts.Render("~/My97DatePicker/WdatePicker.js")
+    @Scripts.Render("~/Scripts/jquery.valiedate.form.js")
+</head>
+<body>
+    <script>
+        function CheckFrom() {
+            var CheckMsgFirst = true;
+            $("#MsgFirst input[type='text']").each(function () {
+                if ($(this).val() == "") {
+                    CheckMsgFirst = false;
+                }
+            })
+            if (CheckMsgFirst == false) {
+                //墨绿深蓝风
+                layer.alert('请把员工入职基本信息补充完整', {
+                    skin: 'layui-layer-lan'
+                    , closeBtn: 0
+                    , anim: 4 //动画类型
+                });
+                return false;
+            }
+            if (!isMoney($("#MonthlySalary").val())) {
+                //墨绿深蓝风
+                layer.alert('月薪输入的格式不正确', {
+                    skin: 'layui-layer-lan'
+                    , closeBtn: 0
+                    , anim: 4 //动画类型
+                });
+                return false;
+            }
+            if (!isNumber($("#EmergencyContactTelephone").val())) {
+                //墨绿深蓝风
+                layer.alert('应急联系人电话输入格式不正确', {
+                    skin: 'layui-layer-lan'
+                    , closeBtn: 0
+                    , anim: 4 //动画类型
+                });
+                return false;
+            }
+            if (!isNumber($("#PresentAddressTelephoneNumber").val())) {
+                //墨绿深蓝风
+                layer.alert('现住址电话输入格式不正确', {
+                    skin: 'layui-layer-lan'
+                    , closeBtn: 0
+                    , anim: 4 //动画类型
+                });
+                return false;
+            }
+        }
+    </script>
+    <style>
+        table {
+            border-collapse: separate;
+            border-spacing: 10px 5px;
+            text-align: center;
+        }
+    </style>
+    @using (Html.BeginForm("EmployeeTurnover", "Employee", FormMethod.Post, new { onsubmit = "return  CheckFrom()" }))
+    {
+         <div class="panel-body" style="padding-bottom:0px;">
+            <div class="panel panel-default" id="MsgFirst">
+                <div class="panel-heading">员工转正申请基本信息</div>
+                <div class="panel-body">
+                 
+                        <table>
+                            <tr>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        姓名
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                                        @Html.HiddenFor(x=>x.Number)
+                                    </div>
+                                </td>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        性别
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        <select id="Sex" name="Sex" class="form-control">
+                                            <option value="男">男</option>
+                                            <option value="女">女</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        出生日期
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.Birthday, new { @class = "form-control", onclick = "WdatePicker({ startDate: '%y-%M-%d 23:59:59', dateFmt: 'yyyy-MM-dd HH:mm:ss', alwaysUseStartDate: true })" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        所属部门
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.SubordinateSector, new { @class = "form-control" })
+                                    </div>
+                                </td><td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        职务
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.Post, new { @class = "form-control" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        职称
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.PostTitle, new { @class = "form-control" })
+                                    </div>
+                                </td><td></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        入职时间
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.InductionTime, new { @class = "form-control", onclick = "WdatePicker({ startDate: '%y-%M-%d 23:59:59', dateFmt: 'yyyy-MM-dd HH:mm:ss', alwaysUseStartDate: true })" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        试用期
+                                    </label>
+                                </td>
+                                <td>
+                                        到
+                                    <div class="col-sm-2" style="width:75%">
+                                        @Html.TextBoxFor(x => x.StartTimeOfProbation, new { @class = "form-control", onclick = "WdatePicker({ startDate: '%y-%M-%d 23:59:59', dateFmt: 'yyyy-MM-dd HH:mm:ss', alwaysUseStartDate: true })" })
+                                    </div>
+                                </td>
+                                <td>
+                                        结束                               
+                                <div class="col-sm-2" style="width:75%">  @Html.TextBoxFor(x => x.EndOfProbationPeriod, new { @class = "form-control", onclick = "WdatePicker({ startDate: '%y-%M-%d 23:59:59', dateFmt: 'yyyy-MM-dd HH:mm:ss', alwaysUseStartDate: true })" }) </div></td>
+                            </tr>
+                            <tr>
+                                <td colspan="1">
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        本人述职
+                                    </label>
+                                </td>
+                                <td colspan ="4">
+                                        @Html.TextAreaFor(x => x.WorkRepor, new { @class = "form-control" })
+                                </td>
+                            </tr>
+                        </table>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">上级主管意见</div>
+                <div class="panel-body">
+                    
+                           @Html.TextAreaFor(x => x.SuperiorOpinion, new { @class = "form-control" })
+                       
+                    
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">行政人事部</div>
+                <div class="panel-body">
+                  
+                            @Html.TextAreaFor(x => x.AdministrationPersonnelDepartmentOpinion, new { @class = "form-control" })
+                       
+                  
+                </div>
+            </div>
+             <div class="panel panel-default">
+                 <div class="panel-heading">总经理意见</div>
+                 <div class="panel-body">
+                     
+                             @Html.TextAreaFor(x => x.GeneralManagerOpinion, new { @class = "form-control" })
+                      
+                     
+                 </div>
+             </div>
+             @if (ViewData["IsShowInfo"] != "True")
+             {
+                   <div class="panel panel-default">
+                  <button type="submit" class="btn btn-primary btn-lg btn-block">提交</button>
+            </div>
+             }
+          
+        </div>
+    }
+</body>
+</html>
+

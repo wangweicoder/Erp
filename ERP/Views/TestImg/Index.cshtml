@@ -1,0 +1,129 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>Index</title>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <link href="~/FileCss/css/Buttons.css" rel="stylesheet" />
+    <script src="~/Scripts/ajaxfileupload.js"></script>
+    <script src="~/Thems/js/layer/mobile/layer.js"></script>
+</head>
+<body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        table tr td {
+  
+        }
+    </style>
+    <div style="background-color:#ddfdba"> 
+        <table >
+            <tr>
+                <td >
+                    <img src="~/Upload/Attach/QQ%e5%9b%be%e7%89%8720170926221447.png" />
+                </td>
+                <td  >
+                    <ul style="list-style-type: none;text-align:left;">
+                        <li>
+                            单位:平安银行
+                        </li>
+                        <li>
+                            品种:幸福树
+                        </li>
+                        <li>
+                            习性:喜阳,稍耐阴,阳面喜水
+                        </li>
+                        <li>
+                            养护方法；土干浇1000毫升
+                        </li>
+                        <li>
+                            规格:1.8-2.2M
+                        </li>
+                        <li>
+                            售价:850元
+                        </li>
+
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    运费:满300免费送,不满加50元
+                    <br />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    提示:当天上午11:00之前付款最晚次日专车送达,11:00后付款最晚隔日专车送达
+                    <br />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                   备注:
+                    <br/>
+                    <div style="text-align: center;">
+                        <textarea style="margin: 0px auto;text-align:center; height: 50px; width: 80%; border: solid #77c302; background-color: #ddfdba"></textarea>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div style="text-align:center;">
+                        <input type="file" id="filePicture" name="filePicture" accept=".jpg,.jpeg,.png,.bmp" />
+                    </div>
+                  
+                </td>
+            </tr>
+            <tr>
+<tr>
+                <td colspan="2">
+                    <br />
+                    <div style="text-align:center;">
+                        <a href="javascript:void(0);" onclick="filePictureChange()" class="button button-primary button-small">点击更换</a>
+                        <a href="javascript:void(0);" class="button button-primary button-small">立即购买</a>
+                    </div>
+                </td> 
+            </tr>
+        </table>
+    </div>
+    <script>
+        function filePictureChange() {
+            var info=$("#filePicture").val();
+            if (info==''||info==null) {
+                layer.open({
+                    content: '上传不能为空'
+    , skin: 'msg'
+    , time: 2 //2秒后自动关闭
+                })
+            }
+            $.ajaxFileUpload({
+                url: "/FlowerArrangement/Upload", //用于文件上传的服务器端请求地址
+                data:{"":""},
+                type: "post",
+                secureuri: false, //一般设置为false
+                fileElementId: "filePicture", //文件上传空间的id属性
+                dataType: "json", //返回值类型 一般设置为json
+                success: function (data, status) {  //服务器成功响应处理函数
+                    layer.open({
+                        content: '更换成功'
+, skin: 'msg'
+, time: 2 //2秒后自动关闭   
+                    })
+                },
+                error: function (data, status, e) {  //服务器响应失败处理函数
+                    //alert(e);
+                }
+            });
+        };
+    </script>
+</body>
+</html>

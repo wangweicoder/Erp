@@ -1,0 +1,372 @@
+﻿@model Model.EmployeeEntry
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    @*加载表格*@
+    @Scripts.Render("~/plugins/jQuery/jquery-2.2.3.min.js")
+
+    @Styles.Render("~/Bootstrap/css/bootstrap.css")
+    @Scripts.Render("~/Bootstrap/js/bootstrap.js")
+
+    @Styles.Render("~/Bootstrap/bootstrap-table/bootstrap-table.css")
+    @Scripts.Render("~/Bootstrap/bootstrap-table/bootstrap-table.js")
+    @*加载弹出层*@
+    @Scripts.Render("~/Thems/js/layer/layer.js")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    @Scripts.Render("~/My97DatePicker/WdatePicker.js")
+    @Scripts.Render("~/Scripts/jquery.valiedate.form.js")
+</head>
+<body>
+    <script>
+        function CheckFrom() {
+            var CheckMsgFirst = true;
+            //$("#MsgFirst input[type='text']").each(function () {
+            //    if ($(this).val() == "") {
+            //        CheckMsgFirst = false;
+            //    }
+            //})
+            //if (CheckMsgFirst == false) {
+            //    //墨绿深蓝风
+            //    layer.alert('请把员工入职基本信息补充完整', {
+            //        skin: 'layui-layer-lan'
+            //        , closeBtn: 0
+            //        , anim: 4 //动画类型
+            //    });
+            //    return false;
+            //}
+            if (!isMoney($("#MonthlySalary").val())) {
+                //墨绿深蓝风
+                layer.alert('月薪输入的格式不正确', {
+                    skin: 'layui-layer-lan'
+                    , closeBtn: 0
+                    , anim: 4 //动画类型
+                });
+                return false;
+            }
+            if (!isNumber($("#EmergencyContactTelephone").val())) {
+                //墨绿深蓝风
+                layer.alert('应急联系人电话输入格式不正确', {
+                    skin: 'layui-layer-lan'
+                    , closeBtn: 0
+                    , anim: 4 //动画类型
+                });
+                return false;
+            }
+            if (!isNumber($("#PresentAddressTelephoneNumber").val())) {
+                //墨绿深蓝风
+                layer.alert('现住址电话输入格式不正确', {
+                    skin: 'layui-layer-lan'
+                    , closeBtn: 0
+                    , anim: 4 //动画类型
+                });
+                return false;
+            }
+            return true;
+        }
+        
+        function SumbitInfo()
+        {
+            if (CheckFrom()) {
+                $("#frommsg").submit();
+            }
+        }
+    </script>
+    <style>
+        table {
+            border-collapse: separate;
+            border-spacing: 10px 5px;
+            text-align: center;
+        }
+    </style>
+    <form id="frommsg" action="/Employee/EmployeeEntry" method="post">
+        <div class="panel-body" style="padding-bottom:0px;">
+            <div class="panel panel-default" id="MsgFirst">
+                <div class="panel-heading">员工入职申请基本信息</div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <table>
+                            <tr>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        姓名
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                                        @Html.HiddenFor(x => x.Number)
+                                    </div>
+                                </td>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        性别
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        <select id="Sex" name="Sex" class="form-control">
+                                            <option value="男">男</option>
+                                            <option value="女">女</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        出生日期
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.Birthday, new { @class = "form-control", onclick = "WdatePicker({ startDate: '%y-%M-%d ', dateFmt: 'yyyy-MM-dd ', alwaysUseStartDate: true , readOnly: true})" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        民族
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.Nation, new { @class = "form-control" })
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        婚否
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        <select id="Marriage" name="Marriage" class="form-control">
+                                            <option value="未婚">未婚</option>
+                                            <option value="已婚">已婚</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        学历
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.Education, new { @class = "form-control" })
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        专业
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.Major, new { @class = "form-control" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        何种语言
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.WhatLanguage, new { @class = "form-control" })
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        籍贯
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.PlaceOfOrigin, new { @class = "form-control" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        户口所在地
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.RegisteredResidence, new { @class = "form-control" })
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        现住址电话
+                                    </label>
+
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.PresentAddressTelephoneNumber, new { @class = "form-control" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        身份证号码
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.IDCard, new { @class = "form-control" })
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        暂住证号码
+                                    </label>
+
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.TemporaryResidencePermitNumber, new { @class = "form-control" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        应急联系人姓名
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.EmergencyContact, new { @class = "form-control" })
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        应急联系人电话
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.EmergencyContactTelephone, new { @class = "form-control" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        联系人单位
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.ContactUnit, new { @class = "form-control" })
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        申请职位
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.ApplyForPosition, new { @class = "form-control" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <label class="control-label col-sm-2" for="txt_search_departmentname">
+                                        月薪(元)
+                                    </label>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(x => x.MonthlySalary, new { @class = "form-control" })
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">员工入职申请家庭成员及主要社会关系</div>
+                    <div class="panel-body">
+                        <table>
+                            <tr>
+                                <th>姓名</th>
+                                <th>与本人关系</th>
+                                <th style="width:45%">单位及职务</th>
+                            </tr>
+                            <tr>
+                                <td>@Html.TextBoxFor(x => x.NameOfFamilyMember, new { @class = "form-control" })</td>
+                                <td>@Html.TextBoxFor(x => x.FamilyMembersAndMyself, new { @class = "form-control" })</td>
+                                <td>@Html.TextBoxFor(x => x.FamilyMembersUnitAndPosition, new { @class = "form-control" })</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.TextBoxFor(x => x.NameOfFamilyMember1, new { @class = "form-control" })</td>
+                                <td>@Html.TextBoxFor(x => x.FamilyMembersAndMyself1, new { @class = "form-control" })</td>
+                                <td>@Html.TextBoxFor(x => x.FamilyMembersUnitAndPosition1, new { @class = "form-control" })</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.TextBoxFor(x => x.NameOfFamilyMember2, new { @class = "form-control" })</td>
+                                <td>@Html.TextBoxFor(x => x.FamilyMembersAndMyself2, new { @class = "form-control" })</td>
+                                <td>@Html.TextBoxFor(x => x.FamilyMembersUnitAndPosition2, new { @class = "form-control" })</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">工作简历</div>
+                    <div class="panel-body">
+                        <table>
+                            <tr>
+                                <th>开始时间</th>
+                                <th>结束时间</th>
+                                <th>单位</th>
+                            </tr>
+                            <tr>
+                                <td>@Html.TextBoxFor(x => x.BeginningTimeOfWork, new { @onclick = "WdatePicker({ startDate: '%y-%M-%d ', dateFmt: 'yyyy-MM-dd', alwaysUseStartDate: true , readOnly: true})", @class = " form-control" })</td>
+                                <td>@Html.TextBoxFor(x => x.EndingTimeOfWork, new { @onclick = "WdatePicker({ startDate: '%y-%M-%d ', dateFmt: 'yyyy-MM-dd', alwaysUseStartDate: true , readOnly: true})", @class = " form-control" })</td>
+                                <td>@Html.TextBoxFor(x => x.WorkUnit, new { @class = " form-control" })</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.TextBoxFor(x => x.BeginningTimeOfWork1, new { @onclick = "WdatePicker({ startDate: '%y-%M-%d ', dateFmt: 'yyyy-MM-dd', alwaysUseStartDate: true, readOnly: true })", @class = " form-control" })</td>
+                                <td>@Html.TextBoxFor(x => x.EndingTimeOfWork1, new { @onclick = "WdatePicker({ startDate: '%y-%M-%d ', dateFmt: 'yyyy-MM-dd', alwaysUseStartDate: true , readOnly: true})", @class = " form-control" })</td>
+                                <td>@Html.TextBoxFor(x => x.WorkUnit1, new { @class = " form-control" })</td>
+                            </tr>
+                            <tr>
+                                <td>@Html.TextBoxFor(x => x.BeginningTimeOfWork2, new { @onclick = "WdatePicker({ startDate: '%y-%M-%d ', dateFmt: 'yyyy-MM-dd', alwaysUseStartDate: true , readOnly: true})", @class = " form-control" })</td>
+                                <td>@Html.TextBoxFor(x => x.EndingTimeOfWork2, new { @onclick = "WdatePicker({ startDate: '%y-%M-%d ', dateFmt: 'yyyy-MM-dd', alwaysUseStartDate: true, readOnly: true })", @class = " form-control" })</td>
+                                <td>@Html.TextBoxFor(x => x.WorkUnit2, new { @class = " form-control" })</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    @if (ViewData["IsShowInfo"] == null)
+                    {
+                        <button type="button" onclick="SumbitInfo()" class="btn btn-primary btn-lg btn-block">提交</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </form>
+
+</body>
+</html>

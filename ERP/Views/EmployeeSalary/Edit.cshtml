@@ -1,0 +1,105 @@
+﻿@model Model.EmployeeSalary
+@{
+    Layout = null;
+}
+
+@Styles.Render("~/bootstrap/css/bootstrap.css")
+@Scripts.Render("~/Plugins/jQuery/jquery-2.2.3.min.js")
+@*加载弹出层*@
+@Scripts.Render("~/Thems/js/layer/layer.js")    @Scripts.Render("~/My97DatePicker/WdatePicker.js")
+<script src="~/Scripts/jquery.valiedate.form.js"></script>
+<script>
+    function CheckFrom() {
+        if ($("#Name").val() == "") {
+            layer.msg('姓名不能为空');
+            return false;
+        }
+        if ($("#age").val() == "") {
+            layer.msg('姓名不能为空');
+            return false;
+        }
+        //if (!isMoney(Basicsalary)) {
+        //    layer.msg('基本工资输入格式不正确');
+        //    return false;
+        //}
+        //if (!isMoney(Commission)) {
+        //    layer.msg('提成输入格式不正确');
+        //    return false;
+        //}
+        //if (!isMoney(Reward)) {
+        //    layer.msg('奖金输入格式不正确');
+        //    return false;
+        //}
+        //if (!isMoney(Punishment)) {
+        //    layer.msg('罚款输入格式不正确');
+        //    return false;
+        //}
+        //if (!isMoney(salary)) {
+        //    layer.msg('薪水输入格式不正确');
+        //    return false;
+        //}
+        return true;
+    }
+</script>
+@using (Html.BeginForm("Edit", "EmployeeSalary", FormMethod.Post, new { onsubmit = "return  CheckFrom()" }))
+{
+    <div class="box-body">
+        <br />
+        <div class="form-group" style="height:30px;">
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>姓名</span>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>性别</span>
+            <div class="col-sm-5">
+                @Html.DropDownListFor(m => m.Sex, ViewData["SexListItems"] as List<SelectListItem>, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>年龄</span>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(m => m.age, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>入职时间</span>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(m => m.InductionTime, new { @class = "form-control" , onclick = "WdatePicker({ startDate: '%y-%M-%d ', dateFmt: 'yyyy-MM-dd ', alwaysUseStartDate: true , readOnly: true})" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>基本工资</span>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(m => m.Basicsalary, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>提成</span>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(m => m.Commission, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>奖金</span>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(m => m.Reward, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>罚款</span>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(m => m.Punishment, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>工资</span>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(m => m.salary, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>月份</span>
+            <div class="col-sm-6">
+                @Html.DropDownListFor(m => m.Month, ViewData["GetMonthItems"] as List<SelectListItem>, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>备注</span>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(m => m.Remark, new { @class = "form-control" })
+                @Html.HiddenFor(x=>x.ID)
+            </div>
+        </div>
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer" style="text-align: center; margin-top: 610px; ">
+        <button id="btn_add" type="submit" class="btn btn-default">
+            <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>保存
+        </button>
+        <button id="btn_delete" type="button" class="btn btn-default" onclick="parent.layer.closeAll();" style="margin-left:25px;">
+            <span class="glyphicon glyphicon-random" aria-hidden="true"></span>&nbsp;&nbsp;取消
+        </button>
+    </div>
+}

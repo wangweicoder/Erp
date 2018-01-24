@@ -1,0 +1,250 @@
+﻿@model  List<Model.FlowerTreatment>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>养护花卉</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="location" content="province=;city=;coord=" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="apple-touch-icon-precomposed" href="~/FileCss/images/screenLogo.png?debug=847" />
+    <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?debug=847" />
+    <script src="~/FileCss/js/zepto.min.js?debug=847" type="text/javascript"></script>
+    <script type="text/javascript" src="~/FileCss/js/main.js?debug=847"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <style>
+        #tj_sx .sx_div {
+            min-height: 360px;
+            overflow: auto;
+            -moz-user-select: none;
+            -o-user-select: none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+            #tj_sx .sx_div a {
+                outline: none;
+                outline-style: none;
+            }
+
+                #tj_sx .sx_div a.cur {
+                    margin: 3px;
+                    height: 34px;
+                    line-height: 34px;
+                    background-color: rgba(69,161,222,0.35);
+                    border-radius: 3px;
+                    border: 1px solid rgba(255,255,255,0.2);
+                    margin-right: 10px;
+                }
+
+        #tj_sx #close_sx {
+            z-index: 6;
+        }
+
+        .gourldiv {
+            clear: both;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .gourlbtn {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 3px;
+            background: #284E74;
+            border: 1px solid rgba(255,255,255,0.4);
+            color: #fff;
+        }
+
+        .optinfo {
+            padding: 5px;
+        }
+
+            .optinfo a {
+                margin: 2px;
+                white-space: nowrap;
+                border: 1px solid rgba(255,255,255,.2);
+                border-radius: 3px;
+                display: inline-block;
+                padding: 2px 4px;
+            }
+
+            .optinfo span {
+                margin: 2px;
+            }
+
+        .list_info strong {
+            word-break: break-all;
+        }
+
+        .shaixuan {
+            z-index: 100;
+        }
+    </style>
+    <script>var CategoryID = "2";</script>
+</head>
+<body>
+    <header id="header" style="">
+        <div class="topbar">
+            <a href="javascript:history.back();" class="back_btn"><i class="iconfont">ş</i></a>
+            <a href="javascript:;" class="top_home"><i class="iconfont">ƙ</i></a>
+            <h1 class="page_title">养护花卉</h1>
+        </div>
+        <div class="home_menu" id="hMenu">
+            <a href="/Shop/Index"><i class="iconfont">Ő</i><span>首页</span></a>
+            <a href="/MFlower/ConservationFlowers"><i class="iconfont">Ɔ</i><span>养护花卉</span></a>
+            <a href="/MFlower/ChangeFlowers"><i class="iconfont">ŭ</i><span>更换花卉</span></a>
+            <a href="/MMIndex/Index"><i class="iconfont">Œ</i><span>会员中心</span></a>
+        </div>
+    </header>
+    <div class="list">
+        <ul id="prolist">
+            @foreach (Model.FlowerTreatment item in Model)
+            {
+                <li>
+                    <span class="list_img">
+                        <img src="@item.LogoPhoto" width="100" height="100" />
+                    </span>
+                    <span class="list_info">
+                        <strong>所属公司: @item.OwnedCompany</strong>
+                        <strong>养护人: @item.UserRealName</strong> <em>养护内容: @item.ContentMsg</em> @*<b>@item.Number</b>*@ <small>
+                            操作时间:
+                            <s>
+                                @item.time
+                            </s>
+
+                        </small>
+                    </span>
+                </li>
+            }
+        </ul>
+    </div>
+    <a href="javascript:;" class="loadmore">加载更多商品</a>
+    <script type="text/javascript" src="http://www.86y.org/js/jquery.min.js"></script>
+    <script>
+        var page = 2;
+        var finished = 0;
+        var sover = 0;
+
+        //如果屏幕未到整屏自动加载下一页补满
+        var setdefult = setInterval(function () {
+            if (sover == 1)
+                clearInterval(setdefult);
+            else if ($("#prolist").height() < $(window).height())
+                loadmore($(window));
+            else
+                clearInterval(setdefult);
+        }, 500);
+
+        //加载完
+        function loadover() {
+            if (sover == 1) {
+                var overtext = "Duang～到底了";
+                $(".loadmore").remove();
+                if ($(".loadover").length > 0) {
+                    $(".loadover span").eq(0).html(overtext);
+                }
+                else {
+                    var txt = '<div class="loadover"><span>' + overtext + '</span></div>'
+                    $("body").append(txt);
+                }
+            }
+        }
+
+        //加载更多
+        var vid = 0;
+        function loadmore(obj) {
+            if (finished == 0 && sover == 0) {
+                var scrollTop = $(obj).scrollTop();
+                var scrollHeight = $(document).height();
+                var windowHeight = $(obj).height();
+
+                if ($(".loadmore").length == 0) {
+                    var txt = '<div class="loadmore"><span class="loading"></span>加载中..</div>'
+                    $("body").append(txt);
+                }
+
+                if (scrollTop + windowHeight - scrollHeight <= 50) {
+                    //此处是滚动条到底部时候触发的事件，在这里写要加载的数据，或者是拉动滚动条的操作
+
+
+                    //防止未加载完再次执行
+                    finished = 1;
+
+                    //var result = "";
+                    //for (var i = 0; i < 6; i++) {
+                    //    vid++;
+                    //    result += '<li>'
+                    //                + '<a href="/product/24786.html"> <span class="list_img"> <img src="images/20140723145737178.jpg" width="100" height="100" /> </span><span class="list_img"> <img src="images/20140723145737178.jpg" width="100" height="100" /> </span> <span class="list_info"> <strong>小米手机4 移动4G版</strong> <em>【现货、价低、不用抢】不锈钢全金属边框！绝佳握感！高色饱和屏！索尼高画质！极速顶级内存！依然是全球顶配性能王者！</em> <b>￥1599.00</b> <small>已有 <s> 347 </s>人评价， <s>871 </s>人咨询</small> </span> </a>'
+                    //            + '</li>'
+                    //}
+                    //setTimeout(function () {
+                    //    //$(".loadmore").remove();
+
+                    //    $('#prolist').append(result);
+                    //    page += 1;
+                    //    finished = 0;
+                    //    //最后一页
+                    //    if (page == 10) {
+                    //        sover = 1;
+                    //        loadover();
+                    //    }
+                    //}, 1000);
+                    $.ajax({
+                        type: 'GET',
+                        url: '/FlowerTreatment/GetMobleListMore?page=' + page,
+                        dataType: 'json',
+                        success: function (data) {
+                            console.log(data);
+                            if (data == "" || data == null) {
+                                console.log('数据加载完了');
+                                sover = 1;
+                                loadover();
+                                if (page == 1) {
+                                    $("#no_msg").removeClass("hidden");
+                                    $(".loadover").remove();
+                                }
+                            }
+                            else {
+                                var result = ''
+                                for (var i = 0; i < data.length; i++) {
+                                    result += ' <li><span class="list_img"><img src="' + data[i].Photo + '" width="100" height="100" /> </span><span class="list_info"> <strong>更换人:' + data[i].UserRealName + '</strong> <em>更换内容: ' + data[i].ContentMsg + '</em><small>操作时间:<s>  ' + data[i].time + '</s></small></span></li>';
+
+
+                                }
+
+                                //为了测试，延迟1秒加载
+                                setTimeout(function () {
+                                    $(".loadmore").remove();
+                                    console.log(result);
+                                    $('#prolist').append(result);
+                                    page += 1;
+                                    finished = 0;
+                                    //最后一页
+                                    if (page == 10) {
+                                        sover = 1;
+                                        loadover();
+                                    }
+                                }, 1000);
+                            }
+                        },
+                        error: function (xhr, type) {
+                            alert('Ajax error!');
+                        }
+                    });
+                }
+            }
+        }
+        //页面滚动执行事件
+        $(window).scroll(function () {
+            loadmore($(this));
+        });
+    </script>
+</body>
+</html>

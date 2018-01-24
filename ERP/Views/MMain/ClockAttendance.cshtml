@@ -1,0 +1,107 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>微信定位</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    @Styles.Render("~/static/css/bootstrap.css")
+    <script src="~/static/js/jquery.js"></script>
+    <script src="~/static/js/util.js"></script>
+    <script src="~/Thems/js/layer/mobile/layer.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+</head>
+<body>
+    <script>
+        $(function () {
+            //loading带文字
+            var index = layer.open({
+                type: 2
+              , content: '加载中,正在定位,请稍后'
+            });
+        })
+    </script>
+    <script>
+        wx.config({
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: 'wx8cea00cbec4ea6d1', // 必填，公众号的唯一标识
+            timestamp: '@Html.Raw(ViewData["timestamp"])', // 必填，生成签名的时间戳
+            nonceStr: '@Html.Raw(ViewData["nonceStr"])', // 必填，生成签名的随机串
+            signature: '@Html.Raw(ViewData["signature"])',// 必填，签名，见附录1
+            jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+        wx.error(function (res) {
+            alert("错误：" + res);
+        });
+
+        wx.checkJsApi({
+            jsApiList: [
+                'getLocation',
+            ],
+            success: function (res) {
+                if (res.checkResult.getLocation == false) {
+                    alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
+                    return;
+                }
+            }
+        });
+        wx.ready(function () {
+            wx.getLocation({
+                type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                success: function (res) {
+                    var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                    var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                    var speed = res.speed; // 速度，以米/每秒计
+                    var accuracy = res.accuracy; // 位置精度
+                    // alert('纬度'+latitude + "。" +'经度'+ longitude);
+                    layer.closeAll();
+                    //获取到经纬度之后，异步去后台加载出来真实的地理位置
+                    $.post("/MMain/GetLocation", { lat: latitude, lon: longitude },
+                      function (data) {
+                     
+                          layer.open({
+                              content: '当前定位于' + data
+                   , btn: ['确认', '取消']
+                   , skin: 'footer'
+                   , yes: function (index) {
+                       //写入一条考勤信息
+                       $.ajax({
+                           url: '/MMain/AddClockAttendanceInfo?Address=' + data,
+                           success: function (datainfo) {
+                               if (datainfo == "1") {
+                              
+                                   layer.open({
+                                       content: '操作成功'
+                                      , btn: '我知道了', yes: function (index) {
+                                          location.href = '/MMIndex/Index';
+                                      }
+                                   });
+                               }
+                               else {
+                                   layer.open({
+                                       content: '操作失败'
+                                    , btn: '我知道了', yes: function (index) {
+                                        location.href = '/MMIndex/Index';
+                                    }
+                                   });
+                               }
+                           }
+                       })
+                   }
+                          });
+                      });
+                },
+                cancel: function (res) {
+                    alert('用户拒绝授权获取地理位置');
+                }
+            });
+        });
+    </script>
+    <div>
+    </div>
+</body>
+</html>

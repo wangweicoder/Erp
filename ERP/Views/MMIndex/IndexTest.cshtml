@@ -1,0 +1,84 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    @Styles.Render("~/static/css/bootstrap.css")
+    <script src="~/static/js/jquery.js"></script>
+    <script src="~/static/js/util.js"></script>
+    <script src="~/Thems/js/layer/mobile/layer.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+ 
+    <script>
+
+        $(function () {
+
+            var height = $(window).height();
+
+            $("button").height(height * 0.2);
+
+        });
+        
+        function aaaa()
+        {
+            //询问框
+            layer.open({
+                content: '选择您要做的事情'
+              , btn: ['养护花卉', '更换花卉']
+              , yes: function (index) {
+                  location.href = '/MFlower/ConservationFlowers'
+              }, no: function (index)
+              {
+                  location.href = '/MFlower/ChangeFlowers'
+              }
+            });
+        }
+
+    </script>
+ 
+</head>
+<body>
+    <div class="navbar navbar-fixed-top" data-id="top">
+    <div class="navbar-inner" style="text-align:center; background-color: #438eb9; height: 50px; color: #FFFFFF; line-height: 50px; font-size: 20px;">
+        <i class="glyphicon glyphicon-leaf"></i> 基础管理
+    </div>
+    </div>
+    <button style="width: 40%; margin-top: 70px; margin-left: 5%;" onclick="location.href='/MMain/ClockAttendance'" class="btn btn-primary">
+        <i class="glyphicon glyphicon-home" style="font-size: 30px;"></i><div></div>
+        考勤打卡
+    </button>
+
+    <button style="width: 40%; margin-top: 70px; margin-left: 10%;" onclick="location.href = '/MMain/ProblemsAndSuggestions'" class="btn btn-primary">
+        <i class=" glyphicon glyphicon-user" style="font-size: 30px;"></i><div></div>
+        提交问题和建议
+    </button>
+
+    <button style="width: 40%; margin-top: 20px; margin-left: 5%;" onclick="location.href = '/MMain/ShowMoreInfo'" class="btn btn-primary">
+        <i class="glyphicon glyphicon-phone-alt" style="font-size: 30px;"></i><div></div>
+        服务介绍
+    </button>
+
+    <button style="width: 40%; margin-top: 20px; margin-left: 10%; " onclick="location.href = '/MMain/CustomRequirements'" class="btn btn-primary">
+        <i class="glyphicon glyphicon-phone-alt" style="font-size: 30px;"></i><div></div>
+        定制需求
+    </button>
+
+    <button style="width: 40%; margin-top: 20px; margin-left: 5%; " onclick="aaaa()" class="btn btn-primary">
+        <i class="glyphicon glyphicon-phone-alt" style="font-size: 30px;"></i><div></div>
+        养护或更换花卉
+    </button>
+
+
+    <button style="width: 40%; margin-top: 20px; margin-left: 10%;" onclick="location.href = '/Shop/Index'" class="btn btn-primary">
+        <i class=" glyphicon glyphicon-user" style="font-size: 30px;"></i><div></div>
+        商城
+    </button>
+</body>
+</html>

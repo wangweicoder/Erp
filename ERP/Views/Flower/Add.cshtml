@@ -1,0 +1,173 @@
+﻿@model Model.Flower
+@{
+    Layout = null;
+}
+
+@Styles.Render("~/bootstrap/css/bootstrap.css")
+@Scripts.Render("~/Plugins/jQuery/jquery-2.2.3.min.js")
+@*加载弹出层*@
+@Scripts.Render("~/Thems/js/layer/layer.js")
+<script src="~/Scripts/jquery.valiedate.form.js"></script>
+<script>
+    $(function () {
+        if ($('#success').val()!='') {
+            parent.layer.msg($('#success').val());
+        }
+    })
+    function CheckFrom() {
+        if ($("#FlowerWatchName").val() == "") {
+            parent.layer.msg('花卉名称不能为空');
+            return false;
+        }
+        if ($("#FlowerNumber").val() == "") {
+            layer.msg('花卉编号不能为空');
+            return false;
+        }
+        if ($("#FlowerWatchType").val() == "") {
+            parent.layer.msg('花卉类型不能为空');
+            return false;
+        }
+        if ($("#FlowerStock").val() == "") {
+            parent.layer.msg('花卉库存数不能为空');
+            return false;
+        }
+        if (!isNumber($("#FlowerStock").val())) {
+            parent.layer.msg('花卉库存数必须为数字');
+            return false;
+        }
+        if ($("#FlowerCostPrice").val()=='') {
+            parent.layer.msg('花卉成本价不能为空');
+            return false;
+        }
+        if ($("#FlowerSalesPrice").val() == '') {
+            parent.layer.msg('花卉销售价不能为空');
+            return false;
+        }
+        if (!isMoney($("#FlowerCostPrice").val())) {
+            parent.layer.msg('花卉成本价格式不正确');
+            return false;
+        }
+        if (!isMoney($("#FlowerSalesPrice").val())) {
+            parent.layer.msg('花卉销售价格式不正确');
+            return false;
+        }
+        if ($("#FlowerSalesPrice").val()=='') {
+            parent.layer.msg('花卉说明不能为空');
+            return false;
+        }
+
+        if (!AttachValid("attach_path")) {
+            parent.layer.msg('请上传附件');
+            return false;
+        }
+        var CheckUserInfo = true;
+        $.ajax({
+            url: '/Flower/CheckFlowerWatchName?FlowerWatchName=' + $("#FlowerWatchName").val(),
+            async: false,
+            success: function (data) {
+                if (data == "True") {
+                    CheckUserInfo = false;
+                }
+            }
+        })
+        if (CheckUserInfo == false) {
+            parent.layer.msg('花卉名已经存在');
+            return false;
+        }
+        $.ajax({
+            url: '/Flower/CheckFlowerNumber?FlowerNumber=' + $("#FlowerNumber").val(),
+            async: false,
+            success: function (data) {
+                if (data == "True") {
+                    CheckUserInfo = false;
+                }
+            }
+        })
+        if (CheckUserInfo == false) {
+            parent.layer.msg('花卉编号已经存在');
+            return false;
+        }
+        return true;
+    }
+    //验证附件类型
+    function AttachValid(id) {
+        var result = true;
+        var oFile = document.getElementById(id);
+        if (oFile.value == null || oFile.value == "") {
+            return false;
+        }
+        return true;
+    }
+</script>
+@using (Html.BeginForm("Add", "Flower", FormMethod.Post, new { onsubmit = "return  CheckFrom()", enctype = "multipart/form-data" }))
+{
+    <div class="box-body">
+        <br />
+        <div class="form-group" style="height:30px;width:100%;">
+            <div style="width:50%;float:left">
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>花卉名称&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.FlowerWatchName, new { @class = "form-control" })
+                </div>
+            </div>
+            <div style="width:50%;float:right">
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>花卉类型</span>
+                <div class="col-sm-5">
+                    @Html.TextBoxFor(m => m.FlowerWatchType, new { @class = "form-control" })
+                </div>
+            </div>
+            <div style="width:50%;float:left">
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>花卉库存数</span>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(m => m.FlowerStock, new { @class = "form-control" })
+                </div>
+            </div>
+            <div style="width:50%;float:right">
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>花卉成本价</span>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(m => m.FlowerCostPrice, new { @class = "form-control" })
+                </div>
+            </div>
+            <div style="width:50%;float:left">
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>花卉销售价</span>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(m => m.FlowerSalesPrice, new { @class = "form-control" })
+                </div>
+            </div>
+            <div style="width:50%;float:right">
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>花卉图片</span>
+                <div class="col-sm-6">
+                    <input type="file" class="form-control" id="attach_path" name="attach_path" />
+                </div>
+            </div>
+            <div style="width:50%;float:left">
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>花卉习性</span>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(m => m.XiXin, new { @class = "form-control" })
+                </div>
+            </div>
+            <div style="width:50%;float:right">
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>养花方法</span>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(m => m.YangHuFangFa, new { @class = "form-control" })
+                </div>
+            </div>
+            <div style="width:100%;">
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>花卉说明</span>
+                <div class="col-sm-6">
+                    @Html.TextAreaFor(m => m.FlowerIntroduction, new { @class = "form-control" })
+                </div>
+                <input type="hidden" value="@ViewData["success"]" id="success" />
+            </div>
+            </div>
+    </div>
+                    <!-- /.box-body -->
+   <div class="box-footer" style="text-align: center; margin-top: 320px;">
+        <button id="btn_add" type="submit" class="btn btn-default">
+            <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>保存
+        </button>
+        <button id="btn_delete" type="button" class="btn btn-default" onclick="parent.layer.closeAll();" style="margin-left:25px;">
+            <span class="glyphicon glyphicon-random" aria-hidden="true"></span>&nbsp;&nbsp;取消
+        </button>
+    </div>
+}

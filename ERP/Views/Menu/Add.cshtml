@@ -1,0 +1,98 @@
+﻿@model Model.Menu
+@{
+    Layout = null;
+}
+
+@Styles.Render("~/bootstrap/css/bootstrap.css")
+@Scripts.Render("~/Plugins/jQuery/jquery-2.2.3.min.js")
+@*加载弹出层*@
+@Scripts.Render("~/Thems/js/layer/layer.js")
+<script src="~/Scripts/jquery.valiedate.form.js"></script>
+<script>
+    function CheckFrom() {
+        if ($("#MenuCode").val() == "") {
+            layer.msg('菜单代码不能为空');
+            return false;
+        }
+        if ($("#MenuName").val() == "") {
+            layer.msg('菜单名称不能为空');
+            return false;
+        }
+        if ($("#UrlPath").val() == "") {
+            layer.msg('URL路径不能为空');
+            return false;
+        }
+        if (!isNumber($("#OrderBy").val())) {
+            layer.msg('排序字段必须为数字');
+            return false;
+        }
+        if (!isNumber($("#Hierarchy").val())) {
+            layer.msg('层级必须为数字');
+            return false;
+        }
+        if (!isNumber($("#SuperiorMenuID").val())) {
+            layer.msg('上级菜单必须为数字');
+            return false;
+        }
+        var CheckUserInfo = true;
+        $.ajax({
+            url: '/RoleInfo/CheckRoleInfo?RoleName=' + $("#RoleName").val() + '&RoleCode=' + $("#RoleCode").val(),
+            async: false,
+            success: function (data) {
+                if (data == "True") {
+                    CheckUserInfo = false;
+                }
+            }
+        })
+        if (CheckUserInfo == false) {
+            layer.msg('角色代码或角色名称已经存在');
+            return false;
+        }
+        return true;
+    }
+</script>
+@using (Html.BeginForm("Add", "Menu", FormMethod.Post, new { onsubmit = "return  CheckFrom()" }))
+{
+    <div class="box-body">
+        <br />
+        <div class="form-group" style="height:30px;">
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>菜单代码&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(m => m.MenuCode, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>菜单名称</span>
+            <div class="col-sm-5">
+                @Html.TextBoxFor(m => m.MenuName, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>URL路径</span>
+            <div class="col-sm-5">
+                @Html.TextBoxFor(m => m.UrlPath, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>排序字段</span>
+            <div class="col-sm-5">
+                @Html.TextBoxFor(m => m.OrderBy, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>层级</span>
+            <div class="col-sm-5">
+                @Html.TextBoxFor(m => m.Hierarchy, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>上级菜单ID</span>
+            <div class="col-sm-5">
+                @Html.TextBoxFor(m => m.SuperiorMenuID, new { @class = "form-control" })
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>终端(手机/PC)</span>
+            <div class="col-sm-5">
+                @Html.DropDownList("deptSelectItems", ViewData["deptSelectItems"] as List<SelectListItem>, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+                    <!-- /.box-body -->
+    <div class="box-footer" style="text-align: center;margin-top:350px;">
+        <button id="btn_add" type="submit" class="btn btn-default">
+            <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>保存
+        </button>
+        <button id="btn_delete" type="button" class="btn btn-default" onclick="parent.layer.closeAll();" style="margin-left:25px;">
+            <span class="glyphicon glyphicon-random" aria-hidden="true"></span>&nbsp;&nbsp;取消
+        </button>
+    </div>
+}

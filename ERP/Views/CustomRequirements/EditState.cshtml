@@ -1,0 +1,47 @@
+﻿@model Model.UserAdmin
+@{
+    Layout = null;
+}
+
+@Styles.Render("~/bootstrap/css/bootstrap.css")
+@Scripts.Render("~/Plugins/jQuery/jquery-2.2.3.min.js")
+@*加载弹出层*@
+@Scripts.Render("~/Thems/js/layer/layer.js")
+<script>
+    $(function () {
+        $("#btn_add").click(function () {
+            $.ajax({
+                url: '/CustomRequirements/Editstatemain?&id=' + $("#id").val() + '&state=' + $("#state").val(),
+                sucess: function (data)
+                {
+                    if (data == "1") {
+                        layer.msg('修改成功');
+                    }
+                    else {
+                        layer.msg('修改失败');
+                    }
+                }
+            })
+        })
+    })
+</script>
+    <div class="box-body">
+        <br />
+        <div class="form-group" style="height:30px;">
+            <select id="state" name="state" class="form-control">
+                <option value="0">待处理</option>
+                <option value="1">已处理</option>
+            </select>
+            <input type="hidden"  id="id" value="@ViewData["id"]" />
+        </div>
+    </div>
+                    <!-- /.box-body -->
+    <div class="box-footer" style="text-align: center;margin-top:250px;">
+        <button id="btn_add" type="button"  class="btn btn-default">
+            <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>保存
+        </button>
+        <button id="btn_delete" type="button" class="btn btn-default" onclick="parent.layer.closeAll();" style="margin-left:25px;">
+            <span class="glyphicon glyphicon-random" aria-hidden="true"></span>&nbsp;&nbsp;取消
+        </button>
+    </div>
+

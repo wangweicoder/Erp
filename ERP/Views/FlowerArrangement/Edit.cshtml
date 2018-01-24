@@ -1,0 +1,128 @@
+﻿@model Model.FlowerArrangement
+@{
+    Layout = null;
+}
+
+@Styles.Render("~/bootstrap/css/bootstrap.css")
+@Scripts.Render("~/Plugins/jQuery/jquery-2.2.3.min.js")
+@*加载弹出层*@
+@Scripts.Render("~/Thems/js/layer/layer.js")
+<script src="~/Scripts/jquery.valiedate.form.js"></script>
+<script>
+    $(function () {
+        var urlimg = $("#ImgORCodePath").val();
+        $("#imgpath").attr("src", urlimg);
+
+    });
+    ///返回主页的数据，为提交做准备
+    var callbackdata = function () {
+        var d = {};
+        var t = $('form').serializeArray();
+        $.each(t, function () {
+            d[this.name] = this.value;
+        });
+        return d;
+    }
+    function CheckFrom() {
+        if ($("#arrangement").val().length == 0) {
+            layer.msg('位置不能为空');
+            return false;
+        }
+        if ($("#Specifications").val().length == 0) {
+            layer.msg('规格不能为空');
+            return false;
+        }
+        if ($("#UnitPrice").val() != "") {
+            if (!isMoney($("#UnitPrice").val())) {
+                layer.msg('单价输入格式不正确');
+                return false;
+            }
+        }
+        if ($("#Count").val() != "") {
+            if (!isNumber($("#Count").val())) {
+                layer.msg('数量输入格式不正确');
+                return false;
+            }
+        }
+        if ($("#Total").val() != "") {
+            if (!isMoney($("#Total").val())) {
+                layer.msg('合计输入格式不正确');
+                return false;
+            }
+        }
+        return true;
+    }
+</script>
+@using (Html.BeginForm("Edit", "FlowerArrangement", FormMethod.Post, new { onsubmit = "return  CheckFrom()", enctype = "multipart/form-data" }))
+{
+
+    <div class="box-body">
+        <br />
+        <div class="form-group" style="width:100%;height:30px;">
+            <div style="width:50%;float:left">
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>位置&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <div class="col-sm-1">
+                    @Html.TextBoxFor(m => m.arrangement, new { @class = "form-control" })
+                </div>
+            </div>
+            <div style="width:50%;float:right">
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>二维码</span>
+                <div class="col-sm-3">                   
+                    <img id="imgpath" src="" style="height:40px;width:40px" />
+                     @Html.HiddenFor(m => m.ImgORCodePath)
+                </div>
+            </div>
+            <div style="width:50%;float:left">
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>规格</span>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(m => m.Specifications, new { @class = "form-control" })
+                </div>
+            </div>
+            <div style="width:50%;float:right">
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>单价</span>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(m => m.UnitPrice, new { @class = "form-control" })
+                </div>
+            </div>
+            <div style="width:50%;float:left">
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>数量</span>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(m => m.Count, new { @class = "form-control" })
+                </div>
+            </div>
+            <div style="width:50%;float:right">
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>总计</span>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(m => m.Total, new { @class = "form-control" })
+                </div>
+            </div>
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>备注</span>
+            <div class="col-sm-6">
+                @Html.TextAreaFor(m => m.Remark, new { @class = "form-control" })
+                @Html.HiddenFor(m => m.id)
+            </div>
+            <div style="width:50%;float:left">
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>对应公司</span>
+                <div class="col-sm-6">
+                    @Html.DropDownListFor(m => m.belongUsersId, ViewData["GetOwnedCompanyList"] as List<SelectListItem>, new { @class = "form-control" })
+                </div>
+            </div>
+            <div style="width:50%;float:right">
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>对应商品</span>
+                <div class="col-sm-6">
+                    @Html.DropDownListFor(m => m.ShopId, ViewData["GetShopList"] as List<SelectListItem>, new { @class = "form-control" })
+                </div>
+            </div>
+          </div>
+    </div>
+    <!-- /.box-body 
+    <div class="box-footer" style="text-align: center; margin-top: 320px;">
+        <button id="btn_add" type="submit" class="btn btn-default">
+            <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>保存
+        </button>
+        <button id="btn_delete" type="button" class="btn btn-default" onclick="parent.layer.closeAll();" style="margin-left:25px;">
+            <span class="glyphicon glyphicon-random" aria-hidden="true"></span>&nbsp;&nbsp;取消
+        </button>
+    </div>-->
+
+}

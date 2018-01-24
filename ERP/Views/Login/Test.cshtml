@@ -1,0 +1,35 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Test</title>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript">
+        x = 0;
+        $(document).ready(function () {
+            $("div").scroll(function () {
+                $("#div").append("瀑布流,瀑布流，瀑布流，瀑布流，瀑布流，瀑布流，瀑布流，瀑布流");
+            });
+            $("button").click(function () {
+                $("div").scroll();
+            });
+        });
+    </script>
+</head>
+<body>
+    <div> 
+        <div style="width:200px;height:100px;overflow:scroll;" id="div">
+            text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text.
+            <br /><br />
+            text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text. text.
+        </div>
+        <p>滚动了 <span>0</span> 次。</p>
+    </div>
+</body>
+</html>

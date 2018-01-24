@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9436F819-6B32-483F-95F7-A6590364B106}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Model</RootNamespace>
+    <AssemblyName>Model</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdminJurisdiction.cs" />
+    <Compile Include="ChangingFlowerExpenses.cs" />
+    <Compile Include="ContractCustomer.cs" />
+    <Compile Include="CustomerRelations.cs" />
+    <Compile Include="EmployeeSalary.cs" />
+    <Compile Include="FlowerArrangement.cs" />
+    <Compile Include="Menu.cs" />
+    <Compile Include="ClockAttendance.cs" />
+    <Compile Include="Employee.cs" />
+    <Compile Include="EmployeeEntry.cs" />
+    <Compile Include="EmployeeTurnover.cs" />
+    <Compile Include="Flower.cs" />
+    <Compile Include="FlowerCategory.cs" />
+    <Compile Include="FlowerChange.cs" />
+    <Compile Include="FlowerDemand.cs" />
+    <Compile Include="FlowerTreatment.cs" />
+    <Compile Include="IntermediateClass.cs" />
+    <Compile Include="LoginLog.cs" />
+    <Compile Include="Orders.cs" />
+    <Compile Include="OrdersDetails.cs" />
+    <Compile Include="OrdersLog.cs" />
+    <Compile Include="ProblemsAndSuggestions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoleInfo.cs" />
+    <Compile Include="Salesman.cs" />
+    <Compile Include="ServiceIntroduction.cs" />
+    <Compile Include="SettlementSituation.cs" />
+    <Compile Include="UserAdmin.cs" />
+    <Compile Include="Wx_SendMsg.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
