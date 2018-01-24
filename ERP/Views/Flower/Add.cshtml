@@ -74,19 +74,19 @@
             parent.layer.msg('花卉名已经存在');
             return false;
         }
-        $.ajax({
-            url: '/Flower/CheckFlowerNumber?FlowerNumber=' + $("#FlowerNumber").val(),
-            async: false,
-            success: function (data) {
-                if (data == "True") {
-                    CheckUserInfo = false;
-                }
-            }
-        })
-        if (CheckUserInfo == false) {
-            parent.layer.msg('花卉编号已经存在');
-            return false;
-        }
+        //$.ajax({
+        //    url: '/Flower/CheckFlowerNumber?FlowerNumber=' + $("#FlowerNumber").val(),
+        //    async: false,
+        //    success: function (data) {
+        //        if (data == "True") {
+        //            CheckUserInfo = false;
+        //        }
+        //    }
+        //})
+        //if (CheckUserInfo == false) {
+        //    parent.layer.msg('花卉编号已经存在');
+        //    return false;
+        //}
         return true;
     }
     //验证附件类型

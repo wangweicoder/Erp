@@ -218,6 +218,7 @@
     <Compile Include="WxPay\WxPayApi.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\goodcart.sql" />
     <Content Include="Bootstrap\bootstrap-table\bootstrap-table-locale-all.js" />
     <Content Include="Bootstrap\bootstrap-table\bootstrap-table-locale-all.min.js" />
     <Content Include="Bootstrap\bootstrap-table\bootstrap-table.css" />
@@ -1869,6 +1870,9 @@
     <Content Include="layui\font\iconfont.eot" />
     <Content Include="layui\font\iconfont.ttf" />
     <Content Include="layui\font\iconfont.woff" />
+    <Content Include="App_Data\ShoppingCartInMVC-master.zip" />
+    <Content Include="Excel\demo.xlt" />
+    <Content Include="Excel\Flowerdemo.xlt" />
     <None Include="Properties\PublishProfiles\1.pubxml" />
     <None Include="Properties\PublishProfiles\11.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -2101,7 +2105,6 @@
     <Content Include="Views\Flower\AddByExcel.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Views\MLoginFilter\" />
     <Folder Include="Views\MOrders\" />
     <Folder Include="Views\WxHelper\" />
