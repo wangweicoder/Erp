@@ -194,6 +194,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="MobleControllers\BuyCartController.cs" />
     <Compile Include="MobleControllers\MFlowerController.cs" />
     <Compile Include="MobleControllers\MLoginController.cs" />
     <Compile Include="MobleControllers\MMainController.cs" />
@@ -2105,6 +2106,7 @@
     <Content Include="Views\Flower\AddByExcel.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Views\Cart\" />
     <Folder Include="Views\MLoginFilter\" />
     <Folder Include="Views\MOrders\" />
     <Folder Include="Views\WxHelper\" />

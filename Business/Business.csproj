@@ -56,6 +56,7 @@
     <Compile Include="Sys_EmployeeEntry.cs" />
     <Compile Include="Sys_EmployeeSalary.cs" />
     <Compile Include="Sys_EmployeeTurnover.cs" />
+    <Compile Include="Sys_FlowerShopCart.cs" />
     <Compile Include="Sys_Flower.cs" />
     <Compile Include="Sys_FlowerArrangement.cs" />
     <Compile Include="Sys_FlowerCategory.cs" />

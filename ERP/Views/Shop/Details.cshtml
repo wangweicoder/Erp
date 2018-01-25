@@ -173,8 +173,7 @@
                 </dd>
             </dl>
             <dl id="_address" class="yanse" style="display: none;"></dl>
-        </div>
-        <script>$('.pcfuwu').click(function () { var el = $(this), f = el.hasClass('active'), cn = 'active'; if (f) { el.removeClass(cn) } else { el.addClass(cn) }; return false; })</script>
+        </div>       
         <div class="btn_box border_top" >
            <div style="float:left;width:108px;overflow:hidden;">
             <a id="mybuycarer" href="javascript:void(0)" onclick="SubminInfoCart()" class="buycarerNormal"
@@ -216,6 +215,15 @@
         </ul>
     </div>
     <script>
+        $('.pcfuwu').click(function () {
+            var el = $(this), f = el.hasClass('active'),
+            cn = 'active';
+            if (f) { el.removeClass(cn) }
+            else { el.addClass(cn) };
+            return false;
+        });
+    </script>
+    <script>
         
         function SubminInfoCart()
         {
@@ -236,12 +244,12 @@
                     }); return false;
                 }
                 $.ajax({
-                    url: '/BuyCart/AddInfo',
-                    data: { "ShopId": $("input[name='id']").val(), "Num": num }
+                    url: '/BuyCart/AddToCart',
+                    data: { "FlowerId": $("input[name='id']").val(), "Num": num }
                 })
                 //提示
                 layer.open({
-                    content: '添加购物车成功.特别说明:购物车商品保存有效期为一周!'
+                    content: '添加购物车成功.'
                   , skin: 'msg'
                   , time: 2 //2秒后自动关闭
                 });
