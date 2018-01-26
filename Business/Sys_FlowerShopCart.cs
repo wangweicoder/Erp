@@ -51,10 +51,10 @@ namespace Business
             return Factory.DBHelper.Query<Model.FlowerShopCart>(SQLConString, strSql.ToString(), new DynamicParameters(new { offset }));
         }       
         /// <summary>
-        /// 通过[FlowerId] 查询信息
+        /// 通过UserId和FlowerId查询信息
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>同一用户本花卉的记录</returns>
         public Model.FlowerShopCart GetFlowerShopCart(string FlowerId,string userid) 
         {
             const string sql = @"SELECT * FROM  FlowerShopCart WHERE FlowerId=@FlowerId and UsersId=@UserID";
@@ -92,8 +92,8 @@ namespace Business
         /// <returns></returns>
         public bool UpdateFlowerShopCart(Model.FlowerShopCart Flower) 
         {
-            const string sql = @"UPDATE  FlowerShopCart SET FlowerWatchName=@FlowerWatchName,FlowerWatchPhoto=@FlowerWatchPhoto,FlowerCostPrice=@FlowerCostPrice,FlowerSalesPrice=@FlowerSalesPrice,
-FlowerStock=@FlowerStock,FlowerIntroduction=@FlowerIntroduction,FlowerWatchType=@FlowerWatchType,XiXin=@XiXin,YangHuFangFa=@YangHuFangFa  WHERE id=@id";
+            const string sql = @"UPDATE  FlowerShopCart SET FlowerId=@FlowerId,Num=@Num,UsersId=@UsersId,Status=@Status,
+                CreateTime=@CreateTime,UpdateTime=@UpdateTime  WHERE id=@Id";
             return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
             {
                 Flower.FlowerId,

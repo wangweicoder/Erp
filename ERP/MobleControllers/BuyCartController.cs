@@ -13,6 +13,12 @@ namespace ERP.MobleControllers
         {
             return View();
         }
+        /// <summary>
+        /// 添加购物车
+        /// </summary>
+        /// <param name="FlowerId"></param>
+        /// <param name="Num"></param>
+        /// <returns></returns>
         public ActionResult AddToCart(string FlowerId, int Num)
         {
             string userid = Utility.ChangeText.GetUsersId().ToString();
@@ -22,7 +28,7 @@ namespace ERP.MobleControllers
             {
                 Cart.Num = Num;
                 Cart.UpdateTime = DateTime.Now;
-
+                
                 bus.UpdateFlowerShopCart(Cart);//原来有这个商品，更新下数量
             }
             else {
@@ -32,9 +38,11 @@ namespace ERP.MobleControllers
                 model.FlowerId = FlowerId;
                 model.Status = 1;
                 model.CreateTime = DateTime.Now;
+                model.UpdateTime = DateTime.Now;
                 bus.InsertFlowerShopCart(model);
             }
-            return Json(new {code=1,message="ok"});
+            int num=bus.GetFlowerShopCartListCount("");
+            return Json(new {code=1,cnum=num},JsonRequestBehavior.AllowGet);
         }
     }
 }

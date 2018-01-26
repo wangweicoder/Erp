@@ -705,7 +705,7 @@ footer { background:#fff;padding-bottom:70px;clear:both;}
 .fuwu dd a{display:inline-block;height:25px;line-height:25px;padding:0 8px;border-radius:3px;margin-right:10px;background:#1dccaa;font-size:12px;color:#fff;margin-bottom:10px;}
 .fuwu_price{color:#ec6f61;}
 
-.liji_buy,.add_cart{display:inline-block;width:95%;height:40px;text-align:center;line-height:40px;color:#fff;margin:0 10px;border-radius:3px;}
+.liji_buy,.add_cart{display:inline-block;width:55%;height:40px;text-align:center;line-height:40px;color:#fff;margin:0 10px;border-radius:3px;}
 .liji_buy{background:#f44623;}.add_cart{background:#45a1de;}
 
 .d_peijian{ margin-top:10px;height:175px;overflow:hidden;padding:10px;background:#fff;border:solid 1px #dadada;-webkit-border-image: url(../images/border.gif) 2 0 round;border-image: url(../images/border.gif) 2 0 round;border-width: 1px 0;}
