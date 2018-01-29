@@ -26,9 +26,9 @@ namespace ERP.MobleControllers
             Model.FlowerShopCart Cart = bus.GetFlowerShopCart(FlowerId.ToString(),userid);
             if (Cart != null)
             {
-                Cart.Num = Num;
+                Cart.Num += Num;
                 Cart.UpdateTime = DateTime.Now;
-                
+            
                 bus.UpdateFlowerShopCart(Cart);//原来有这个商品，更新下数量
             }
             else {
@@ -41,8 +41,15 @@ namespace ERP.MobleControllers
                 model.UpdateTime = DateTime.Now;
                 bus.InsertFlowerShopCart(model);
             }
-            int num=bus.GetFlowerShopCartListCount("");
+            int num = bus.GetFlowerList().Sum(m=>m.Num);
             return Json(new {code=1,cnum=num},JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult GetTotal() 
+        {
+            Business.Sys_FlowerShopCart bus = new Business.Sys_FlowerShopCart();
+            List<Model.FlowerShopCart> list= bus.GetFlowerList();
+            int num = list.Sum(p => p.Num);
+            return Json(new { code = 1, cnum = num }, JsonRequestBehavior.AllowGet);
         }
     }
 }
