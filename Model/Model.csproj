@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminJurisdiction.cs" />
+    <Compile Include="CartLine.cs" />
     <Compile Include="ChangingFlowerExpenses.cs" />
     <Compile Include="ContractCustomer.cs" />
     <Compile Include="CustomerRelations.cs" />
