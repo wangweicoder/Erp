@@ -14,20 +14,21 @@
     <link rel="apple-touch-icon-precomposed" href="~/FileCss/images/screenLogo.png?debug=847" />
     <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?debug=847" />
     <script src="~/FileCss/js/jquery.min.js"></script>
-    <script src="~/FileCss/js/jquery.touchslider.min.js"></script>
-    <script src="~/FileCss/js/main.js"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&amp;ak=2E9486ae97437e84c519f008952b67ae"></script>
-    <script src="~/FileCss/js/MapWrapper.min.js"></script>
-    <link rel="apple-touch-icon-precomposed" href="images/screenLogo.png?debug=847" />
-    <script src="~/FileCss/js/zepto.min.js?debug=847" type="text/javascript"></script>
-    <script src="~/FileCss/js/main.js?debug=847" type="text/javascript"></script>
+    @*<script src="~/FileCss/js/jquery.touchslider.min.js"></script>*@
+    <script src="~/FileCss/js/main.js"></script>@*//cooker*@
+    @*<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&amp;ak=2E9486ae97437e84c519f008952b67ae"></script>*@
+    @*<script src="~/FileCss/js/MapWrapper.min.js"></script>*@
+    @*<link rel="apple-touch-icon-precomposed" href="images/screenLogo.png?debug=847" />
+        <link href="~/FileCss/spinner/jquery.spinner.css" rel="stylesheet" />*@
+    @*<script src="~/FileCss/js/zepto.min.js?debug=847" type="text/javascript"></script>*@
+    @*<script src="~/FileCss/js/main.js?debug=847" type="text/javascript"></script>*@
     <script src="~/FileCss/js/distpicker.data.js"></script>
     <script src="~/FileCss/js/distpicker.js"></script>
-    @*<link href="~/FileCss/spinner/jquery.spinner.css" rel="stylesheet" />*@
-    <script src="~/FileCss/spinner/jquery.spinner.js"></script>
 
+    <script src="~/FileCss/spinner/jquery.spinner.js"></script>
+    <script src="~/FileCss/jq/jquery.fly.min.js"></script>
     <script src="~/Thems/js/layer/mobile/layer.js"></script>
-   
+
 </head>
 <body>
     <style>
@@ -65,16 +66,32 @@
                 border-right: 0;
                 border-left: 1px solid #dbdbdb;
             }
-            .cart{
-                display: inline-block;
-                width: 37%;
-                height: 40px;
-                text-align: center;
-                line-height: 40px;
-                color: #fff;background: #f44623;
-                margin: 0 10px;
-                border-radius: 3px;
-            }
+
+        .cart {
+            display: inline-block;
+            width: 37%;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            color: #fff;
+            background: #f44623;
+            margin: 0 10px;
+            border-radius: 3px;
+        }
+
+        .gwfnum {
+            font-size: 12px;
+            font-weight: 400;
+            color: #fff;
+            display: block;
+            width: 19px;
+            height: 15px;
+            margin-top: -20px;
+            margin-left: 16px;
+            background-color: red;
+            border-radius: 16px;
+            text-align: center;line-height: 12px;
+        }
     </style>
     <script>
         $(document).ready(function () {
@@ -96,7 +113,7 @@
     </script>
 
     @Html.Partial("header")
-    <form action="/Shop/PayOrders" method="post"  id="fromInfo">
+    <form action="/Shop/PayOrders" method="post" id="fromInfo">
         <div class="product" style="position:relative;">
             <div id="bigImg">
                 <div id="pro_img" class="pro_img">
@@ -156,7 +173,7 @@
                     <div style="width:100%" data-toggle="distpicker">
                         <div style="width:50%;float:left">
                             <select style="width:80px;" name="province"></select>
-                             <select style="width: 120px; " name="city"></select>
+                            <select style="width: 120px; " name="city"></select>
                         </div>
                         <div style="width:50%; padding-left:20px">
                             <select style="width: 80px; " name="area"></select>
@@ -183,25 +200,24 @@
                 </dd>
             </dl>
             <dl id="_address" class="yanse" style="display: none;"></dl>
-        </div>       
-        <div class="btn_box border_top" >
-           <div style="float:left;width:58px;overflow:hidden;">
-            <a id="mybuycarer" href="javascript:void(0)" onclick="SubminInfoCart()" class="buycarerNormal"
-                style="position: relative;display:block;float:left;">
-                <em style="position: absolute; top: -5px; right: 0; background: #f44623; 
-                color: #fff; display: block; height: 14px; line-height: 14px; padding: 0 3px; border-radius: 
-                 14px; display: none;" id="cartCount">0</em> 
-               <img src="~/FileCss/images/de_gouwuche.png" width="20" height="20"
-                     style="display: block; margin-left: 5px;" /> 
-                <span id="cnum" style="font-size: 11px;font-weight:600;color: #ff0000; display: block; width: 40px; height: 25px;
-            margin-top:-22px ;margin-left: 13px;"></span>
-               <span style="font-size: 12px; color: #2c3e50; display: block; width: 40px; height: 25px;">购物车</span>
-             </a>
-         </div>
-            <div style="margin-left:12px;">                
-                <a href="javascript:void(0)" data-src="" onclick="SubminInfoCart()" class="cart left">加入购物车</a>
+        </div>
+        <div class="btn_box border_top">
+            <div style="float:left;width:58px;overflow:hidden;">
+                <a id="mybuycarer" href="javascript:void(0)" onclick="SubminInfoCart()" class="buycarerNormal"
+                   style="position: relative;display:block;float:left;">
+                    <em style="position: absolute; top: -5px; right: 0; background: #f44623;
+                color: #fff; display: block; height: 14px; line-height: 14px; padding: 0 3px; border-radius:
+                 14px; display: none;" id="cartCount">0</em>
+                    <img src="~/FileCss/images/de_gouwuche.png" width="20" height="20"
+                         style="display: block; margin-left: 5px;" />
+                    <span id="end" class="gwfnum"></span>
+                    <span style="font-size: 12px; padding-top: 5px;color: #2c3e50; display: block; width: 40px; height: 25px;">购物车</span>
+                </a>
+            </div>
+            <div style="margin-left:12px;">
+                <a href="javascript:void(0)" data-src="" class="cart left addcar">加入购物车</a>
                 <a href="javascript:void(0)" data-src="" onclick="SubmitIinfo()" class="cart right">下单支付</a>
-            </div> 
+            </div>
 
         </div>
     </form>
@@ -234,55 +250,113 @@
             else { el.addClass(cn) };
             return false;
         });
+        //
+        (function ($) {
+            $.extend({
+                tipsBox: function (options) {
+                    options = $.extend({
+                        obj: null,  //jq对象，要在那个html标签上显示
+                        str: "+3",  //字符串，要显示的内容;也可以传一段html，如: "<b style='font-family:Microsoft YaHei;'>+1</b>"
+                        startSize: "18px",  //动画开始的文字大小
+                        endSize: "38px",    //动画结束的文字大小
+                        interval: 600,  //动画时间间隔
+                        color: "red",    //文字颜色
+                        callback: function () { }    //回调函数
+                    }, options);
+                    $("body").append("<span class='fnum'>" + options.str + "</span>");
+                    var box = $(".fnum");
+                    var left = options.obj.offset().left + options.obj.width() / 2;
+                    var top = options.obj.offset().top - options.obj.height();
+                    box.css({
+                        "position": "absolute",
+                        "left": left + "px",
+                        "top": top + "px",
+                        "z-index": 9999,
+                        "font-size": options.startSize,
+                        "line-height": options.endSize,
+                        "color": options.color
+                    });
+                    box.animate({
+                        "font-size": options.endSize,
+                        "opacity": "0",
+                        "top": top - parseInt(options.endSize) + "px"
+                    }, options.interval, function () {
+                        box.remove();
+                        options.callback();
+                    });
+                }
+            });
+        })(jQuery);
+
     </script>
     <script>
-        
-        function SubminInfoCart()
-        {
-            layer.open({
-                content: '您确定将此商品加入购物车吗？'
-            , btn: ['取消', '确定']
-            , no: function (index) {
-                var parms;
+        $(function () {
+            //添加购物车
+            $(".addcar").click(function (event) {
                 var num = $('#FlowerNum').val();
-                var ConsigneeName = $('#ConsigneeName').val();
-                var ConsigneePhone = $('#ConsigneePhone').val();
-                var ConsigneAaddress = $('#ConsigneAaddress').val();
+                var offset = $("#end").offset();
+                var flyer = $('<img class="u-flyer" src="">');
+                flyer.fly({
+                    start: {
+                        left: event.pageX,
+                        top: event.pageY
+                    },
+                    end: {
+                        left: offset.left + 10,
+                        top: offset.top + 10,
+                        width: 0,
+                        height: 0
+                    },
+                    onEnd: function () {
+                        $.tipsBox({
+                            obj: $("#end"),
+                            str: "<b style='font-family:Microsoft YaHei;'>+" + num + "</b>",
+                            callback: function () {
+                            }
+                        });
+                        niceIn($("#end"));
+                    }
+                });
+
                 if (num == '' || num == null || num == 0) {
                     layer.open({
                         content: '购买数量必须大于1'
-       , skin: 'msg'
-       , time: 2 //2秒后自动关闭
+                     , skin: 'msg'
+                    , time: 2 //2秒后自动关闭
                     }); return false;
                 }
                 $.ajax({
                     url: '/BuyCart/AddToCart',
                     data: { "FlowerId": $("input[name='id']").val(), "Num": num },
-                    dataType:"json",
+                    dataType: "json",
                     success: function (data, status) {
-                        if (data.code == 1)
-                        {
-                            $("#cnum").text(data.cnum);
+                        if (data.code == 1) {
+                            $("#end").text(data.cnum);
                         }
                     },
                 })
-                //提示
-                layer.open({
-                    content: '添加购物车成功.'
-                  , skin: 'msg'
-                  , time: 2 //2秒后自动关闭
-                });
 
-            }
-              , yes: function (index) {
-                  layer.close(index);
-              }
             });
-
+            //计算总数
+            $.ajax({
+                url: '/BuyCart/GetTotal',
+                type: "get",
+                dataType: "json",
+                success: function (data, status) {
+                    if (data.code == 1) {
+                        $("#end").text(data.cnum);
+                    }
+                },
+            })
+        });
+        function niceIn(prop) {
+            prop.find('i').addClass('niceIn');
+            setTimeout(function () {
+                prop.find('i').removeClass('niceIn');
+            }, 1000);
         }
 
-        function  SubmitIinfo()
-        {
+        function SubmitIinfo() {
             //询问框
             layer.open({
                 content: '您确定要下单并支付吗？'
@@ -328,7 +402,7 @@
                     layer.close(index);
                 }
             });
-           
+
         }
     </script>
 </body>
