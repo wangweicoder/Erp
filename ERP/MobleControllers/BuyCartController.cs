@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -8,6 +9,7 @@ namespace ERP.MobleControllers
 {
     public class BuyCartController : MLoginFilterController
     {
+        string userid = Utility.ChangeText.GetUsersId().ToString();
         // GET: Cart
         public ActionResult Index()
         {
@@ -20,8 +22,7 @@ namespace ERP.MobleControllers
         /// <param name="Num"></param>
         /// <returns></returns>
         public ActionResult AddToCart(string FlowerId, int Num)
-        {
-            string userid = Utility.ChangeText.GetUsersId().ToString();
+        {           
             Business.Sys_FlowerShopCart bus = new Business.Sys_FlowerShopCart();
             Model.FlowerShopCart Cart = bus.GetFlowerShopCart(FlowerId.ToString(),userid);
             if (Cart != null)
@@ -41,15 +42,70 @@ namespace ERP.MobleControllers
                 model.UpdateTime = DateTime.Now;
                 bus.InsertFlowerShopCart(model);
             }
-            int num = bus.GetFlowerList().Sum(m=>m.Num);
+            int num = bus.GetFlowerList().Where(m=>m.UsersId==userid).ToList().Sum(m=>m.Num);
             return Json(new {code=1,cnum=num},JsonRequestBehavior.AllowGet);
         }
         public ActionResult GetTotal() 
         {
             Business.Sys_FlowerShopCart bus = new Business.Sys_FlowerShopCart();
-            List<Model.FlowerShopCart> list= bus.GetFlowerList();
+            List<Model.FlowerShopCart> list = bus.GetFlowerList().Where(m => m.UsersId == userid).ToList();
             int num = list.Sum(p => p.Num);
             return Json(new { code = 1, cnum = num }, JsonRequestBehavior.AllowGet);
+        }
+        ///<summary>
+        ///分页获得数据信息
+        ///</summary>
+        ///<author>wangwei</author>
+        ///<returns></returns>
+        public JsonResult GetOrdersList()
+        {
+            Business.Sys_FlowerShopCart  Sys_OrdersManaage = new Business.Sys_FlowerShopCart();
+            StringBuilder sb = new StringBuilder();
+            if (!string.IsNullOrEmpty(userid))
+            {
+                sb.Append(" and UsersId='" + userid + "'");
+            }
+            return Json(new { total = Sys_OrdersManaage.FlowerShopCartList(sb.ToString()).Count(), rows = Sys_OrdersManaage.FlowerShopCartList(sb.ToString()) }, JsonRequestBehavior.AllowGet);
+        }
+        
+        /// <summary>    
+        /// 点击数量+号或点击数量-号或自己输入一个值
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="quantity"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult IncreaseOrDecreaseOne(string id, int quantity)
+        {
+            Business.Sys_FlowerShopCart bus = new Business.Sys_FlowerShopCart();
+            Model.FlowerShopCart Cart = bus.GetFlowerShopCartById(id);
+            if (Cart != null)
+            {
+                Cart.Num = quantity;
+                Cart.UpdateTime = DateTime.Now;
+
+                bus.UpdateFlowerShopCart(Cart);//原来有这个商品，更新下数量
+            }
+            return Json(new
+            {
+                msg = true
+            });            
+        }
+                
+        /// <summary>
+        /// 从购物车移除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult RemoveFromCart(string id)
+        {
+            Business.Sys_FlowerShopCart bus = new Business.Sys_FlowerShopCart();
+            Model.FlowerShopCart Cart = bus.GetFlowerShopCartById(id);
+            if (Cart != null)
+            {               
+                bus.DeleteFlowerShopCart(Cart.Id.ToString());//
+            }
+            return Json(new { code = 1 }, JsonRequestBehavior.AllowGet);
         }
     }
 }

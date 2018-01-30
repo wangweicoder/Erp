@@ -10,22 +10,20 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta name="format-detection" content="telephone=no" />
-    <meta name="location" content="province=;city=;coord=" />
-    <link rel="apple-touch-icon-precomposed" href="~/FileCss/images/screenLogo.png?debug=847" />
+    <meta name="location" content="province=;city=;coord=" />  
     <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?debug=847" />
     <script src="~/FileCss/js/jquery.min.js"></script>
     @*<script src="~/FileCss/js/jquery.touchslider.min.js"></script>*@
-    <script src="~/FileCss/js/main.js"></script>@*//cooker*@
+    @*<script src="~/FileCss/js/main.js"></script>*@@*//cooker*@
     @*<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&amp;ak=2E9486ae97437e84c519f008952b67ae"></script>*@
     @*<script src="~/FileCss/js/MapWrapper.min.js"></script>*@
-    @*<link rel="apple-touch-icon-precomposed" href="images/screenLogo.png?debug=847" />
-        <link href="~/FileCss/spinner/jquery.spinner.css" rel="stylesheet" />*@
+    @*<link href="~/FileCss/spinner/jquery.spinner.css" rel="stylesheet" />*@
     @*<script src="~/FileCss/js/zepto.min.js?debug=847" type="text/javascript"></script>*@
-    @*<script src="~/FileCss/js/main.js?debug=847" type="text/javascript"></script>*@
+    <script src="~/FileCss/js/main.js?debug=847" type="text/javascript"></script>
     <script src="~/FileCss/js/distpicker.data.js"></script>
     <script src="~/FileCss/js/distpicker.js"></script>
 
-    <script src="~/FileCss/spinner/jquery.spinner.js"></script>
+    @*<script src="~/FileCss/spinner/jquery.spinner.js"></script>*@
     <script src="~/FileCss/jq/jquery.fly.min.js"></script>
     <script src="~/Thems/js/layer/mobile/layer.js"></script>
 
@@ -203,7 +201,7 @@
         </div>
         <div class="btn_box border_top">
             <div style="float:left;width:58px;overflow:hidden;">
-                <a id="mybuycarer" href="javascript:void(0)" onclick="SubminInfoCart()" class="buycarerNormal"
+                <a id="mybuycarer" href="/Shop/GetCartList"  class="buycarerNormal"
                    style="position: relative;display:block;float:left;">
                     <em style="position: absolute; top: -5px; right: 0; background: #f44623;
                 color: #fff; display: block; height: 14px; line-height: 14px; padding: 0 3px; border-radius:

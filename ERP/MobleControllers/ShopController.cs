@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -17,7 +18,7 @@ namespace ERP.MobleControllers
             return View(Sys_Flower.GetFlowerList());
         }
 
-
+        string userid = Utility.ChangeText.GetUsersId().ToString();
 
         public ActionResult Details() 
         {
@@ -96,10 +97,23 @@ namespace ERP.MobleControllers
             return null;
         }
 
-
-        public ActionResult GetOrderList() 
+        /// <summary>
+        /// 购物车
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult GetCartList()
         {
-            return View();
+            Business.Sys_FlowerShopCart Sys_OrdersManaage = new Business.Sys_FlowerShopCart();
+            StringBuilder sb = new StringBuilder();
+            if (!string.IsNullOrEmpty(userid))
+            {
+                sb.Append(" and UsersId='" + userid + "'");
+            }
+           List<Model.FlowerCartVM>list= Sys_OrdersManaage.FlowerShopCartList(sb.ToString());
+           Model.CartLine model = new Model.CartLine();
+           model.Products = list;
+           return View(model);
         }
+        
 	}
 }

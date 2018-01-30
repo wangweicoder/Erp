@@ -46,6 +46,7 @@
     <Compile Include="CustomerRelations.cs" />
     <Compile Include="EmployeeSalary.cs" />
     <Compile Include="FlowerArrangement.cs" />
+    <Compile Include="FlowerCartVM.cs" />
     <Compile Include="FlowerShopCart.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="ClockAttendance.cs" />

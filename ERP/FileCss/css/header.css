@@ -1,0 +1,141 @@
+﻿body, button, input, select, textarea {
+    font: 14px/1.5 tahoma,Verdana,arial,microsoft yahei,"\5b8b\4f53";
+    color: #676b70;
+}
+
+.topbar {
+    background: #79ca06;
+}
+
+.back_btn {
+    display: block;
+    width: 45px;
+    height: 45px;
+    float: left;
+    background: url(../../FileCss/images/back.png) no-repeat;
+    background-size: auto auto;
+    background-size: 100%;
+}
+
+    .back_btn i, .top_home i {
+        display: none;
+    }
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+/*address, caption, cite, code, dfn, em, th, var, i {
+    font-style: normal;
+    font-weight: normal;
+    }
+    a {
+    color: #676b70;
+    }*/
+.top_home {
+    display: block;
+    width: 45px;
+    height: 45px;
+    float: right;
+    background: url(../../FileCss/images/more.png) no-repeat;
+    background-size: auto auto;
+    background-size: 100%;
+}
+
+.page_title {
+    text-align: center;
+    height: 45px;
+    line-height: 45px;
+    font-size: 16px;
+    color: #fff;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    font-weight: 800;
+}
+
+.home_menu {
+    height: 60px;
+    display: none;
+    border-bottom: solid 1px #dadada;
+    border-bottom-width: 1px;
+    -webkit-border-image: url(../../FileCss/images/border.gif) 2 0 round;
+    border-image: url(../../FileCss/images/border.gif) 2 0 round;
+    border-width: 0 0 1px 0;
+}
+
+    .home_menu a {
+        width: 25%;
+        height: 50px;
+        display: block;
+        text-align: center;
+        padding: 5px 0;
+        float: left;
+        color: #676b70;
+        text-shadow: 0 1px 0 #fff;
+        text-decoration: none;
+    }
+
+        .home_menu a i {
+            font-size: 20px;
+            color: #2c3e50;
+            display: block;
+        }
+
+@font-face {
+    font-family: 'iconfont';
+    src: url('../fonts/iconfont.eot?t=1'); /* IE9*/
+    src: url('../fonts/../fonts/iconfont.eot?t=1#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('../fonts/iconfont.woff?t=1') format('woff'), /* chrome、firefox */
+    url('../fonts/iconfont.ttf?t=1') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('../fonts/iconfont.svg?t=1#uxiconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.home_menu a span {
+    font-size: 12px;
+    color: #2c3e50;
+}
+/*/结算/*/
+.btn_box {
+    height: 40px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #f6f6f6;
+    padding: 10px 0;
+    z-index: 78;
+}
+
+    .btn_box a {
+        margin: -24px 13px;
+    }
+
+.cart {
+    display: inline-block;
+    width: 37%;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    color: #fff;
+    background: #f44623;
+    margin: 0 10px;
+    border-radius: 3px;
+}
+
+.right {
+    float: right;
+}

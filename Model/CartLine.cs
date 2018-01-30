@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 namespace Model
 {
     public class CartLine
-    {
-        public Flower Product { get; set; }
+    {        
         public int Quantity { get; set; }
-        public List<Flower> Products { get; set; }
+        public List<FlowerCartVM> Products { get; set; }
     }
 }

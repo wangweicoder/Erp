@@ -14,7 +14,7 @@ namespace Business
     {
         private string SQLConString = System.Configuration.ConfigurationManager.AppSettings["SQLConString"];
 
-           /// <summary>
+        /// <summary>
         /// 获得总记录数
         /// </summary>
         /// <param name="StrWhere"></param>
@@ -32,23 +32,22 @@ namespace Business
         }
 
         /// <summary>
-        /// 分页获得数据信息
+        /// 获得数据信息
         /// </summary>
-        /// <param name="limit">页码大小</param>
-        /// <param name="offset">第几页</param>
-        /// <param name="UserName">用户名</param>
-        /// <param name="Role">角色ID</param>
+        /// <param name="Userid">用户名</param>        
         /// <returns></returns>
-        public List<Model.FlowerShopCart> FlowerShopCartList(int offset, string StrWhere)  
+        public List<Model.FlowerCartVM> FlowerShopCartList(string StrWhere)  
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("SELECT * FROM ( SELECT ROW_NUMBER() over(order by FlowerShopCart.id desc) as rn ,* FROM FlowerShopCart");
+            strSql.Append("SELECT b.Id, x.FlowerWatchName,x.FlowerWatchPhoto,x.FlowerSalesPrice,x.FlowerIntroduction");
+	        strSql.Append(",b.Num,b.Status,b.UpdateTime FROM Flower x inner join FlowerShopCart b on x.id=b.FlowerId");
+	       
             if (!string.IsNullOrEmpty(StrWhere))
             {
                 strSql.Append(" where  1=1 " + StrWhere);
             }
-            strSql.Append(")T where t.rn between   @offset and (@offset+9)");
-            return Factory.DBHelper.Query<Model.FlowerShopCart>(SQLConString, strSql.ToString(), new DynamicParameters(new { offset }));
+
+            return Factory.DBHelper.Query<Model.FlowerCartVM>(SQLConString, strSql.ToString(), new DynamicParameters(new { }));
         }       
         /// <summary>
         /// 通过UserId和FlowerId查询信息
@@ -65,7 +64,21 @@ namespace Business
                 }));
             return FlowerList.Count() > 0 ? FlowerList[0] : null;
         }
-        
+        /// <summary>
+        /// 通过Id查询信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>花卉的记录</returns>
+        public Model.FlowerShopCart GetFlowerShopCartById(string Id)
+        {
+            const string sql = @"SELECT * FROM  FlowerShopCart WHERE Id=@Id";
+            List<Model.FlowerShopCart> FlowerList = Factory.DBHelper.Query<Model.FlowerShopCart>(SQLConString, sql.ToString(),
+                new DynamicParameters(new
+                {
+                   Id
+                }));
+            return FlowerList.Count() > 0 ? FlowerList[0] : null;
+        }
         /// <summary>
         /// 写入一条记录
         /// </summary>
@@ -93,7 +106,7 @@ namespace Business
         public bool UpdateFlowerShopCart(Model.FlowerShopCart Flower) 
         {
             const string sql = @"UPDATE  FlowerShopCart SET FlowerId=@FlowerId,Num=@Num,UsersId=@UsersId,Status=@Status,
-                CreateTime=@CreateTime,UpdateTime=@UpdateTime  WHERE id=@Id";
+                CreateTime=@CreateTime,UpdateTime=@UpdateTime  WHERE Id=@Id";
             return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
             {
                 Flower.FlowerId,
@@ -113,7 +126,7 @@ namespace Business
         /// <returns></returns>
         public bool DeleteFlowerShopCart(string id)
         {
-            const string sql =@"DELETE from FlowerShopCart WHERE id=@id";
+            const string sql =@"DELETE from FlowerShopCart WHERE Id=@id";
             return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
             {
                 id,
