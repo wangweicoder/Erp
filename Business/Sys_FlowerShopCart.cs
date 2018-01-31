@@ -40,7 +40,7 @@ namespace Business
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("SELECT b.Id, x.FlowerWatchName,x.FlowerWatchPhoto,x.FlowerSalesPrice,x.FlowerIntroduction");
-	        strSql.Append(",b.Num,b.Status,b.UpdateTime FROM Flower x inner join FlowerShopCart b on x.id=b.FlowerId");
+            strSql.Append(",b.FlowerId,b.Num,b.Status,b.UpdateTime FROM Flower x inner join FlowerShopCart b on x.id=b.FlowerId");
 	       
             if (!string.IsNullOrEmpty(StrWhere))
             {

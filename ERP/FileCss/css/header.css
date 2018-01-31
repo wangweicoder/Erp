@@ -124,6 +124,21 @@
         margin: -24px 13px;
     }
 
+        .btn_box a:link {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .btn_box a:visited {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .btn_box a:hover {
+            text-decoration: none;
+            color: #fff;
+        }
+
 .cart {
     display: inline-block;
     width: 37%;
@@ -131,10 +146,10 @@
     text-align: center;
     line-height: 40px;
     color: #fff;
-    background: #f44623;
-    margin: 0 10px;
+    background: #f44623;   
     border-radius: 3px;
 }
+
 
 .right {
     float: right;

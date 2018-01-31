@@ -28,7 +28,7 @@ namespace ERP.MobleControllers
             return View(Sys_Flower.GetFlower(id));
         }
 
-
+        [HttpPost]
         public ActionResult PayOrders()
         {
             #region 生成订单
@@ -77,9 +77,61 @@ namespace ERP.MobleControllers
 
             ViewData["OrdersId"] = Orders.OrderId;
             ViewData["PayTotal"] = Flower.FlowerSalesPrice * int.Parse(OrdersNum);
-            return Redirect("/WxPay/Index?OrdersId=" + Orders.OrderId + "&PayTotal=" + Flower.FlowerSalesPrice * int.Parse(OrdersNum));
+            //return Redirect("/WxPay/Index?OrdersId=" + Orders.OrderId + "&PayTotal=" + Flower.FlowerSalesPrice * int.Parse(OrdersNum));
+            return View();
         }
+        [HttpGet]
+        public ActionResult PayOrders(string id)
+        {
+            #region 生成订单
 
+            //string id = Request["id"];
+            Business.Sys_Flower Sys_Flower = new Business.Sys_Flower();
+            Model.Flower Flower = Sys_Flower.GetFlower(id);
+            string OrdersNum = Request["FlowerNum"];
+            string address = Request["province"] + Request["city"] + Request["area"] + Request["ConsigneAaddress"];
+            string ConsigneeName = Request["ConsigneeName"];
+            string ConsigneePhone = Request["ConsigneePhone"];
+            Model.Orders Orders = new Model.Orders();
+            Orders.UsersId = Utility.ChangeText.GetUsersId();
+            Orders.CreateTime = DateTime.Now;
+            Orders.SellingPrice = Flower.FlowerSalesPrice * int.Parse(OrdersNum);
+            Orders.OrdersState = 1;
+            Orders.OrderId = Utility.ChangeText.OrderIdCreate();
+            Orders.GoodsSum = int.Parse(OrdersNum);
+            Orders.CostPrice = Flower.FlowerCostPrice * int.Parse(OrdersNum);
+            Orders.ConsigneeName = ConsigneeName;
+            Orders.ConsigneePhone = ConsigneePhone;
+            Orders.ConsigneAaddress = address;
+            List<Model.OrdersDetails> OrdersDetailsList = new List<Model.OrdersDetails>();
+            for (int i = 0; i < int.Parse(OrdersNum); i++)
+            {
+                Model.OrdersDetails OrdersDetails = new Model.OrdersDetails();
+                OrdersDetails.OrderId = Orders.OrderId;
+                OrdersDetails.FlowerNumber = Flower.FlowerNumber;
+                OrdersDetails.FlowerWatchName = Flower.FlowerWatchName;
+                OrdersDetails.FlowerWatchPhoto = Flower.FlowerWatchPhoto;
+                OrdersDetails.SellingPrice = Flower.FlowerSalesPrice;
+                OrdersDetails.SellingNum = int.Parse(OrdersNum);
+                OrdersDetails.CostPrice = Flower.FlowerCostPrice;
+                OrdersDetailsList.Add(OrdersDetails);
+            }
+            Model.OrdersLog OrdersLog = new Model.OrdersLog();
+            OrdersLog.OrdersId = Orders.OrderId;
+            OrdersLog.OrdersState = 1;
+            OrdersLog.UserName = Utility.ChangeText.GetUserName();
+            OrdersLog.Remark = "";
+            OrdersLog.Time = DateTime.Now;
+
+            Business.Sys_OrdersManaage Sys_OrdersManaage = new Business.Sys_OrdersManaage();
+            //Sys_OrdersManaage.InsertOrders(Orders, OrdersDetailsList, OrdersLog);
+            #endregion
+
+            ViewData["OrdersId"] = Orders.OrderId;
+            ViewData["PayTotal"] = Flower.FlowerSalesPrice * int.Parse(OrdersNum);
+            //return Redirect("/WxPay/Index?OrdersId=" + Orders.OrderId + "&PayTotal=" + Flower.FlowerSalesPrice * int.Parse(OrdersNum));
+            return View();
+        }
         public ActionResult PayOrdersNow() 
         {
             return Redirect("/WxPay/Index?OrdersId=" + Request["OrdersId"] + "&PayTotal=" + Request["PayTotal"]);

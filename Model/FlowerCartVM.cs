@@ -12,7 +12,10 @@ namespace Model
         /// 主键ID
         /// </summary>
         public int Id { set; get; }
-
+        /// <summary>
+        /// 花卉Id
+        /// </summary>
+        public string FlowerId { set; get; }
         /// <summary>
         /// 花卉名称
         /// </summary>

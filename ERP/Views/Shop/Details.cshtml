@@ -111,7 +111,7 @@
     </script>
 
     @Html.Partial("header")
-    <form action="/Shop/PayOrders" method="post" id="fromInfo">
+    <form action="/Shop/PayOrders" method="get" id="fromInfo">
         <div class="product" style="position:relative;">
             <div id="bigImg">
                 <div id="pro_img" class="pro_img">
@@ -362,31 +362,31 @@
               , no: function (index) {
                   var parms;
                   var num = $('#FlowerNum').val();
-                  var ConsigneeName = $('#ConsigneeName').val();
-                  var ConsigneePhone = $('#ConsigneePhone').val();
-                  var ConsigneAaddress = $('#ConsigneAaddress').val();
-                  if (ConsigneeName == '' || ConsigneeName == null) {
-                      layer.open({
-                          content: '收货人姓名不能为空'
-         , skin: 'msg'
-         , time: 2 //2秒后自动关闭
-                      });
-                      return false;
-                  }
-                  if (ConsigneePhone == '' || ConsigneePhone == null) {
-                      layer.open({
-                          content: '收货人电话不能为空'
-         , skin: 'msg'
-         , time: 2 //2秒后自动关闭
-                      }); return false;
-                  }
-                  if (ConsigneAaddress == '' || ConsigneeName == null) {
-                      layer.open({
-                          content: '收货人地址不能为空'
-         , skin: 'msg'
-         , time: 2 //2秒后自动关闭
-                      }); return false;
-                  }
+         //         var ConsigneeName = $('#ConsigneeName').val();
+         //         var ConsigneePhone = $('#ConsigneePhone').val();
+         //         var ConsigneAaddress = $('#ConsigneAaddress').val();
+         //         if (ConsigneeName == '' || ConsigneeName == null) {
+         //             layer.open({
+         //                 content: '收货人姓名不能为空'
+         //, skin: 'msg'
+         //, time: 2 //2秒后自动关闭
+         //             });
+         //             return false;
+         //         }
+         //         if (ConsigneePhone == '' || ConsigneePhone == null) {
+         //             layer.open({
+         //                 content: '收货人电话不能为空'
+         //, skin: 'msg'
+         //, time: 2 //2秒后自动关闭
+         //             }); return false;
+         //         }
+         //         if (ConsigneAaddress == '' || ConsigneeName == null) {
+         //             layer.open({
+         //                 content: '收货人地址不能为空'
+         //, skin: 'msg'
+         //, time: 2 //2秒后自动关闭
+         //             }); return false;
+         //         }
                   if (num == '' || num == null || num == 0) {
                       layer.open({
                           content: '购买数量必须大于1'

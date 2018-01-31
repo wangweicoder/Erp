@@ -9,10 +9,13 @@
     <link href="~/points/css/mui.min.css" rel="stylesheet" />
     <link href="~/points/css/loaders.min.css" rel="stylesheet" />
     <link href="~/points/css/loading.css" rel="stylesheet" />
-
+    <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?debug=847" />
     <script src="~/points/js/rem.js"></script>
     <script src="~/points/js/jquery-1.8.3.min.js"></script>
     <script src="~/points/js/swiper.jquery.min.js"></script>
+    <script src="js/jquery.min.js" type="text/javascript"></script>  
+    <script src="~/FileCss/js/distpicker.data.js"></script>
+    <script src="~/FileCss/js/distpicker.js"></script>
     @*加载弹出层*@
     @Scripts.Render("~/Thems/js/layer/layer.js")
     <script type="text/javascript">
@@ -38,12 +41,15 @@
         {
             if ($("#DetailedAddress").val()=="") {
                 layer.msg('地址不能为空');
+                return false;
             }
             if ($("#ConsigneeName").val() == "") {
                 layer.msg('联系人姓名不能为空');
+                return false;
             }
             if ($("#ConsigneePhone").val() == "") {
                 layer.msg('联系人电话不能为空');
+                return false;
             }
             $.ajax({
                 url: '/Shop/AddInfo?OrdersId=' + $("#OrdersId").val() + '&DetailedAddress=' + $("#DetailedAddress").val() + '&ConsigneeName=' + $("#ConsigneeName").val() + '&ConsigneePhone=' + $("#ConsigneePhone").val(),
@@ -96,9 +102,48 @@
             </ul>
         </div>
         <div class="odernum clearfloat">
-            <ul>
-                <li><input type="text" name="ConsigneePhone" id="ConsigneePhone" placeholder="联系人电话" style="width:50%"></li>
-            </ul>
+            <div class="pro_kc">
+                <dl class="yanse">
+                    <dt>
+                        收货人：
+                    </dt>
+                    <dd>
+                        <input type="text" name="ConsigneeName" id="ConsigneeName" />
+                    </dd>
+                    <br />
+                    <dt>
+                        收货人电话：
+                    </dt>
+                    <dd>
+                        <input type="text" name="ConsigneePhone" id="ConsigneePhone" />
+                    </dd>
+                    <br />
+                    <dt>
+                        收货地址：
+                    </dt>
+
+                    <dd>
+                        <div style="width:100%" data-toggle="distpicker">
+                            <div style="width:50%;float:left">
+                                <select style="width:80px;" name="province"></select>
+                                <select style="width: 120px; " name="city"></select>
+                            </div>
+                            <div style="width:50%; padding-left:20px">
+                                <select style="width: 80px; " name="area"></select>
+                            </div>
+                        </div>
+                    </dd>
+                    <br />
+                    <dt>
+                        详细地址：
+                    </dt>
+                    <dd>
+                        <input type="text" name="ConsigneAaddress" id="ConsigneAaddress" />
+                    </dd>                    
+                </dl>
+                <dl id="_address" class="yanse" style="display: none;"></dl>
+            </div>
+
         </div>
         <button type="submit" class="address-add f">确认支付</button>
         </div>
