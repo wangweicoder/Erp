@@ -81,9 +81,19 @@ namespace Business
         /// <returns></returns>
         public Model.Flower GetFlower(string id) 
         {
-            const string sql =
-@"SELECT * FROM  Flower WHERE id=@id";
+            const string sql ="SELECT * FROM  Flower WHERE id=@id";
             List<Model.Flower> FlowerList = Factory.DBHelper.Query<Model.Flower>(SQLConString, sql.ToString(), new DynamicParameters(new { id }));
+            return FlowerList.Count() > 0 ? FlowerList[0] : null;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public Model.Flower GetFlowers(string ids)
+        {
+            const string sql =@"SELECT * FROM  Flower WHERE id=@id";
+            List<Model.Flower> FlowerList = Factory.DBHelper.Query<Model.Flower>(SQLConString, sql.ToString(), new DynamicParameters(new { ids }));
             return FlowerList.Count() > 0 ? FlowerList[0] : null;
         }
         /// <summary>
@@ -93,8 +103,7 @@ namespace Business
         /// <returns></returns>
         public Model.Flower GetFlowerByFlowerNumber(string FlowerNumber)
         {
-            const string sql =
-@"SELECT * FROM  Flower WHERE FlowerNumber=@FlowerNumber";
+            const string sql ="SELECT * FROM  Flower WHERE FlowerNumber=@FlowerNumber";
             List<Model.Flower> FlowerList = Factory.DBHelper.Query<Model.Flower>(SQLConString, sql.ToString(), new DynamicParameters(new { FlowerNumber }));
             return FlowerList.Count() > 0 ? FlowerList[0] : null;
         }

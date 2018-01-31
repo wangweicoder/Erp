@@ -13,19 +13,18 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />     
     <meta name="location" content="province=;city=;coord=" />
     
-    <script src="~/FileCss/js/jquery.min.js"></script>
-   
-    <script src="~/FileCss/js/main.js?debug=847" type="text/javascript"></script>
- 
-    <script src="~/Thems/js/layer/mobile/layer.js"></script>
+    <link href="~/FileCss/css/header.css" rel="stylesheet" />
+    <link href="~/Bootstrap/css/jquery.bootstrap-touchspin.min.css" rel="stylesheet" />
     <link href="~/FileCss/css/shopitem.css" rel="stylesheet" />
     @*加载表格*@
     @Scripts.Render("~/plugins/jQuery/jquery-2.2.3.min.js")
     @Styles.Render("~/Bootstrap/css/bootstrap.min.css")
     @Scripts.Render("~/Bootstrap/js/bootstrap.min.js")
     <script src="~/Bootstrap/js/jquery.bootstrap-touchspin.min.js"></script>
-    <link href="~/FileCss/css/header.css" rel="stylesheet" />
-    <link href="~/Bootstrap/css/jquery.bootstrap-touchspin.min.css" rel="stylesheet" />
+    @*<script src="~/FileCss/js/jquery.min.js"></script>*@
+    <script src="~/FileCss/js/main.js?debug=847" type="text/javascript"></script>
+    <script src="~/Thems/js/layer/mobile/layer.js"></script>
+    
     <style>
         body {
             background: #fff;
@@ -39,9 +38,8 @@
     $(function () {
         //移出
         $(".btn-sm").click(function () {
-            //$(this).closest("div.productbox").find('#Id').val()
+            
             var id = $(this).closest("div.productbox").find('#Id').val();
-
             layer.open({
                 content: '您确定将此商品移出购物车吗？'
              , btn: ['取消', '确定']
@@ -82,13 +80,7 @@
                     location.reload();
                 }
             });
-
-            //var temp = $(this).val();
-            //alert(temp);
-
-
-            //var temp = $(this).closest("div.productbox").find('#Id').val();
-            //alert(temp);
+            //
         });
 
         i.on("touchspin.on.stopdownspin", function () {
@@ -127,8 +119,8 @@
                 }
             });
         });
-        var fnum =@fnum;//计算件数
-        var fmoney=@fmoney;//总计
+        var fnum=@fnum ;//计算件数
+        var fmoney=@fmoney  //总计
             $('.row :checkbox').prop({ checked: true }).trigger('change');//选择框默认选中
             $checkboxList.change(function () {
                 var selectCount = 0;
@@ -142,6 +134,7 @@
                     $chkAll.prop({ checked: true });
                     $(".btn_box a").css("background"," #f44623");//亮
                 }else if(selectCount == 0){
+                    $chkAll.prop({ checked: false });
                     $(".btn_box a").css("background"," #676b70");//
                 } else {
                     $chkAll.prop({ checked: false });
@@ -168,8 +161,8 @@
                 }
 
             });
-
-            $("#totalmoney").text("¥"+@fmoney);
+        //总金额
+         $("#totalmoney").text("¥"+@fmoney);
     });
 
     //结算
@@ -177,25 +170,29 @@
         if(thi.children[0].innerText!=0){
             layer.open({
                 content: '提交'
-                                      , skin: 'msg'
+                 , skin: 'msg'
                                       , time: 2 //2秒后自动关闭
             });
             //
             var account ="";
+            var flowernums="";
             var $checkboxList = $('[id^=chk_]');
             $checkboxList.each(function () {
                 if (this.checked) {
                     var tyug = $(this).closest("div.productbox").find("#FlowerId").val();
                     account+=tyug+",";
+                    var tyun = $(this).closest("div.productbox").find("input[name^='demo2']").val();
+                    flowernums+=tyun+",";
                 }
             });
-            location.href="/Shop/PayOrders?id="+account;
+            flowernums=flowernums.substring(0,flowernums.length-1);
+            location.href="/Shop/PayCartOrders?ids="+account+"&FlowerNums="+flowernums;
         }
         else{
             layer.open({
                 content: '请选择商品后结算！'
-                                  , skin: 'msg'
-                                  , time: 2 //2秒后自动关闭
+                 ,skin: 'msg'
+                 , time: 2 //2秒后自动关闭
             });
         }
 

@@ -52,22 +52,7 @@ namespace ERP.MobleControllers
             int num = list.Sum(p => p.Num);
             return Json(new { code = 1, cnum = num }, JsonRequestBehavior.AllowGet);
         }
-        ///<summary>
-        ///分页获得数据信息
-        ///</summary>
-        ///<author>wangwei</author>
-        ///<returns></returns>
-        public JsonResult GetOrdersList()
-        {
-            Business.Sys_FlowerShopCart  Sys_OrdersManaage = new Business.Sys_FlowerShopCart();
-            StringBuilder sb = new StringBuilder();
-            if (!string.IsNullOrEmpty(userid))
-            {
-                sb.Append(" and UsersId='" + userid + "'");
-            }
-            return Json(new { total = Sys_OrdersManaage.FlowerShopCartList(sb.ToString()).Count(), rows = Sys_OrdersManaage.FlowerShopCartList(sb.ToString()) }, JsonRequestBehavior.AllowGet);
-        }
-        
+               
         /// <summary>    
         /// 点击数量+号或点击数量-号或自己输入一个值
         /// </summary>
