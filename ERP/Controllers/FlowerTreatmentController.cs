@@ -58,7 +58,8 @@ namespace ERP.Controllers
         {
             string id = Request["id"];
             Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
-            ViewData["GetUserInfoSelectItems"] = GetUserInfoSelectItems();
+            ViewData["GetUserInfoSelectItems"] = GetUserInfoSelectItems("Customer","0");//管理员
+            ViewData["GetCustomerInfoSelectItems"] = GetUserInfoSelectItems("Customer", "1");//客户
             return View(Sys_FlowerTreatment.GetModel(id));
         }
 
@@ -130,10 +131,18 @@ namespace ERP.Controllers
             return Content("0");
         }
 
-        public List<SelectListItem> GetUserInfoSelectItems()
+        public List<SelectListItem> GetUserInfoSelectItems(string rolecode,string type)
         {
             Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
-            List<Model.UserAdmin> list = Sys_UserAdmin.GetUserAdminListByRoleCodeNo("Customer");
+            List<Model.UserAdmin> list=new List<Model.UserAdmin>();
+            if (type == "0")
+            {
+                list = Sys_UserAdmin.GetUserAdminListByRoleCodeNo(rolecode);//不等于
+            }
+            else
+            {
+                list = Sys_UserAdmin.GetAdminInfoList(rolecode);
+            }
             List<SelectListItem> deptSelectItems = new List<SelectListItem>();
             SelectListItem item = new SelectListItem();
             foreach (Model.UserAdmin d in list)

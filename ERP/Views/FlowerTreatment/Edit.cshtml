@@ -47,7 +47,7 @@
                 </div>
                 <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>养护所属客户</span>
                 <div class="col-sm-6">
-                    @Html.DropDownListFor(m => m.OwnedUsersId, ViewData["GetUserInfoSelectItems"] as List<SelectListItem>, new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.OwnedUsersId, ViewData["GetCustomerInfoSelectItems"] as List<SelectListItem>, new { @class = "form-control" })
                 </div>
                 <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>养护内容</span>
                 <div class="col-sm-6">

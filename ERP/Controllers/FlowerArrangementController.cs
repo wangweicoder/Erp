@@ -15,11 +15,11 @@ using ThoughtWorks.QRCode.Codec;
 namespace ERP.Controllers
 {
     
-    public class FlowerArrangementController : Controller
+    public class FlowerArrangementController : LoginFilter
     {
         //
         // GET: /FlowerArrangement/
-        [SysAuthAttribute]
+        // [SysAuthAttribute]
         public ActionResult Index()
         {          
             return View();

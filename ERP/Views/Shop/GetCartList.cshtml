@@ -37,8 +37,7 @@
     <script>
     $(function () {
         //移出
-        $(".btn-sm").click(function () {
-            
+        $(".btn-sm").click(function () {            
             var id = $(this).closest("div.productbox").find('#Id').val();
             layer.open({
                 content: '您确定将此商品移出购物车吗？'
@@ -91,10 +90,12 @@
                 }
             });
         });
+
         //全选
         var $chkAll = $('.allcheck');
         var $checkboxList = $('[id^=chk_]');
         $chkAll.prop({ checked: true });//选择框默认选中
+        var fmoney=@fmoney  //总计
         $chkAll.change(function () {
             var that = this;
             $('.row :checkbox').prop({ checked: that.checked }).trigger('change');
@@ -105,7 +106,8 @@
                     var tyu = $(this).closest("div.productbox").find("input[name^='demo2']").val();
                     allfnum += parseInt(tyu);
                     $("#totalpkg").text(allfnum);
-                    $(".btn_box a").css("background"," #f44623");
+                    $(".btn_box a").css("background", " #f44623");
+                    fnum = allfnum;
                     //总计
                     var tyuj = $(this).closest("div.productbox table").find("[name='demo1']").text();
                     allfPrice+=parseInt(tyuj)*parseInt(tyu);
@@ -116,12 +118,12 @@
                     $(".btn_box a").attr("disabled",false);
                     $(".btn_box a").css("background"," #676b70");
                     //总计
-                    $("#totalmoney").text("¥"+fnum);
+                    $("#totalmoney").text("¥"+0);
                 }
             });
         });
-        var fnum=@fnum ;//计算件数
-        var fmoney=@fmoney  //总计
+        var fnum=@fnum //计算件数
+        
             $('.row :checkbox').prop({ checked: true }).trigger('change');//选择框默认选中
             $checkboxList.change(function () {
                 var selectCount = 0;
@@ -163,7 +165,7 @@
 
             });
         //总金额
-         $("#totalmoney").text("¥"+@fmoney);
+         $("#totalmoney").text("¥"+fmoney);
     });
 
     //结算
@@ -172,7 +174,7 @@
             layer.open({
                 content: '提交'
                  , skin: 'msg'
-                                      , time: 2 //2秒后自动关闭
+                 , time: 2 //2秒后自动关闭
             });
             //
             var account ="";

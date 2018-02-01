@@ -12,10 +12,15 @@ namespace ERP.Controllers
         // GET: /Login/
         public ActionResult Index()
         {
-
+            HttpContext.Session.RemoveAll(); 
             return View();
+           
         }
-
+        public ActionResult LoginOut()
+        {
+            HttpContext.Session.RemoveAll();
+            return Redirect("/Login/Index");
+        }
         [HttpPost]
         public ActionResult Index(Model.UserAdmin UserAdmin)
         {

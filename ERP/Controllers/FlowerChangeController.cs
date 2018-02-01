@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace ERP.Controllers
 {
-    public class FlowerChangeController : Controller
+    public class FlowerChangeController : LoginFilter
     {
         //
         // GET: /FlowerChange/

@@ -147,10 +147,10 @@ namespace ERP.MobleControllers
             Sys_OrdersManaage.InsertOrders(Orders, OrdersDetailsList, OrdersLog);
             #endregion
 
-            ViewData["OrdersId"] = Orders.OrderId;
-            ViewData["PayTotal"] = Orders.SellingPrice;
-            //return Redirect("/WxPay/Index?OrdersId=" + Orders.OrderId + "&PayTotal=" + Flower.FlowerSalesPrice * int.Parse(FlowerNum));
-            return View();
+            //ViewData["OrdersId"] = Orders.OrderId;
+            //ViewData["PayTotal"] = Orders.SellingPrice;
+            return Redirect("/WxPay/Index?OrdersId=" + Orders.OrderId + "&PayTotal=" + Flower.FlowerSalesPrice * int.Parse(FlowerNum));
+            //return View();
         }
         public ActionResult PayOrdersNow() 
         {
@@ -169,9 +169,10 @@ namespace ERP.MobleControllers
              }
         }
 
-        public void AddInfo() 
+        public void AddInfo()
         {
-            string ConsigneAaddress = Request["DetailedAddress"];
+            string address = Request["province"] + Request["city"] + Request["area"];
+            string ConsigneAaddress = address+Request["DetailedAddress"];
             string ConsigneeName = Request["ConsigneeName"];
             string ConsigneePhone = Request["ConsigneePhone"];
             string OrdersId = Request["OrdersId"];

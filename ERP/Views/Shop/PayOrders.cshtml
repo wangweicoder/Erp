@@ -53,9 +53,10 @@
             var phone=$("#ConsigneePhone").val();
             if (phone == "") {
                 layer.msg('联系人电话不能为空');
-                if (!valiDateTel(phone)) {
-                    layer.msg('联系人电话不合法！');
-                }
+                return false;
+            }
+            else if (!valiDateTel(phone)) {
+                layer.msg('联系人电话不合法！');
                 return false;
             }
             //$.ajax({

@@ -752,7 +752,6 @@
     <Content Include="Scripts\Admin\FlowerChange.js" />
     <Content Include="Scripts\Admin\FlowerTreatment.js" />
     <Content Include="Scripts\Admin\MenuInfo.js" />
-    <Content Include="Scripts\Admin\CartLine.js" />
     <Content Include="Scripts\Admin\Orders.js" />
     <Content Include="Scripts\Admin\OrdersInfoMation.js" />
     <Content Include="Scripts\Admin\ProblemsAndSuggestions.js" />
