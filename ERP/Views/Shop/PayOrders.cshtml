@@ -17,6 +17,7 @@
     <script src="~/FileCss/js/distpicker.js"></script>
     @*加载弹出层*@
     @Scripts.Render("~/Thems/js/layer/layer.js")
+    <script src="~/Scripts/jquery.valiedate.form.js"></script>
     <script type="text/javascript">
 
         $(window).load(function () {
@@ -36,9 +37,12 @@
             }
         });
 
-        function CheckFrom()
-        {
-            if ($("#DetailedAddress").val()=="") {
+        function CheckFrom() {
+            var adr = $("select[name='province']").val();
+            var adr1 = $("select[name='city']").val();
+            var adr2 = $("select[name='area']").val();
+          
+          if (adr == "") {
                 layer.msg('地址不能为空');
                 return false;
             }
@@ -46,60 +50,69 @@
                 layer.msg('联系人姓名不能为空');
                 return false;
             }
-            if ($("#ConsigneePhone").val() == "") {
+            var phone=$("#ConsigneePhone").val();
+            if (phone == "") {
                 layer.msg('联系人电话不能为空');
+                if (!valiDateTel(phone)) {
+                    layer.msg('联系人电话不合法！');
+                }
                 return false;
             }
-            $.ajax({
-                url: '/Shop/AddInfo?OrdersId=' + $("#OrdersId").val() + '&DetailedAddress=' + $("#DetailedAddress").val() + '&ConsigneeName=' + $("#ConsigneeName").val() + '&ConsigneePhone=' + $("#ConsigneePhone").val(),
-            })
+            //$.ajax({
+            //    url: '/Shop/AddInfo?OrdersId=' + $("#OrdersId").val() + '&DetailedAddress='+ adr+adr1+adr2+ $("#DetailedAddress").val() + '&ConsigneeName=' + $("#ConsigneeName").val() + '&ConsigneePhone=' + $("#ConsigneePhone").val(),
+            //})
         }
     </script>
 </head>
 
 <!--loading页结束-->
 <body>
-@using (Html.BeginForm("PayOrdersNow", "Shop", FormMethod.Post, new { onsubmit = "return  CheckFrom()" }))
-{
+    @using (Html.BeginForm("PayOrdersNow", "Shop", FormMethod.Post, new { onsubmit = "return  CheckFrom()" }))
+    {
     <!--loading页开始-->
-    <div class="loading">
-        <div class="loader">
-            <div class="loader-inner pacman">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
+        <div class="loading">
+            <div class="loader">
+                <div class="loader-inner pacman">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
             </div>
         </div>
-    </div>
-    <header class="mui-bar mui-bar-nav report-header box-s" id="header">
-        <a href="javascript:history.go(-1)"><i class="iconfont icon-fanhui fl"></i></a>
-        <p>确认支付</p>
-    </header>
-    <div id="main" class="mui-clearfix contaniner sorder">
-        <div class="warning clearfloat box-s">
-            提示：请在24小时内完成在线支付，逾期将视为订单无效
-        </div>
-        <div class="odernum clearfloat">
-            <ul>
-                <li>您的订单号：@ViewData["OrdersId"]
-                    <input type="hidden" id="OrdersId" value="@ViewData["OrdersId"]" name="OrdersId" />
+        <header class="mui-bar mui-bar-nav report-header box-s" id="header">
+            <a href="javascript:history.go(-1)"><i class="iconfont icon-fanhui fl"></i></a>
+            <p>确认支付</p>
+        </header>
+        <div id="main" class="mui-clearfix contaniner sorder">
+            <div class="warning clearfloat box-s">
+                @ViewData["msg"] 
+            </div>
+            <div class="odernum clearfloat">
+                <ul>
+                    <li>
+                        您的订单号：@ViewData["OrdersId"]
+                        <input type="hidden" id="OrdersId" value="@ViewData["OrdersId"]" name="OrdersId" />
+                    </li>
+                    <li>
+                        应付价格：<span>
+                            @ViewData["PayTotal"]
+                        <input type="hidden" value="@ViewData["PayTotal"]" name="PayTotal" />
+                    </span>
                 </li>
-                <li>应付价格：<span>@ViewData["PayTotal"]
-                             <input type="hidden" value="@ViewData["PayTotal"]" name="PayTotal" /> </span></li>
             </ul>
         </div>
         @*<div class="odernum clearfloat">
-            <ul>          
-                <li><input type="text" name="DetailedAddress" id="DetailedAddress" placeholder="请输入地址" style="width:50%"></li>
-            </ul>
-        </div>
-        <div class="odernum clearfloat">
-            <ul>
-                <li><input type="text" name="ConsigneeName" id="ConsigneeName" placeholder="联系人姓名" style="width:50%"></li>
-            </ul>
-        </div>*@
+                <ul>
+                    <li><input type="text" name="DetailedAddress" id="DetailedAddress" placeholder="请输入地址" style="width:50%"></li>
+                </ul>
+            </div>
+            <div class="odernum clearfloat">
+                <ul>
+                    <li><input type="text" name="ConsigneeName" id="ConsigneeName" placeholder="联系人姓名" style="width:50%"></li>
+                </ul>
+            </div>*@
         <div class="odernum clearfloat">
             <div class="pro_kc">
                 <dl class="yanse">
@@ -137,15 +150,21 @@
                         详细地址：
                     </dt>
                     <dd>
-                        <input type="text" name="ConsigneAaddress" id="ConsigneAaddress" />
-                    </dd>                    
+                        <input type="text" name="DetailedAddress" id="DetailedAddress" />
+                    </dd>
+                    <dt>
+                        备注：
+                    </dt>
+                    <dd>
+                        <input type="text" name="Remark" id="Remark" />
+                    </dd>
                 </dl>
                 <dl id="_address" class="yanse" style="display: none;"></dl>
             </div>
 
         </div>
         <button type="submit" class="address-add f">确认支付</button>
-        </div>
-}
+    </div>
+    }
 </body>
 </html>

@@ -34,7 +34,15 @@ namespace Factory
             }
         }
 
-        //查询数据
+       
+        /// <summary>
+        /// 查询数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="Server"></param>
+        /// <param name="strSql"></param>
+        /// <param name="Parameters"></param>
+        /// <returns></returns>
         public static List<T> Query<T>(string Server, string strSql, DynamicParameters Parameters)
         {
             return Obj.Query<T>(Server, strSql, Parameters);
@@ -46,7 +54,14 @@ namespace Factory
             return Obj.QueryTable(Server, strSql, Parameters);
         }
        
-        //Server实现数据库读写分离 拆分库
+       
+        /// <summary>
+        ///  Server实现数据库读写分离 拆分库
+        /// </summary>
+        /// <param name="Server"></param>
+        /// <param name="strSql"></param>
+        /// <param name="Parameters"></param>
+        /// <returns></returns>
         public static bool ExecSQL(string Server, string strSql, DynamicParameters Parameters)
         {
             return Obj.ExecSQL(Server, strSql, Parameters);
@@ -72,7 +87,14 @@ namespace Factory
         {
             return Obj.ExecuteSQLBatch(Server, strSql, list);
         }
-        // 事务执行SQL
+        
+        /// <summary>
+        ///  事务执行SQL
+        /// </summary>
+        /// <param name="Server"></param>
+        /// <param name="StrSQL"></param>
+        /// <param name="Parameters"></param>
+        /// <returns></returns>
         public static bool ExecTranSQL(string Server, string StrSQL, DynamicParameters Parameters)
         {
             return Obj.ExecTranSQL(Server, StrSQL, Parameters);

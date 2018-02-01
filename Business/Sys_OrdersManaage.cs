@@ -35,7 +35,7 @@ namespace Business
             }
             strSql.Append(")T where t.rn between   @offset and (@offset+9)");
             return Factory.DBHelper.Query<Model.Orders>(SQLConString, strSql.ToString(), new DynamicParameters(new { offset }));
-        
+
         }
 
         /// <summary>
@@ -62,11 +62,11 @@ namespace Business
         /// </summary>
         /// <param name="Ordersid"></param>
         /// <returns></returns>
-        public Model.Orders GetOrdersInfoByOrdersId(string OrderId) 
+        public Model.Orders GetOrdersInfoByOrdersId(string OrderId)
         {
             const string sql =
 @"SELECT * FROM  Orders WHERE OrderId=@OrderId";
-            List<Model.Orders>  OrdersList= Factory.DBHelper.Query<Model.Orders>(SQLConString, sql.ToString(), new DynamicParameters(new { OrderId }));
+            List<Model.Orders> OrdersList = Factory.DBHelper.Query<Model.Orders>(SQLConString, sql.ToString(), new DynamicParameters(new { OrderId }));
             return OrdersList.Count() > 0 ? OrdersList[0] : null;
         }
 
@@ -129,16 +129,16 @@ namespace Business
         }
 
 
-        public int GetPayOrdersSum(string OrdersId) 
+        public int GetPayOrdersSum(string OrdersId)
         {
             const string sql =
 @"SELECT SUM(OrdersDetails.SellingNum) as id FROM OrdersDetails   WHERE OrderId=@OrdersId ";
             List<Model.OrdersDetails> OrdersDetails = Factory.DBHelper.Query<Model.OrdersDetails>(SQLConString, sql.ToString(), new DynamicParameters(new { OrdersId }));
-            return OrdersDetails.Count()>0?OrdersDetails[0].id:0;
-        
+            return OrdersDetails.Count() > 0 ? OrdersDetails[0].id : 0;
+
         }
 
-        public bool AddInfo(string OrdersID, string DetailedAddress, string ConsigneeName, string ConsigneePhone) 
+        public bool AddInfo(string OrdersID, string DetailedAddress, string ConsigneeName, string ConsigneePhone)
         {
             const string sql =
 @"UPDATE  ORDERS SET ConsigneeName=@ConsigneeName,ConsigneePhone=@ConsigneePhone,ConsigneAaddress=@DetailedAddress WHERE OrderId=@OrdersID";
@@ -181,7 +181,7 @@ namespace Business
                 OrdersState
             }));
 
-            int OrdersInfoSum =  GetPayOrdersSum(OrdersId);
+            int OrdersInfoSum = GetPayOrdersSum(OrdersId);
             string sql = @"UPDATE Flower set FlowerStock=FlowerStock-" + OrdersInfoSum + "  WHERE OrderId=@OrdersId ";
             Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
             {
@@ -228,11 +228,11 @@ LogisticsNumber=@LogisticsNumber,OrderDelivery=getdate()  where OrderId=@OrdersI
         /// <param name="OrdersId"></param>
         /// <param name="OrderState"></param>
         /// <returns></returns>
-        public bool SetOrderState(string OrdersId,string OrderState) 
+        public bool SetOrderState(string OrdersId, string OrderState)
         {
             const string sql =
 @"UPDATE  ORDERS SET OrdersState=@OrderState  WHERE OrderId=@OrdersId";
-            return  Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
+            return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
             {
                 OrderState,
                 OrdersId,
@@ -244,21 +244,21 @@ LogisticsNumber=@LogisticsNumber,OrderDelivery=getdate()  where OrderId=@OrdersI
         /// </summary>
         /// <param name="OrdersLog"></param>
         /// <returns></returns>
-        public bool InsertOrderLog(Model.OrdersLog OrdersLog) 
+        public bool InsertOrderLog(Model.OrdersLog OrdersLog)
         {
             const string sql =
 @"INSERT INTO OrdersLog(OrdersId,UserName,OrdersState,Remark) VALUES(@OrdersId,@UserName,@OrdersState,@Remark)";
             return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
             {
-               OrdersLog.OrdersId,
-               OrdersLog.UserName,
-               OrdersLog.OrdersState,
-               OrdersLog.Remark,
+                OrdersLog.OrdersId,
+                OrdersLog.UserName,
+                OrdersLog.OrdersState,
+                OrdersLog.Remark,
             }));
         }
 
         /// <summary>
-        /// 事务下订单
+        /// 非事务订单
         /// </summary>
         /// <returns></returns>
         public bool InsertOrders(Model.Orders orders, List<Model.OrdersDetails> ordersDetailList, Model.OrdersLog ordersLog)
@@ -288,8 +288,9 @@ LogisticsNumber=@LogisticsNumber,OrderDelivery=getdate()  where OrderId=@OrdersI
                 ordersLog.UserName,
                 ordersLog.OrdersState,
                 ordersLog.Remark,
-               
+
             }));
+            //           
             foreach (Model.OrdersDetails item in ordersDetailList)
             {
                 const string OrdersDetail = @"insert into OrdersDetails(OrderId,FlowerWatchName,FlowerWatchPhoto,FlowerNumber,
@@ -308,11 +309,134 @@ LogisticsNumber=@LogisticsNumber,OrderDelivery=getdate()  where OrderId=@OrdersI
                     item.SellingNum,
 
                 }));
-            
+
             }
+
             return true;
+
         }
 
+        /// <summary>
+        /// 事务批量执行SQL语句
+        /// </summary>
+        /// <param name="SQLList">SQL集合</param>
+        /// <param name="SqlParameterList">参数集合</param>
+        /// <returns></returns>
+        public bool TransactionAddOrders(Model.Orders orders, List<Model.OrdersDetails> ordersDetailList, Model.OrdersLog ordersLog)
+        {
+            using (SqlConnection conn = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["SQLConString"]))
+            {
+                conn.Open();                
+                SqlTransaction tr = conn.BeginTransaction();//声明事务
+                SqlCommand comm = new SqlCommand();
+                comm.Connection = conn;
+                //指定给SqlCommand事务
+                comm.Transaction = tr;
+                try
+                {
+                    #region order
+                    //遍历Hashtable数据，每次遍历执行SqlCommand
+                    const string sql =
+@"insert into Orders (OrderId,SellingPrice,CostPrice,profit,UsersId,ConsigneeName,ConsigneePhone,ConsigneAaddress,OrdersState,GoodsSum) 
+ values(@OrderId,@SellingPrice,@CostPrice,@profit,@UsersId,@ConsigneeName,@ConsigneePhone,@ConsigneAaddress,@OrdersState,@GoodsSum)";
+                    string cmdText = sql;
+                    SqlParameter[] pars = new SqlParameter[]{  
+                            new SqlParameter("@OrderId",orders.OrderId),
+                            new SqlParameter("@SellingPrice", orders.SellingPrice),
+                            new SqlParameter("@CostPrice",orders.CostPrice),
+                            new SqlParameter("@profit", orders.profit),
+                            new SqlParameter("@UsersId",orders.UsersId),
+                            new SqlParameter("@ConsigneeName", orders.ConsigneeName),
+                            new SqlParameter("@ConsigneePhone",orders.ConsigneePhone),
+                            new SqlParameter("@ConsigneAaddress", orders.ConsigneAaddress),                          
+                            new SqlParameter("@OrdersState",orders.OrdersState),
+                            new SqlParameter("@GoodsSum", orders.GoodsSum),  
+                        };
+                    //指定执行语句
+                    comm.CommandText = cmdText;
+
+                    //有参数则进行添加
+                    if (pars != null)
+                    {
+                        comm.Parameters.AddRange(pars);
+                    }
+                    //执行
+                    comm.ExecuteNonQuery();
+                    //使用后清空参数，为下次使用
+                    comm.Parameters.Clear();
+                    #endregion
+
+                    #region OrdersLog
+                    //遍历Hashtable数据，每次遍历执行SqlCommand
+                    const string OrdersLog =
+@"insert into OrdersLog(OrdersId,UserName,OrdersState,Remark)  values(@OrdersId,@UserName,@OrdersState,@Remark)";
+
+                    SqlParameter[] parsl = new SqlParameter[]{  
+                            new SqlParameter("@OrdersId",ordersLog.OrdersId),
+                            new SqlParameter("@UserName", ordersLog.UserName),                                                  
+                            new SqlParameter("@OrdersState",ordersLog.OrdersState),
+                            new SqlParameter("@Remark", ordersLog.Remark),  
+                        };
+                    //指定执行语句
+                    comm.CommandText = OrdersLog;
+
+                    //有参数则进行添加
+                    if (parsl != null)
+                    {
+                        comm.Parameters.AddRange(parsl);
+                    }
+                    //执行
+                    comm.ExecuteNonQuery();
+                    //使用后清空参数，为下次使用
+                    comm.Parameters.Clear();
+                    #endregion
+
+                    #region detail
+                    foreach (Model.OrdersDetails item in ordersDetailList)
+                    {
+                        const string OrdersDetail = @"insert into OrdersDetails(OrderId,FlowerWatchName,FlowerWatchPhoto,FlowerNumber,
+                                         SellingPrice,CostPrice,profit,SellingNum) 
+                                         values(@OrderId,@FlowerWatchName,@FlowerWatchPhoto,@FlowerNumber,@SellingPrice,
+                                         @CostPrice,@profit,@SellingNum)";
+                        SqlParameter[] parsd = new SqlParameter[]{  
+                            new SqlParameter("@OrderId",item.OrderId),
+                            new SqlParameter("@FlowerWatchName", item.FlowerWatchName),
+                            new SqlParameter("@FlowerWatchPhoto",item.FlowerWatchPhoto),
+                            new SqlParameter("@SellingPrice", item.SellingPrice),
+                            new SqlParameter("@FlowerNumber",item.FlowerNumber==null ? "":item.FlowerNumber),
+                            new SqlParameter("@CostPrice", item.CostPrice),
+                            new SqlParameter("@profit",item.profit),
+                            new SqlParameter("@SellingNum", item.SellingNum),  
+                        };
+
+                        //指定执行语句
+                        comm.CommandText = OrdersDetail;
+                        //有参数则进行添加
+                        if (pars != null)
+                        {
+                            foreach (SqlParameter par in parsd)
+                            {
+                                comm.Parameters.Add(par);
+                            }
+                        }
+                        //执行
+                        comm.ExecuteNonQuery();
+                        //使用后清空参数，为下次使用
+                        comm.Parameters.Clear();
+                    }
+                    #endregion
+                    //不出意外事务提前，返回True
+                    tr.Commit();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    //出意外事务回滚，返回Fasle
+                    tr.Rollback();
+                    return false;
+                }
+            }
+        }
 
 
         /// <summary>

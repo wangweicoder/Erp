@@ -42,8 +42,8 @@
             var id = $(this).closest("div.productbox").find('#Id').val();
             layer.open({
                 content: '您确定将此商品移出购物车吗？'
-             , btn: ['取消', '确定']
-             , no: function (index) {
+             , btn: ['确定','取消']
+             ,yes : function (index) {
                  var num = 1;
                  $.ajax({
                      url: '/BuyCart/RemoveFromCart?id=' + id,
@@ -60,7 +60,8 @@
                   , skin: 'msg'
                   , time: 2 //2秒后自动关闭
                  });
-             }, yes: function (index) {
+             }, 
+             no: function (index) {
                  layer.close(index);
              }
             });
@@ -186,7 +187,8 @@
                 }
             });
             flowernums=flowernums.substring(0,flowernums.length-1);
-            location.href="/Shop/PayCartOrders?ids="+account+"&FlowerNums="+flowernums;
+            location.href="/Shop/PayOrders?ids="+account+"&FlowerNums="+flowernums
+                +"&goodnum="+$("#totalpkg").text();
         }
         else{
             layer.open({
