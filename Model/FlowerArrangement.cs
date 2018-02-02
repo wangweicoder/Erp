@@ -86,7 +86,7 @@ namespace Model
         /// </summary>
         public string XiXin { set; get; }
         /// <summary>
-        /// 习性s
+        /// 养护方法
         /// </summary>
         public string YangHuFangFa { set; get; }
         /// <summary>

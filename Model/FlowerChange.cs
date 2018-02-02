@@ -92,6 +92,10 @@ namespace Model
         /// 备注
         /// </summary>
         public string Reamrk { set; get; }
+        /// <summary>
+        /// 账号
+        /// </summary>
+        public string UserName { set; get; }
 
         /// <summary>
         /// 状态  

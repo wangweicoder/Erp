@@ -71,6 +71,19 @@ namespace Business
             return FlowerArrangementList.Count() > 0 ? FlowerArrangementList[0] : null;
         }
 
+        /// <summary>
+        /// 查询养护时间
+        /// </summary>
+        /// <param name="belongUsersId">所属用户id</param>
+        /// <author>wangwei</author>
+        /// <returns></returns>
+        public Model.FlowerTreatment GetFlowerTreatmentModel(string belongUsersId) 
+        {
+            const string sql =
+            @"SELECT  max([time]) as time FROM [FlowerTreatment] where OwnedUsersId=@belongUsersId";
+            List<Model.FlowerTreatment> FlowerTreatmentList = Factory.DBHelper.Query<Model.FlowerTreatment>(SQLConString, sql.ToString(), new DynamicParameters(new { belongUsersId }));
+            return FlowerTreatmentList.Count() > 0 ? FlowerTreatmentList[0] : null;
+        }
 
         public int Add(Model.FlowerArrangement FlowerArrangement)
         {

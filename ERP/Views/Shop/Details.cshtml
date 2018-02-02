@@ -97,16 +97,26 @@
             $(".add").click(function () {
                 var n = $(this).prev().val();
                 var num = parseInt(n) + 1;
-                if (num == 0) { return; }
+                if (num <= 0) {
+                    num = 1;
+                    //return;
+                }
                 $(this).prev().val(num);
             });
             //减的效果
             $(".jian").click(function () {
                 var n = $(this).next().val();
                 var num = parseInt(n) - 1;
-                if (num == 0) { return }
+                if (num <= 0) {
+                    num = 1;
+                    //return;
+                }
                 $(this).next().val(num);
             });
+            //图片正方形
+            var width = $(".pro_img_box li img").width();
+            $(".pro_img_box li img").height(width);
+            
         })
     </script>
 
@@ -368,30 +378,30 @@
                   if (ConsigneeName == '' || ConsigneeName == null) {
                       layer.open({
                           content: '收货人姓名不能为空'
-         , skin: 'msg'
-         , time: 2 //2秒后自动关闭
+                     , skin: 'msg'
+                     , time: 2 //2秒后自动关闭
                       });
                       return false;
                   }
                   if (ConsigneePhone == '' || ConsigneePhone == null) {
                       layer.open({
                           content: '收货人电话不能为空'
-         , skin: 'msg'
-         , time: 2 //2秒后自动关闭
+                         , skin: 'msg'
+                         , time: 2 //2秒后自动关闭
                       }); return false;
                   }
                   if (ConsigneAaddress == '' || ConsigneeName == null) {
                       layer.open({
                           content: '收货人地址不能为空'
-         , skin: 'msg'
-         , time: 2 //2秒后自动关闭
+                         , skin: 'msg'
+                         , time: 2 //2秒后自动关闭
                       }); return false;
                   }
-                  if (num == '' || num == null || num == 0) {
+                  if (num == '' || num == null || num <= 0) {
                       layer.open({
                           content: '购买数量必须大于1'
-         , skin: 'msg'
-         , time: 2 //2秒后自动关闭
+                        , skin: 'msg'
+                        , time: 2 //2秒后自动关闭
                       }); return false;
                   }
                   $("#fromInfo").submit();

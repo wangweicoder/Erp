@@ -19,6 +19,10 @@ namespace ERP.MobleControllers
                 string id = Request["ArrangementId"];
                 Business.Sys_FlowerArrangement Sys_FlowerArrangement = new Business.Sys_FlowerArrangement();
                 Model.FlowerArrangement  FlowerArrangement=Sys_FlowerArrangement.GetModel(id);
+                if (FlowerArrangement.belongUsersId != 0)
+                {
+                 ViewBag.Treattime= Sys_FlowerArrangement.GetFlowerTreatmentModel(FlowerArrangement.belongUsersId.ToString()).time;
+                }
                 if (Session["RoleCode"] != null && Session["RoleCode"].ToString() == "Tourist")
                 {
                     ViewData["IsTourist"] = 1;
@@ -60,7 +64,7 @@ namespace ERP.MobleControllers
             }
             catch (Exception ex)
             {
-                 Utility.Log.WriteTextLog("test2222", "", "", "", ex.ToString());
+                Utility.Log.WriteTextLog("扫码页面", "MMain",ex.Message, "GetArrangementInfo", ex.ToString());
                  return null;
             }
            

@@ -23,12 +23,13 @@ namespace Business
         public List<Model.FlowerChange> GetList(int limit, int offset, string StrWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("SELECT * FROM ( SELECT ROW_NUMBER() over(order by id desc) as rn ,* FROM FlowerChange");
+            strSql.Append("SELECT u.UserName,T.* FROM ( SELECT ROW_NUMBER() over(order by id desc) as rn ,* FROM FlowerChange");
             if (!string.IsNullOrEmpty(StrWhere))
             {
                 strSql.Append(" where  1=1 " + StrWhere);
             }
-            strSql.Append(")T where t.rn between   @offset and (@offset+9)");
+            strSql.Append(")T inner join [dbo].[UserAdmin] u on u.ID=T.UsersId");
+            strSql.Append(" where T.rn between   @offset and (@offset+9)");
             return Factory.DBHelper.Query<Model.FlowerChange>(SQLConString, strSql.ToString(), new DynamicParameters(new { offset }));
         }
 

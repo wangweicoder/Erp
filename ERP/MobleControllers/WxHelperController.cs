@@ -32,6 +32,8 @@ namespace ERP.MobleControllers
                     Session["RoleCode"] = UserAdmin.RoleCode;
                     if (Request["way"] == "Arrangement")
                     {
+                        string gzhurl = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=" + System.Configuration.ConfigurationManager.AppSettings["WxAppId"] + "&scene=110#wechat_redirect";
+                        Utility.PostData.GetData(gzhurl);
                         return RedirectToAction("GetArrangementInfo", "MMain", new { ArrangementId =Request["id"]});
                     }
                     else
@@ -42,6 +44,8 @@ namespace ERP.MobleControllers
                 }
                 else if (Request["way"] == "Arrangement" )
                 {
+                    string gzhurl = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=" + System.Configuration.ConfigurationManager.AppSettings["WxAppId"] + "&scene=110#wechat_redirect";
+                    Utility.PostData.GetData(gzhurl);//自动关注公众号
                     if (UserAdmin == null )
                     {
                         System.Random Random = new System.Random();
