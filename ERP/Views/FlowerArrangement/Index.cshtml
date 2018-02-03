@@ -282,6 +282,36 @@
                 }, function () {
                 });
             });
+            //导出二维码            
+            $("#btn_ByOrcode").click(function () {
+                var ids ="";
+                var rows = $("#tb_departments").bootstrapTable('getSelections');
+                for (var i = 0; i < rows.length; i++) {
+                    ids += rows[i].id + ",";
+                }
+                ids = ids.substring(0, ids.length - 1);               
+                var arrangement = $("#arrangement").val();
+                var belongUsersId = $("#belongUsersId").val();
+                $.ajax({
+                    url: '/FlowerArrangement/DownloadOrCode?ids=' + ids + '&limit=9000&offset=1&arrangement=' + arrangement + '&belongUsersId=' + belongUsersId,
+                    async: true,
+                    success: function (data) {
+                        if (data == "1") {
+                            parent.layer.open({
+                                type: 0,
+                                title: '提示',
+                                shadeClose: true,
+                                shade: 0.8,
+                                //area: ['630px;', '500px;'],
+                                content: '导出成功'
+                            });
+                        }
+                    },
+                    error: function (data) {
+
+                    }
+                })
+            });
         })
     </script>
 </body>

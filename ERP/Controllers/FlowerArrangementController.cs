@@ -313,6 +313,58 @@ namespace ERP.Controllers
             Utility.Excel.ExplorerExcel(dt,list);
         }
         /// <summary>
+        /// 导出二维码
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <param name="limit"></param>
+        /// <param name="offset"></param>
+        /// <param name="arrangement"></param>
+        /// <param name="belongUsersId"></param>
+        public string DownloadOrCode(string ids, int limit, int offset, string arrangement, int belongUsersId)
+        {
+            Business.Sys_FlowerArrangement Sys_FlowerArrangement = new Business.Sys_FlowerArrangement();
+            StringBuilder sb = new StringBuilder();
+            if (!string.IsNullOrEmpty(ids))
+            {
+                sb.Append(" and f1.Id  in(" + ids + ")");
+            }
+            if (!string.IsNullOrEmpty(arrangement))
+            {
+                sb.Append(" and arrangement  like '%" + arrangement + "%'");
+
+            }
+            if (belongUsersId.ToString() != "0")
+            {
+                sb.Append(" and belongUsersId  = '" + belongUsersId + "'");
+            }
+            List<Model.FlowerArrangement> flist = Sys_FlowerArrangement.GetList(limit, offset, sb.ToString());
+            try
+            {
+                for (int i = 0; i < flist.Count; i++)
+                {
+                    string path = flist[i].ImgORCodePath;
+                    int index = path.IndexOf(".");
+                    string exc = path.Substring(index, path.Length - index);
+                    string filename = flist[i].OwnedCompany + flist[i].arrangement + flist[i].FlowerWatchName + exc;//获得图片的真实名字
+                    string dir = Server.MapPath("/Upload/OrCodepic");
+                    string targetPath = dir + "/"+filename;
+                    if (!System.IO.Directory.Exists(dir))
+                    { // 目录不存在，建立目录  
+                        System.IO.Directory.CreateDirectory(dir);
+                    }
+                    string abpath = Server.MapPath("~") + path;
+                    System.IO.File.Copy(abpath, targetPath,true);
+                }
+                return "1";
+            }
+            catch (Exception ex)
+            {
+                return "0";
+            }
+        }
+
+
+        /// <summary>
         /// 导入Excel文件
         /// </summary>
         /// <param name="files"></param>
