@@ -202,7 +202,7 @@ namespace ERP.Controllers
                 FlowerChange.UsersId = Utility.ChangeText.GetUsersId();
                 FlowerChange.Photo = FilePath;
                 FlowerChange.Number = Utility.ChangeText.OrderIdCreate();
-                FlowerChange.State = "已更换";
+                FlowerChange.State = "未更换";
 
 
                 FlowerChange.FlowerType = FlowerArrangement.FlowerType;

@@ -135,7 +135,7 @@
                         <span class="list_img">
                             @if (string.IsNullOrEmpty(item.ChangePhoto))
                             {
-                                <a href="/MFlower/AddFlowersPhotoInfo?Number=@item.id"></a>
+                                <a href="/MFlower/AddFlowersPhotoInfo?Number=@item.id">上传新植物</a>
                             }
                             else
                             {
@@ -146,7 +146,7 @@
                     </td>
                     <td>
                         <span class="gh">
-                            <strong>更换人: @item.UserName</strong>
+                            <strong>提交人: @item.UserName</strong>
                              <em>更换内容: @item.ContentMsg <br />
                              所属公司: @item.OwnedCompany <br /> 
                             位置: @item.PlacingPosition <br /> 
