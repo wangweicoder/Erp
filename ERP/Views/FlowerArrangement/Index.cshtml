@@ -296,16 +296,26 @@
                     url: '/FlowerArrangement/DownloadOrCode?ids=' + ids + '&limit=9000&offset=1&arrangement=' + arrangement + '&belongUsersId=' + belongUsersId,
                     async: true,
                     success: function (data) {
-                        if (data == "1") {
+                        if (data.code == "1") {
                             parent.layer.open({
                                 type: 0,
                                 title: '提示',
                                 shadeClose: true,
                                 shade: 0.8,
                                 //area: ['630px;', '500px;'],
-                                content: '导出成功'
+                                content: '导出成功至'+data.msg
                             });
                         }
+                        else {
+                            parent.layer.open({
+                                type: 0,
+                                title: '提示',
+                                shadeClose: true,
+                                shade: 0.8,
+                                //area: ['630px;', '500px;'],
+                                content: '导出失败'+data.msg
+                            });
+                             }
                     },
                     error: function (data) {
 

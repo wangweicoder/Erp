@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -320,7 +321,7 @@ namespace ERP.Controllers
         /// <param name="offset"></param>
         /// <param name="arrangement"></param>
         /// <param name="belongUsersId"></param>
-        public string DownloadOrCode(string ids, int limit, int offset, string arrangement, int belongUsersId)
+        public ActionResult DownloadOrCode(string ids, int limit, int offset, string arrangement, int belongUsersId)
         {
             Business.Sys_FlowerArrangement Sys_FlowerArrangement = new Business.Sys_FlowerArrangement();
             StringBuilder sb = new StringBuilder();
@@ -340,30 +341,161 @@ namespace ERP.Controllers
             List<Model.FlowerArrangement> flist = Sys_FlowerArrangement.GetList(limit, offset, sb.ToString());
             try
             {
-                for (int i = 0; i < flist.Count; i++)
+                Task task = new Task(()=> CreateImg(flist));
+                task.Start();
+                while (!task.IsCompleted)
                 {
-                    string path = flist[i].ImgORCodePath;
-                    int index = path.IndexOf(".");
-                    string exc = path.Substring(index, path.Length - index);
-                    string filename = flist[i].OwnedCompany + flist[i].arrangement + flist[i].FlowerWatchName + exc;//获得图片的真实名字
-                    string dir = Server.MapPath("/Upload/OrCodepic");
-                    string targetPath = dir + "/"+filename;
-                    if (!System.IO.Directory.Exists(dir))
-                    { // 目录不存在，建立目录  
-                        System.IO.Directory.CreateDirectory(dir);
-                    }
-                    string abpath = Server.MapPath("~") + path;
-                    System.IO.File.Copy(abpath, targetPath,true);
+                    task.Wait();
                 }
-                return "1";
+                string weburl=System.Configuration.ConfigurationManager.AppSettings["WebImgUrl"];
+                string localurl = System.Configuration.ConfigurationManager.AppSettings["localurl"];
+                if (task.Status == TaskStatus.RanToCompletion)
+                {
+                    string dir = Server.MapPath("/Upload/OrCodepic");                   
+                    DirectoryInfo theFolder = new DirectoryInfo(dir);
+                    //获得文件列表并按时间倒序
+                    var fileInfo = theFolder.GetFiles().OrderByDescending(x => x.CreationTime);
+                    foreach (FileInfo NextFile in fileInfo)  //遍历文件
+                    {
+                        DownloadOneFileByURLWithWebClient(NextFile.Name, weburl, localurl);
+                    }
+                }
+                return Json(new {code="1",msg=localurl },JsonRequestBehavior.AllowGet);
+                //return File(filePath, "text/plain", "demo.zip"); //客户端保存的名字
             }
             catch (Exception ex)
             {
-                return "0";
+                return Json(new { code = "0", msg = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+        
+        /// <summary>
+        /// 保存图片文件
+        /// </summary>
+        /// <param name="flist"></param>
+        private void CreateImg(List<Model.FlowerArrangement> flist)
+        {
+            for (int i = 0; i < flist.Count; i++)
+            {
+                string path = flist[i].ImgORCodePath;
+                int index = path.IndexOf(".");
+                string exc = path.Substring(index, path.Length - index);
+                string filename = flist[i].OwnedCompany + flist[i].arrangement + flist[i].FlowerWatchName + exc;//获得图片的真实名字
+                string dir = Server.MapPath("/Upload/OrCodepic");
+                string targetPath = dir + "/" + filename;
+                if (!System.IO.Directory.Exists(dir))
+                { // 目录不存在，建立目录  
+                    System.IO.Directory.CreateDirectory(dir);
+                }
+                string abpath = Server.MapPath("~") + path;
+                System.IO.File.Copy(abpath, targetPath, true);
+            }
 
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="url"></param>
+        /// <param name="localPath"></param> 
+        public  static  void  DownloadOneFileByURLWithWebClient(string  fileName,  string  url,  string  localPath)
+        {
+            System.Net.WebClient wc  =   new  System.Net.WebClient();   
+             if (System.IO.File.Exists(localPath  +  fileName))
+             {
+                 System.IO.File.Delete(localPath  +  fileName);
+             }
+             if  (Directory.Exists(localPath)  ==   false )  
+             { 
+                 Directory.CreateDirectory(localPath);
+             }
+             wc.DownloadFile(url  +  fileName, localPath  +  fileName);
+         }
 
+         //public string zip() 
+         //{
+         //    //每次下载的时候都会把文件放到这个文件夹下然后前台通过这个地址进行下载，所以我每次都会删除上次导出时候创建的文件夹，然后在重新创建，这样做的效果就是这个文件夹里永远只有一个最新的文件；
+         //    //这里放的是jpeg格式的图片，因为我从服务器上获取的不是jpeg的文件，是dicm的文件，我需要把这个dicm文件转换成jpeg转换成之后，我需要临时存放到这个文件夹里面以备后面压缩。
+         //    string weburl = "d:\\webtupian";
+         //    if (Directory.Exists(weburl))
+         //    {
+         //        DirectoryInfo direct = new DirectoryInfo(weburl);
+         //        direct.Delete(true);
+         //    }
+         //    //这个是压缩包zip存放的地方
+         //    string lurl = HttpContext.Server.MapPath("../linshi");
+         //    if (Directory.Exists(lurl))
+         //    {
+         //        DirectoryInfo direct1 = new DirectoryInfo(lurl);
+         //        direct1.Delete(true);
+         //    }
+         //    string modality = "";
+         //    if (request.Params["modality"] != null && request.Params["modality"].ToString() != "")
+         //    {
+         //        modality = request.Params["modality"].ToString();
+         //    }
+         //    //获取特定的数据集信息
+         //    DataSet ds = dall.getimgdaochu(where, modality);
+         //    StringBuilder html = new StringBuilder();
+
+         //    string zipedFile = string.Empty;
+         //    List<Byte[]> lstFI = new List<Byte[]>();
+         //    List<string> listimage = new List<string>();
+         //    byte[] img = null;
+         //    if (ds != null && ds.Tables[0].Rows.Count > 0)
+         //    {
+         //        int i = 1;
+         //        foreach (DataRow row in ds.Tables[0].Rows)
+         //        {
+         //            context.Response.ClearContent();
+         //            string dcm_path = row["REFERENCE_FILE"].ToString();//这是dicm文件的地址
+         //            string share_ip = SYS_APP_CONFIG.GetAppConfigValue("dcm_share_ip");//这是服务器的ip地址
+         //            zipedFile = row["PATIENT_ID"].ToString();//这是数据的编号。
+         //            string tuname = row["PATIENT_NAME"].ToString();//这是当前这个数据人的名字
+         //            img = DicomUtility.GetJpegFromDcm(dcm_path, System.Drawing.Imaging.ImageFormat.Jpeg);//这是通过dicm文件的地址和ip什么的，把dicm文件转换成图片格式的byte字节。
+         //            Image imgg = BytToImg(img);//这是通过byte字节获取jpeg的图片
+         //            zipname = tupian_url + tuname + i.ToString() + "张";//压缩zip的名字
+         //            url = "d:\\webtupian";
+         //            if (!Directory.Exists(url))
+         //            {
+         //                Directory.CreateDirectory("d:\\webtupian");//创建新路径
+         //            }
+         //            string name = tuname + i.ToString();
+         //            imgg.Save("d:\\webtupian" + "/" + name + ".jpeg");//图片保存
+         //            listimage.Add("d:\\webtupian" + "/" + name + ".jpeg");//把当前图片保存的路径保存起来，用于后面的zip通过路径压缩文件。
+         //            i++;
+         //            imgg.Dispose();
+         //        }
+         //        //压缩成zip，需要下载ionic的dll然后引用。
+         //        //zipname这个是zip的名字
+         //        using (Ionic.Zip.ZipFile zip = new Ionic.Zip.ZipFile(zipname, Encoding.Default))
+         //        {
+         //            foreach (string fileToZip in listimage)
+         //            {
+         //                using (FileStream fs = new FileStream(fileToZip, FileMode.Open, FileAccess.ReadWrite))//根据路径把文件转换成文件流
+         //                {
+         //                    byte[] buffer = new byte[fs.Length];//把文件流转换成byte字节
+         //                    fs.Read(buffer, 0, buffer.Length);
+         //                    string fileName = fileToZip.Substring(fileToZip.LastIndexOf("\\") + 1);
+         //                    zip.AddEntry(fileName, buffer);
+         //                }
+         //            }
+         //            if (!Directory.Exists(HttpContext.Current.Server.MapPath("../linshi")))
+         //            {
+         //                Directory.CreateDirectory(HttpContext.Current.Server.MapPath("../linshi"));//创建新路径
+         //            }
+         //            zip.Save(HttpContext.Current.Server.MapPath("../linshi/" + zipname + ".zip"));
+         //        }
+         //        //为了防止乱码，把数据封装了一下，到前台用unescape()解析就可以了。
+         //        return Microsoft.JScript.GlobalObject.escape(zipname + "1");//返回zip的名字和拼接的字符串1,1是代表有数据可以导出
+         //    }
+         //    else
+         //    {
+         //        return "当前该人员没有图片可供导出。2";
+         //    }
+         
+         //}
         /// <summary>
         /// 导入Excel文件
         /// </summary>
