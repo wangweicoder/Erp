@@ -76,7 +76,7 @@ var TableInit = function () {
                 field: 'FlowerTreatmentAddress',
                 title: '养护地址'
             }, {
-                field: 'OwnedUsersRealName',
+                field: 'OwnedCompany',
                 title: '养护所属客户名称'
             }
             , {

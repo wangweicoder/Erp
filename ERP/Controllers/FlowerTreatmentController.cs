@@ -14,8 +14,32 @@ namespace ERP.Controllers
         // GET: /FlowerTreatment/
         public ActionResult Index()
         {
-            ViewData["SelectItem"] = GetFlowerTreatmentName();
+            ViewData["SelectItem"] = GetOwnedCompanyList();
             return View();
+        }
+        /// <summary>
+        /// 获得公司名称
+        /// </summary>
+        /// <returns></returns>
+        public List<SelectListItem> GetOwnedCompanyList()
+        {
+            Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
+            List<Model.UserAdmin> UserAdminList = Sys_UserAdmin.GetAdminInfoList("Customer");
+            List<SelectListItem> hourList = new List<SelectListItem>();
+            SelectListItem item = new SelectListItem();
+            item.Text = "-请选择-";
+            item.Value = "";
+            item.Selected = true;
+            hourList.Add(item);
+            foreach (Model.UserAdmin d in UserAdminList)
+            {
+                item = new SelectListItem();
+                item.Text = d.OwnedCompany;
+                item.Value = d.ID.ToString();
+                item.Selected = false;
+                hourList.Add(item);
+            }           
+            return hourList;
         }
         public List<SelectListItem> GetFlowerTreatmentName()
         {

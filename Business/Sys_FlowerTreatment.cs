@@ -21,12 +21,12 @@ namespace Business
         public List<Model.FlowerTreatment> FlowerTreatmentList(int limit, int offset, string StrWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("SELECT * FROM ( SELECT ROW_NUMBER() over(order by id desc) as rn ,* FROM FlowerTreatment");
+            strSql.Append("SELECT u.OwnedCompany,* FROM ( SELECT ROW_NUMBER() over(order by id desc) as rn ,* FROM FlowerTreatment");
             if (!string.IsNullOrEmpty(StrWhere))
             {
                 strSql.Append(" where  1=1 " + StrWhere);
             }
-            strSql.Append(")T where t.rn between   @offset and (@offset+9)");
+            strSql.Append(")T inner join [dbo].[UserAdmin] u on u.ID=T.OwnedUsersId  where t.rn between   @offset and (@offset+9)");
             
             return Factory.DBHelper.Query<Model.FlowerTreatment>(SQLConString, strSql.ToString(), new DynamicParameters(new { offset }));
         }
