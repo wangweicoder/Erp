@@ -38,7 +38,7 @@ namespace ERP.Controllers
                 item.Value = d.ID.ToString();
                 item.Selected = false;
                 hourList.Add(item);
-            }           
+            }
             return hourList;
         }
         public List<SelectListItem> GetFlowerTreatmentName()
@@ -78,11 +78,11 @@ namespace ERP.Controllers
             return Json(new { total = Sys_FlowerTreatment.GetFlowerTreatmentListCount(sb.ToString()), rows = Sys_FlowerTreatment.FlowerTreatmentList(limit, offset, sb.ToString()) }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Edit() 
+        public ActionResult Edit()
         {
             string id = Request["id"];
             Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
-            ViewData["GetUserInfoSelectItems"] = GetUserInfoSelectItems("Customer","0");//管理员
+            ViewData["GetUserInfoSelectItems"] = GetUserInfoSelectItems("Customer", "0");//管理员
             ViewData["GetCustomerInfoSelectItems"] = GetUserInfoSelectItems("Customer", "1");//客户
             return View(Sys_FlowerTreatment.GetModel(id));
         }
@@ -108,7 +108,7 @@ namespace ERP.Controllers
         {
             Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
             StringBuilder sb = new StringBuilder();
-            Business.Sys_UserAdmin Sys_UserAdmin=new Business.Sys_UserAdmin ();
+            Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
             Model.UserAdmin UserAdmin = Sys_UserAdmin.GetUserAdminByUserId(Utility.ChangeText.GetUsersId());
             if (UserAdmin.RoleCode != "Customer")
             {
@@ -116,7 +116,7 @@ namespace ERP.Controllers
             }
             else if (Utility.ChangeText.GetUserName() != "admin")
             {
-                sb.Append(" and OwnedUsersId='" + Utility.ChangeText.GetUsersId() + "'");  
+                sb.Append(" and OwnedUsersId='" + Utility.ChangeText.GetUsersId() + "'");
             }
             Utility.Log.WriteTextLog("testsql", "", "", Request["page"], sb.ToString());
             int page = int.Parse(Request["page"]);
@@ -129,7 +129,7 @@ namespace ERP.Controllers
         }
 
 
-        public ActionResult EditInfo(Model.FlowerTreatment FlowerTreatment) 
+        public ActionResult EditInfo(Model.FlowerTreatment FlowerTreatment)
         {
             Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
             Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
@@ -144,7 +144,7 @@ namespace ERP.Controllers
             return Content("0");
         }
 
-        public ActionResult DeleteInfo() 
+        public ActionResult DeleteInfo()
         {
             string id = Request["id"];
             Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
@@ -154,28 +154,41 @@ namespace ERP.Controllers
             }
             return Content("0");
         }
-
-        public List<SelectListItem> GetUserInfoSelectItems(string rolecode,string type)
+        /// <summary>
+        /// 绑定养护人、客户
+        /// </summary>
+        /// <param name="rolecode"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public List<SelectListItem> GetUserInfoSelectItems(string rolecode, string type)
         {
             Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
-            List<Model.UserAdmin> list=new List<Model.UserAdmin>();
+            List<Model.UserAdmin> list = new List<Model.UserAdmin>();
+            List<SelectListItem> deptSelectItems = new List<SelectListItem>();
+            SelectListItem item = new SelectListItem();
             if (type == "0")
             {
                 list = Sys_UserAdmin.GetUserAdminListByRoleCodeNo(rolecode);//不等于
+                foreach (Model.UserAdmin d in list)
+                {
+                    item = new SelectListItem();
+                    item.Text = d.RealName;
+                    item.Value = d.ID.ToString();
+                    item.Selected = true;
+                    deptSelectItems.Add(item);
+                }
             }
             else
             {
-                list = Sys_UserAdmin.GetAdminInfoList(rolecode);
-            }
-            List<SelectListItem> deptSelectItems = new List<SelectListItem>();
-            SelectListItem item = new SelectListItem();
-            foreach (Model.UserAdmin d in list)
-            {
-                item = new SelectListItem();
-                item.Text = d.RealName;
-                item.Value = d.ID.ToString();
-                item.Selected = true;
-                deptSelectItems.Add(item);
+                list = Sys_UserAdmin.GetAdminInfoList(rolecode); 
+                foreach (Model.UserAdmin d in list)
+                {
+                    item = new SelectListItem();
+                    item.Text = d.OwnedCompany;
+                    item.Value = d.ID.ToString();
+                    item.Selected = true;
+                    deptSelectItems.Add(item);
+                }
             }
             return deptSelectItems;
         }
