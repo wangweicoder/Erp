@@ -21,7 +21,7 @@ namespace Business
         public List<Model.FlowerTreatment> FlowerTreatmentList(int limit, int offset, string StrWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("SELECT u.OwnedCompany,* FROM ( SELECT ROW_NUMBER() over(order by id desc) as rn ,* FROM FlowerTreatment");
+            strSql.Append("SELECT u.OwnedCompany as CompanyName,T.* FROM ( SELECT ROW_NUMBER() over(order by id desc) as rn ,* FROM FlowerTreatment");
             if (!string.IsNullOrEmpty(StrWhere))
             {
                 strSql.Append(" where  1=1 " + StrWhere);
