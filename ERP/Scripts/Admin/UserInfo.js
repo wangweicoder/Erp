@@ -59,10 +59,11 @@ var TableInit = function () {
             }, {
                 field: 'UserName',
                 title: '用户名'
-            }, {
-                field: 'RealName',
-                title: '真实姓名'
             }
+                //, {
+            //    field: 'RealName',
+            //    title: '真实姓名'
+            //}
             , {
                 field: 'IsEnable',
                 title: '当前状态',

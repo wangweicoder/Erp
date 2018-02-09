@@ -75,5 +75,9 @@ namespace Model
         /// 所属客户公司名称
         /// </summary>
         public string OwnedCompany { set; get; }
+        /// <summary>
+        /// 外键用户表的公司名称
+        /// </summary>
+        public string CompanyName { set; get; }
     }
 }

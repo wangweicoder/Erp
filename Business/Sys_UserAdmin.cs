@@ -19,8 +19,7 @@ namespace Business
         /// <returns></returns>
         public Model.UserAdmin GetUserAdminByUserId(int UsersUserAdminId) 
         {
-            const string sql =
-@"SELECT * FROM UserAdmin where id=@UsersUserAdminId";
+            const string sql =@"SELECT * FROM UserAdmin where id=@UsersUserAdminId";
             List<Model.UserAdmin> UserAdminList = Factory.DBHelper.Query<Model.UserAdmin>(SQLConString, sql.ToString(), new DynamicParameters(new { UsersUserAdminId }));
             return UserAdminList.Count > 0 ? UserAdminList[0] : null;
         }
@@ -31,8 +30,7 @@ namespace Business
         /// <returns></returns>
         public Model.UserAdmin GetUserAdminByOpendId(string OpendId) 
         {
-            const string sql =
-  @"SELECT  * FROM UserAdmin where OpenId=@OpendId";
+            const string sql = @"SELECT  * FROM UserAdmin where OpenId=@OpendId";
             List<Model.UserAdmin> UserAdminList = Factory.DBHelper.Query<Model.UserAdmin>(SQLConString, sql.ToString(), new DynamicParameters(new { OpendId }));
             return UserAdminList.Count > 0 ? UserAdminList[0] : null;
         }
@@ -43,8 +41,7 @@ namespace Business
         /// <returns></returns>
         public Model.UserAdmin AdminLogin(Model.UserAdmin UserAdmin) 
         {
-            const string sql =
-@"SELECT * FROM UserAdmin WHERE UserName=@UserName AND PassWord=@PassWord";
+            const string sql =@"SELECT * FROM UserAdmin WHERE UserName=@UserName AND PassWord=@PassWord";
             List<Model.UserAdmin> UserAdminList = Factory.DBHelper.Query<Model.UserAdmin>(SQLConString, sql.ToString(), new DynamicParameters(new { UserAdmin.UserName, UserAdmin.PassWord }));
             return UserAdminList.Count > 0 ? UserAdminList[0] : null;
         }
@@ -55,8 +52,7 @@ namespace Business
         /// <returns></returns>
         public bool CheckUserAdminInfo(string UserName) 
         {
-            const string sql =
-@"SELECT ID FROM UserAdmin WHERE  UserName=@UserName";
+            const string sql =@"SELECT ID FROM UserAdmin WHERE  UserName=@UserName";
             List<Model.UserAdmin> UserAdminList = Factory.DBHelper.Query<Model.UserAdmin>(SQLConString, sql.ToString(), new DynamicParameters(new { UserName }));
             return UserAdminList.Count() > 0 ? true : false;
         }
@@ -85,8 +81,7 @@ namespace Business
         }
         public List<Model.UserAdmin> GetAdminInfoList(string RoleCode)
         {
-            string sql =
-@"SELECT * FROM UserAdmin WHERE   RoleCode=@RoleCode  order by Weekly";
+            string sql =@"SELECT * FROM UserAdmin WHERE   RoleCode=@RoleCode  order by Weekly";
             return Factory.DBHelper.Query<Model.UserAdmin>(SQLConString, sql.ToString(), new DynamicParameters(new { RoleCode }));
         }
         /// <summary>
@@ -142,7 +137,11 @@ namespace Business
         public List<Model.UserAdmin> UserAdminList(int limit, int offset, string StrWhere)  
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("SELECT * FROM ( SELECT ROW_NUMBER() over(order by UserAdmin.id desc) as rn ,UserAdmin.IsEnable,UserAdmin.ID,UserAdmin.UserName,UserAdmin.RealName,UserAdmin.CheckAddress,UserAdmin.RoleName,UserAdmin.OwnedCompany,UserAdmin.WorkRealName,UserAdmin.WorkUsersId,UserAdmin.LogoPhoto,UserAdmin.Weekly  FROM UserAdmin");
+            strSql.Append("SELECT * FROM ( SELECT ROW_NUMBER() over(order by UserAdmin.id desc) as rn ,");
+            strSql.Append(" UserAdmin.IsEnable,UserAdmin.ID,UserAdmin.UserName,UserAdmin.RealName,");
+            strSql.Append(" UserAdmin.CheckAddress,UserAdmin.RoleName,");
+            strSql.Append(" UserAdmin.OwnedCompany,UserAdmin.WorkRealName,");
+            strSql.Append(" UserAdmin.WorkUsersId,UserAdmin.LogoPhoto,UserAdmin.Weekly  FROM UserAdmin");
             if (!string.IsNullOrEmpty(StrWhere))
             {
                 strSql.Append(" where  1=1 " + StrWhere);
@@ -204,8 +203,8 @@ namespace Business
         /// <returns></returns>
         public bool UpdateUserAdmin(Model.UserAdmin UserAdmin) 
         {
-            const string sql =
-@"UPDATE UserAdmin SET PassWord=@PassWord,RealName=@RealName,CheckAddress=@CheckAddress,OwnedCompany=@OwnedCompany,RoleName=@RoleName,RoleCode=@RoleCode WHERE ID=@ID";
+            const string sql =@"UPDATE UserAdmin SET PassWord=@PassWord,RealName=@RealName,CheckAddress=@CheckAddress,
+OwnedCompany=@OwnedCompany,RoleName=@RoleName,RoleCode=@RoleCode WHERE ID=@ID";
             return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
             {
                 UserAdmin.PassWord,
@@ -221,8 +220,7 @@ namespace Business
 
         public bool UpdateOpenId(string OpenId,int UsersId)
         {
-            const string sql =
-@"UPDATE UserAdmin SET OPENID=@OpenId  WHERE ID=@UsersId";
+            const string sql =@"UPDATE UserAdmin SET OPENID=@OpenId  WHERE ID=@UsersId";
             return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
             {
                 OpenId,
@@ -236,8 +234,7 @@ namespace Business
         /// <returns></returns>
         public bool UpdateUserAdminIsEnable(int IsEnable,int ID) 
         {
-            const string sql =
-@"UPDATE UserAdmin SET IsEnable=@IsEnable WHERE ID=@ID";
+            const string sql =@"UPDATE UserAdmin SET IsEnable=@IsEnable WHERE ID=@ID";
             return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
             {
                 IsEnable,ID
@@ -251,8 +248,7 @@ namespace Business
         /// <returns></returns>
         public bool DeleteUserAdminInfo(int ID) 
         {
-            const string sql =
-@"DELETE FROM UserAdmin WHERE ID=@ID";
+            const string sql =@"DELETE FROM UserAdmin WHERE ID=@ID";
             return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
             {
                 ID
@@ -261,9 +257,7 @@ namespace Business
 
         public bool SetUserAdminRole(string id, string RoleCode, string RoleName) 
         {
-            const string sql =
-@"UPDATE UserAdmin SET RoleCode=@RoleCode,RoleName=@RoleName
- WHERE ID=@id ";
+            const string sql =@"UPDATE UserAdmin SET RoleCode=@RoleCode,RoleName=@RoleName WHERE ID=@id ";
             return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
             {
                 id,
@@ -275,8 +269,7 @@ namespace Business
 
         public bool SetWorkName(string id,string WorkRealName,string WorkUsersId)
         {
-            const string sql =
-@"UPDATE UserAdmin SET WorkUsersId=@WorkUsersId,WorkRealName=@WorkRealName WHERE ID=@id";
+            const string sql =@"UPDATE UserAdmin SET WorkUsersId=@WorkUsersId,WorkRealName=@WorkRealName WHERE ID=@id";
             return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
             {
 
@@ -302,8 +295,7 @@ namespace Business
 
         public bool SetWeekly(string id, string Weekly) 
         {
-            const string sql =
-@"UPDATE UserAdmin  SET Weekly=@Weekly  WHERE ID=@id ";
+            const string sql =@"UPDATE UserAdmin  SET Weekly=@Weekly  WHERE ID=@id ";
             return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
             {
                 Weekly,

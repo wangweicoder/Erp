@@ -111,7 +111,7 @@ namespace ERP.Controllers
             ViewData["deptSelectItems"] = GetdeptSelectItems();
             Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
             Business.Sys_Role Sys_Role = new Business.Sys_Role();
-
+            UserAdmin.RealName = "";
             UserAdmin.RoleName=Sys_Role.GetRoleInfoByRoleCode(UserAdmin.RoleCode).RoleName;
             UserAdmin.PassWord = Utility.ChangeText.md5(UserAdmin.PassWord);
             if (Sys_UserAdmin.InsertUserAdmin(UserAdmin))
@@ -221,12 +221,8 @@ namespace ERP.Controllers
             deptSelectItems = Request["deptSelectItems"];
             SelectRealName = Request["SelectRealName"];
             Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
-            if (Sys_UserAdmin.SetWorkName(id, SelectRealName, deptSelectItems))
-            {
-            }
-                     Response.Write("<script>parent.layer.closeAll();</script>");
-           
-      
+            Sys_UserAdmin.SetWorkName(id, SelectRealName, deptSelectItems);
+            Response.Write("<script>parent.layer.closeAll();</script>");
             return View(GetUserSelectItems(int.Parse(Request["id"])));
         }
 

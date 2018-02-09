@@ -136,7 +136,7 @@ namespace ERP.Controllers
             Model.UserAdmin UserAdmin = Sys_UserAdmin.GetUserAdminByUserId(Convert.ToInt32(FlowerTreatment.OwnedUsersId));
             Model.UserAdmin UserAdmin1 = Sys_UserAdmin.GetUserAdminByUserId(FlowerTreatment.UsersId);
             FlowerTreatment.UserRealName = UserAdmin1.RealName;
-            FlowerTreatment.OwnedUsersRealName = UserAdmin.RealName;
+            FlowerTreatment.OwnedUsersRealName = UserAdmin.RealName;         
             if (Sys_FlowerTreatment.Update(FlowerTreatment))
             {
                 return Content("1");
