@@ -21,7 +21,9 @@ namespace ERP.MobleControllers
                 Model.FlowerArrangement  FlowerArrangement=Sys_FlowerArrangement.GetModel(id);
                 if (FlowerArrangement.belongUsersId != 0)
                 {
-                 ViewBag.Treattime= Sys_FlowerArrangement.GetFlowerTreatmentModel(FlowerArrangement.belongUsersId.ToString()).time;
+                 DateTime dt = Sys_FlowerArrangement.GetFlowerTreatmentModel(FlowerArrangement.belongUsersId.ToString()).time;
+                 ViewBag.Treattime = dt;
+                 ViewBag.PlanTreatTime = dt.AddDays(7);
                 }
                 if (Session["RoleCode"] != null && Session["RoleCode"].ToString() == "Tourist")
                 {

@@ -92,14 +92,22 @@
                 type:'POST',
                 success: function (data)
                 {
-                    //信息框
-                    layer.open({
-                        content: '操作成功'
-                      , btn: '我知道了',
-                        yes: function () {
-                            location.href = '/MMIndex/Index';
-                      }
-                    });
+                    if (data == "1") {
+                        //信息框
+                        layer.open({
+                            content: '操作成功'
+                          , btn: '我知道了',
+                            yes: function () {
+                                location.href = '/MMIndex/Index';
+                            }
+                        });
+                    }
+                    else {
+                        layer.open({
+                            content: "今日已提交"
+                            , btn: '我知道了'
+                        });
+                    }
                 }
             })
         }

@@ -12,7 +12,7 @@ namespace Business
         private string SQLConString = System.Configuration.ConfigurationManager.AppSettings["SQLConString"];
 
         /// <summary>
-        /// 
+        /// 分页查询
         /// </summary>
         /// <param name="limit"></param>
         /// <param name="offset"></param>
@@ -47,7 +47,23 @@ namespace Business
             List<Model.FlowerTreatment> FlowerTreatmentList = Factory.DBHelper.Query<Model.FlowerTreatment>(SQLConString, strSql.ToString(), new DynamicParameters(new { StrWhere }));
             return FlowerTreatmentList.Count() > 0 ? FlowerTreatmentList[0].id : 0;
         }
-
+        /// <summary>
+        /// 分页查询
+        /// </summary>
+        /// <param name="limit"></param>
+        /// <param name="offset"></param>
+        /// <param name="StrWhere"></param>
+        /// <returns></returns>
+        public List<Model.FlowerTreatment> FlowerTreatmentList(string StrWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("SELECT * FROM FlowerTreatment t");
+            if (!string.IsNullOrEmpty(StrWhere))
+            {
+                strSql.Append(" where  1=1 and" + StrWhere);
+            }            
+            return Factory.DBHelper.Query<Model.FlowerTreatment>(SQLConString, strSql.ToString(), new DynamicParameters(new { StrWhere }));
+        }
         public List<Model.FlowerTreatment> GetFlowerTreatmentName() 
         {
             const string sql =

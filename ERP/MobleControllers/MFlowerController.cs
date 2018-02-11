@@ -56,40 +56,59 @@ namespace ERP.MobleControllers
             try
             {
 
-            string x = string.Empty, y = string.Empty, strReturn = string.Empty;
+                string x = string.Empty, y = string.Empty, strReturn = string.Empty;
 
-            string apiurl = "http://api.map.baidu.com/geoconv/v1/?coords=" + Request["longitude"] + "," + Request["latitude"] + "&from=1&to=5&ak=Kl3rqGn6gECfy7mH5rS3fkGkaWYiyVlr";
-            string detail = Utility.PostData.GetData(apiurl);
-            ERP.MobleControllers.MMainController.BaiDuCoordinates jd = JsonConvert.DeserializeObject<ERP.MobleControllers.MMainController.BaiDuCoordinates>(detail);
-            List<ERP.MobleControllers.MMainController.bc_result> result = jd.result;
-            foreach (var item in result)
-            {
-                x = item.x;
-                y = item.y;
-            }
-            apiurl = "http://api.map.baidu.com/geocoder/v2/?ak=Kl3rqGn6gECfy7mH5rS3fkGkaWYiyVlr&callback=renderReverse&location=" + y + "," + x + "&output=json&pois=1";
-            detail = Utility.PostData.GetData(apiurl);
-            detail = detail.Replace("renderReverse&&renderReverse(", "");
-            detail = detail.TrimEnd(')');
-            ERP.MobleControllers.MMainController.GetAddressNew GetAddress = JsonConvert.DeserializeObject<ERP.MobleControllers.MMainController.GetAddressNew>(detail);
-            Utility.Log.WriteTextLog("返回定位", "", "", "", detail);
-            Business.Sys_UserAdmin Sys_UserAdmin=new Business.Sys_UserAdmin ();
-            ViewData["deptSelectItems"] = GetdeptSelectItems();
-            Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
-            FlowerTreatment.FlowerTreatmentType = "养护花卉";
-            FlowerTreatment.UsersId = Utility.ChangeText.GetUsersId();
-            FlowerTreatment.OwnedUsersId = Request["deptSelectItems"];
-            FlowerTreatment.UserRealName = Utility.ChangeText.GetRealName();
-            FlowerTreatment.FlowerTreatmentAddress =GetAddress.result.formatted_address;
-            Model.UserAdmin  UserAdmin=Sys_UserAdmin.GetUserAdminByUserId(Convert.ToInt32(FlowerTreatment.OwnedUsersId));
-            FlowerTreatment.OwnedUsersRealName =UserAdmin.RealName;
-            FlowerTreatment.OwnedCompany = UserAdmin.OwnedCompany;
-            FlowerTreatment.LogoPhoto = UserAdmin.LogoPhoto;
-            if (Sys_FlowerTreatment.InsertFlowerTreatment(FlowerTreatment))
-            {
-              
-            }
-            return View();
+                string apiurl = "http://api.map.baidu.com/geoconv/v1/?coords=" + Request["longitude"] + "," + Request["latitude"] + "&from=1&to=5&ak=Kl3rqGn6gECfy7mH5rS3fkGkaWYiyVlr";
+                string detail = Utility.PostData.GetData(apiurl);
+                ERP.MobleControllers.MMainController.BaiDuCoordinates jd = JsonConvert.DeserializeObject<ERP.MobleControllers.MMainController.BaiDuCoordinates>(detail);
+                List<ERP.MobleControllers.MMainController.bc_result> result = jd.result;
+                foreach (var item in result)
+                {
+                    x = item.x;
+                    y = item.y;
+                }
+                apiurl = "http://api.map.baidu.com/geocoder/v2/?ak=Kl3rqGn6gECfy7mH5rS3fkGkaWYiyVlr&callback=renderReverse&location=" + y + "," + x + "&output=json&pois=1";
+                detail = Utility.PostData.GetData(apiurl);
+                detail = detail.Replace("renderReverse&&renderReverse(", "");
+                detail = detail.TrimEnd(')');
+                ERP.MobleControllers.MMainController.GetAddressNew GetAddress = JsonConvert.DeserializeObject<ERP.MobleControllers.MMainController.GetAddressNew>(detail);
+                Utility.Log.WriteTextLog("返回定位", "", "", "", detail);
+                Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
+                ViewData["deptSelectItems"] = GetdeptSelectItems();
+                Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
+                int userid = Utility.ChangeText.GetUsersId();
+                FlowerTreatment.FlowerTreatmentType = "养护花卉";
+                FlowerTreatment.UsersId = userid;
+                FlowerTreatment.OwnedUsersId = Request["deptSelectItems"];
+                FlowerTreatment.UserRealName = Utility.ChangeText.GetRealName();
+                FlowerTreatment.FlowerTreatmentAddress = GetAddress.result.formatted_address;
+                Model.UserAdmin UserAdmin = Sys_UserAdmin.GetUserAdminByUserId(Convert.ToInt32(FlowerTreatment.OwnedUsersId));
+                FlowerTreatment.OwnedUsersRealName = UserAdmin.RealName;
+                FlowerTreatment.OwnedCompany = UserAdmin.OwnedCompany;
+                FlowerTreatment.LogoPhoto = UserAdmin.LogoPhoto;
+                //同一登录人，同一公司，一天只能提交一次
+                StringBuilder stb = new StringBuilder();
+                if (userid != 0)
+                {
+                    stb.Append(" t.UsersId=" + userid + "");
+                }
+                if (!string.IsNullOrEmpty(FlowerTreatment.OwnedUsersId))
+                {
+                    stb.Append(" and t.OwnedUsersId='" + FlowerTreatment.OwnedUsersId + "'");
+                }
+                string dt = DateTime.Now.ToShortDateString();
+                { 
+                    stb.Append(" and time>'" + dt + "'"); 
+                }
+                if (Sys_FlowerTreatment.FlowerTreatmentList(stb.ToString()).Count == 0)
+                {
+                    Sys_FlowerTreatment.InsertFlowerTreatment(FlowerTreatment);
+                    return Content("1");
+                }
+                else {
+                    return Content("0");
+                }
+                
             }
             catch (Exception ex)
             {

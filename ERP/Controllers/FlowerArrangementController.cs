@@ -183,8 +183,8 @@ namespace ERP.Controllers
                 HttpPostedFileBase files = Request.Files["file"];
                 Utility.Log.WriteTextLog("报错", "", "", "", files == null ? "true" : "fasle");
                 if (files == null) return Json("Faild", JsonRequestBehavior.AllowGet);
-           
 
+                
                 Business.Sys_FlowerArrangement Sys_FlowerArrangement = new Business.Sys_FlowerArrangement();
                 Model.FlowerArrangement FlowerArrangement = Sys_FlowerArrangement.GetModel(FlowerArrangementId);
 

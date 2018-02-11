@@ -80,7 +80,10 @@
                                 </li>
                                 <li>
                                     <span class="spanstyle">养护时间:</span>@ViewBag.Treattime
-                                </li>                               
+                                </li>
+                                <li>
+                                    <span class="spanstyle">预计下次养护时间:</span>@ViewBag.PlanTreatTime
+                                </li>                                 
                                 <li>
                                     <span class="spanstyle"> 规格:</span> @Model.Specifications
                                 </li>
@@ -148,6 +151,7 @@
                       , done: function (res) {
                           //layer.alert('提交成功');
                           layer.msg('提交成功');
+                          $(this).show();
                           //location.reload();
                       }
                       , error: function () {
@@ -163,7 +167,31 @@
                     //数字转换星期
                    var oldv = $("#kly").text().trim();
                    var show_day = new Array('一', '二', '三', '四', '五', '六', '日');
-                   $("#kly").text(show_day[oldv-1]);
+                   $("#kly").text(show_day[oldv - 1]);
+                    //
+                   $("#test9").click(function () {
+                       $this = $(this);
+                       // 保存原按钮的text值 
+                       var oldText = $this.val();
+                      // 设置计时的开始值,5s要从6开始减 
+                       var i = 6;
+                       //禁用按钮
+                       $this.attr('disabled', true);
+                       //设置定时器                        
+                       var btnTimer = null; 
+                       btnTimer = setInterval(function () {
+                           // 开始计数
+                           i--;
+                           // 注意clearInterval一定要最后，不然attr和text函数不会执行 
+                           if (i <= 0) {
+                               $this.removeAttr('disabled');
+                               $this.val(oldText);
+                               clearInterval(btnTimer);
+                           }
+                           else { $this.val(i); }
+                       }, 1000);
+                       
+                   });
                 });
             </script>
     </body>
