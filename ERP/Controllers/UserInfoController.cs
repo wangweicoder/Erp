@@ -110,8 +110,7 @@ namespace ERP.Controllers
         {
             ViewData["deptSelectItems"] = GetdeptSelectItems();
             Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
-            Business.Sys_Role Sys_Role = new Business.Sys_Role();
-            UserAdmin.RealName = "";
+            Business.Sys_Role Sys_Role = new Business.Sys_Role();           
             UserAdmin.RoleName=Sys_Role.GetRoleInfoByRoleCode(UserAdmin.RoleCode).RoleName;
             UserAdmin.PassWord = Utility.ChangeText.md5(UserAdmin.PassWord);
             if (Sys_UserAdmin.InsertUserAdmin(UserAdmin))

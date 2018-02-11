@@ -209,7 +209,6 @@ OwnedCompany=@OwnedCompany,RoleName=@RoleName,RoleCode=@RoleCode WHERE ID=@ID";
             {
                 UserAdmin.PassWord,
                 UserAdmin.RealName,
-           
                 UserAdmin.CheckAddress,
                 UserAdmin.OwnedCompany,
                 UserAdmin.RoleName,
