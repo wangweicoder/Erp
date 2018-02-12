@@ -88,7 +88,7 @@ namespace Business
         public bool AddFlowerPhotoInfo(string Number, string ChangePhoto)
         {
             const string sql =
-@"UPDATE FlowerChange SET ChangePhoto=@ChangePhoto,state='已更换'  WHERE id=@Number";
+@"UPDATE FlowerChange SET ChangePhoto=@ChangePhoto,state='已更换'  WHERE Number=@Number";
             return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
             {
                 ChangePhoto,
