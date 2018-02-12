@@ -100,7 +100,7 @@
             var that = this;
             $('.row :checkbox').prop({ checked: that.checked }).trigger('change');
             var allfnum=0;//全选时赋初值
-            var allfPrice=0;//全选时赋初值
+            fmoney = 0;//全选时赋初值
             $checkboxList.each(function () {
                 if (this.checked) {
                     var tyu = $(this).closest("div.productbox").find("input[name^='demo2']").val();
@@ -110,8 +110,8 @@
                     fnum = allfnum;
                     //总计
                     var tyuj = $(this).closest("div.productbox table").find("[name='demo1']").text();
-                    allfPrice+=parseInt(tyuj)*parseInt(tyu);
-                    $("#totalmoney").text("¥"+allfPrice);
+                    fmoney += parseInt(tyuj) * parseInt(tyu);
+                    $("#totalmoney").text("¥" + fmoney);
                 } else {
                     fnum = 0;
                     fmoney = 0;
