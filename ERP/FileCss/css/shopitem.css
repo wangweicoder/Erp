@@ -10,7 +10,6 @@
 
 .producttitle {
     font-weight:bold;
-	padding:5px 0 5px 0;
 }
 
 .productprice {
@@ -25,6 +24,8 @@
 
 .productname {
     margin-bottom: 10px;
+	float:left;
+    padding-right:10px;
 }
 
 .productdes {
