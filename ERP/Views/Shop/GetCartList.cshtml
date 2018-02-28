@@ -222,19 +222,17 @@
 
                 <div class="col-md-3 column productbox">
                     @Html.Hidden("Id", item.Id)     
-                    @Html.Hidden("FlowerId", item.FlowerId)    
+                    @Html.Hidden("FlowerId", item.FlowerId)                                  
+                    <a href="/Shop/Details?id=@item.FlowerId">
+                    <img src="@item.FlowerWatchPhoto" style="width: 460px; height: 250px;" class="img-responsive">
+                    </a>
                     <div class="producttitle">
-                        @*<div class="productname">@item.FlowerWatchName</div>
-                        <div class="productdes">@item.FlowerIntroduction</div>*@
-                        <div class="productname">
-                            <a href="/Shop/Details?id=@item.FlowerId">
-                                <img src="@item.FlowerWatchPhoto" style="width: 70px; height: 80px;padding-top:10px" class="img-responsive">
-                            </a>
-                        </div>
-                        <div class="productdes">
+                        <div class="productname">@item.FlowerWatchName</div>
+                        <div class="productdes">@item.FlowerIntroduction</div>
+                        <div>
                             <table>
                                 <tr>
-                                    <td style="width:45px;">单价：</td>
+                                    <td style="width:50px;">单价：</td>
                                     <td name="demo1">@item.FlowerSalesPrice</td>
                                 </tr>
                                 <tr>
@@ -244,11 +242,11 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><input type="checkbox" class="checkbox" id="chk_@item.Id" /></td>                                   
-                                    <td style="padding-right: 20px;">小计：@((item.Num * item.FlowerSalesPrice).ToString("c"))</td>
-                                    <td>
-                                        <input class="btn btn-default btn-sm" type="button" value="移除" />
-                                    </td>
+                                    <td><input type="checkbox" class="checkbox" id="chk_@item.Id" /></td>
+                                    <td>小计：</td>
+                                    <td style="padding-right: 20px;">@((item.Num * item.FlowerSalesPrice).ToString("c"))</td>
+                                    <td><input class="btn btn-default btn-sm" type="button" value="移除" />  
+                                     </td>
                                 </tr>
                             </table>
                         </div>
