@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@model  Model.CartLine
+@{   
+    //var fmoney = Model.Products.Sum(x => x.Num * x.FlowerSalesPrice);
+ }
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
@@ -8,10 +12,81 @@
     <link href="~/points/css/zhifu.css" rel="stylesheet" />
     <link href="~/points/css/mui.min.css" rel="stylesheet" />
     <link href="~/points/css/loaders.min.css" rel="stylesheet" />
-    <link href="~/points/css/loading.css" rel="stylesheet" />
+    <link href="~/points/css/loading.css" rel="stylesheet" />  
     <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?debug=847" />
+    <link href="~/FileCss/css/shopitem.css" rel="stylesheet" />
+    <style>
+        .gw_num {
+            border: 1px solid #dbdbdb;
+            width: 143px;
+            line-height: 26px;
+            overflow: hidden;
+            height:30px;
+        }
+
+            .gw_num em {
+                display: block;
+                height: 26px;
+                width: 26px;
+                float: left;
+                color: #7A7979;
+                border-right: 1px solid #dbdbdb;
+                text-align: center;
+                cursor: pointer;
+            }
+
+            .gw_num .num {
+                display: block;
+                float: left;
+                text-align: center;
+                width: 52px;
+                font-style: normal;
+                font-size: 14px;
+                line-height: 24px;
+                border: 0;
+            }
+
+            .gw_num em.add {
+                float: right;
+                border-right: 0;
+                border-left: 1px solid #dbdbdb;
+            }
+
+        .cart {
+            display: inline-block;
+            width: 37%;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            color: #fff;
+            background: #f44623;
+            margin: 0 10px;
+            border-radius: 3px;
+        }
+
+        .gwfnum {
+            font-size: 12px;
+            font-weight: 400;
+            color: #fff;
+            display: block;
+            width: 19px;
+            height: 15px;
+            margin-top: -20px;
+            margin-left: 16px;
+            background-color: red;
+            border-radius: 16px;
+            text-align: center;
+            line-height: 12px;
+        }
+         .text-center {
+        text-align: left;font-size: 15px;font-weight: bold;color: red;
+        line-height:10px;
+        }
+    </style>
+
     <script src="~/points/js/rem.js"></script>
-    <script src="~/points/js/jquery-1.8.3.min.js"></script>
+    <script src="~/points/js/jquery-1.8.3.min.js"></script> 
+    <script src="~/Bootstrap/js/jquery.bootstrap-touchspin.min.js"></script>
     <script src="~/points/js/swiper.jquery.min.js"></script>
     <script src="~/FileCss/js/distpicker.data.js"></script>
     <script src="~/FileCss/js/distpicker.js"></script>
@@ -35,13 +110,51 @@
 					cont_pb = $(footer).outerHeight(true);
                 $(main).css({ paddingTop: cont_pt, paddingBottom: cont_pb });
             }
+            //总计
+            var fmoney =0 ;
+            var divp = $("div.productbox");
+            divp.each(function () {               
+                var tyun = $(this).closest("div.productbox").find("input[name^='FlowerNum']").val();              
+                var tyuj = $(this).closest("div.productbox").find("[name='demo1']").text();
+                fmoney += parseInt(tyuj) * parseInt(tyun);
+            });          
+            //总金额
+            $("#totalmoney").text("¥" + fmoney);
+            //加的效果
+            $(".add").click(function () {
+                var n = $(this).prev().val();
+                var num = parseInt(n) + 1;
+                if (num <= 0) {
+                    num = 1;
+                    //return;
+                }
+                $(this).prev().val(num);
+                //计算总价格
+                var tyuj = $(this).closest("div.productbox table").find("[name='demo1']").text();
+                fmoney += parseInt(tyuj) * 1;
+                $("#totalmoney").text("¥" + fmoney);
+            });
+            //减的效果
+            $(".jian").click(function () {
+                var n = $(this).next().val();
+                var num = parseInt(n) - 1;
+                if (num <= 0) {
+                    num = 1;
+                    //return;
+                }
+                $(this).next().val(num);
+                //计算总价格
+                var tyuj = $(this).closest("div.productbox table").find("[name='demo1']").text();
+                fmoney -= parseInt(tyuj) * 1;
+                $("#totalmoney").text("¥" + fmoney);
+            });
         });
-
+        //提交
         function CheckFrom() {
             var adr = $("select[name='province']").val();
             var adr1 = $("select[name='city']").val();
             var adr2 = $("select[name='area']").val();
-          
+           
           if (adr == "") {
                 layer.msg('地址不能为空');
                 return false;
@@ -59,18 +172,32 @@
                 layer.msg('联系人电话不合法！');
                 return false;
             }
-            //$.ajax({
-            //    url: '/Shop/AddInfo?OrdersId=' + $("#OrdersId").val() + '&DetailedAddress='+ adr+adr1+adr2+ $("#DetailedAddress").val() + '&ConsigneeName=' + $("#ConsigneeName").val() + '&ConsigneePhone=' + $("#ConsigneePhone").val(),
-            //})
+            var goodnum = 0;
+            var flowernums = "";
+            var divp = $("div.productbox");
+            divp.each(function () {               
+                var tyun = $(this).closest("div.productbox").find("input[name^='FlowerNum']").val();
+                flowernums += tyun + ",";
+                goodnum += parseInt(tyun);
+            });           
+            flowernums = flowernums.substring(0, flowernums.length - 1);
+           $.ajax({
+               url: '/Shop/PayOrdersNow?ids=' + $("#ids").val() +
+             '&FlowerNums=' + flowernums + '&goodnum=' + goodnum +
+             '&Remark=' + $("#Remark").val() +
+             '&DetailedAddress=' + adr + adr1 + adr2 + $("#DetailedAddress").val() +
+             '&ConsigneeName=' + $("#ConsigneeName").val() +
+             '&ConsigneePhone=' + $("#ConsigneePhone").val(),
+               type: "get",              
+            })
         }
     </script>
 </head>
 
 <!--loading页结束-->
 <body>
-    @using (Html.BeginForm("PayOrdersNow", "Shop", FormMethod.Post, new { onsubmit = "return  CheckFrom()" }))
-    {
-    <!--loading页开始-->
+    <form>
+        <!--loading页开始-->
         <div class="loading">
             <div class="loader">
                 <div class="loader-inner pacman">
@@ -88,84 +215,117 @@
         </header>
         <div id="main" class="mui-clearfix contaniner sorder">
             <div class="warning clearfloat box-s">
-                @ViewData["msg"] 
+                @ViewData["msg"]
             </div>
             <div class="odernum clearfloat">
                 <ul>
                     <li>
-                        您的订单号：@ViewData["OrdersId"]
-                        <input type="hidden" id="OrdersId" value="@ViewData["OrdersId"]" name="OrdersId" />
+                        <input type="hidden" id="ids" value="@ViewData["ids"]" name="ids" />
                     </li>
                     <li>
-                        应付价格：<span>
-                            @ViewData["PayTotal"]
-                        <input type="hidden" value="@ViewData["PayTotal"]" name="PayTotal" />
-                    </span>
-                </li>
-            </ul>
-        </div>
-        @*<div class="odernum clearfloat">
-                <ul>
-                    <li><input type="text" name="DetailedAddress" id="DetailedAddress" placeholder="请输入地址" style="width:50%"></li>
-                </ul>
-            </div>
-            <div class="odernum clearfloat">
-                <ul>
-                    <li><input type="text" name="ConsigneeName" id="ConsigneeName" placeholder="联系人姓名" style="width:50%"></li>
-                </ul>
-            </div>*@
-        <div class="odernum clearfloat">
-            <div class="pro_kc">
-                <dl class="yanse">
-                    <dt>
-                        收货人：
-                    </dt>
-                    <dd>
-                        <input type="text" name="ConsigneeName" id="ConsigneeName" />
-                    </dd>
-                    <br />
-                    <dt>
-                        收货人电话：
-                    </dt>
-                    <dd>
-                        <input type="text" name="ConsigneePhone" id="ConsigneePhone" />
-                    </dd>
-                    <br />
-                    <dt>
-                        收货地址：
-                    </dt>
+                        <div class="row">
+                            @for (int i = 0; i < Model.Products.Count; i++)
+                            {
+                                var item = (Model.Products)[i];
+                                <div class="col-md-3 column productbox">
+                                    @*@Html.Hidden("Id", item.Id)*@
+                                    @Html.Hidden("FlowerId", item.FlowerId)
+                                    <div class="producttitle">
+                                        <div class="productname">
+                                            <img src="@item.FlowerWatchPhoto" style="width: 70px; height: 80px;padding-top:10px" class="img-responsive">
+                                        </div>
+                                        <div class="productdes">
+                                            <table>
+                                                <tr>
+                                                    <td style="width:45px;">单价：</td>
+                                                    <td name="demo1">@item.FlowerSalesPrice</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>数量：</td>
+                                                    <td>
+                                                        <div class="gw_num">
+                                                            <em class="jian">-</em>
+                                                            <input type="text" value="@item.Num" class="num" name="FlowerNum" id="FlowerNum" />
+                                                            <em class="add">+</em>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
 
-                    <dd>
-                        <div style="width:100%" data-toggle="distpicker">
-                            <div style="width:50%;float:left">
-                                <select style="width:80px;" name="province"></select>
-                                <select style="width: 120px; " name="city"></select>
-                            </div>
-                            <div style="width:50%; padding-left:20px">
-                                <select style="width: 80px; " name="area"></select>
-                            </div>
+                                </div>
+                            }
+
                         </div>
-                    </dd>
-                    <br />
-                    <dt>
-                        详细地址：
-                    </dt>
-                    <dd>
-                        <input type="text" name="DetailedAddress" id="DetailedAddress" />
-                    </dd>
-                    <dt>
-                        备注：
-                    </dt>
-                    <dd>
-                        <input type="text" name="Remark" id="Remark" />
-                    </dd>
-                </dl>
-                <dl id="_address" class="yanse" style="display: none;"></dl>
+                    </li>
+                </ul>
             </div>
+            @*<div class="odernum clearfloat">
+                    <ul>
+                        <li><input type="text" name="DetailedAddress" id="DetailedAddress" placeholder="请输入地址" style="width:50%"></li>
+                    </ul>
+                </div>
+                <div class="odernum clearfloat">
+                    <ul>
+                        <li><input type="text" name="ConsigneeName" id="ConsigneeName" placeholder="联系人姓名" style="width:50%"></li>
+                    </ul>
+                </div>*@
+            <div class="odernum clearfloat">
+                <div class="pro_kc">
+                    <dl class="yanse">
+                        <dt>
+                            收货人：
+                        </dt>
+                        <dd>
+                            <input type="text" name="ConsigneeName" id="ConsigneeName" />
+                        </dd>
+                        <br />
+                        <dt>
+                            收货人电话：
+                        </dt>
+                        <dd>
+                            <input type="text" name="ConsigneePhone" id="ConsigneePhone" />
+                        </dd>
+                        <br />
+                        <dt>
+                            收货地址：
+                        </dt>
 
+                        <dd>
+                            <div style="width:100%" data-toggle="distpicker">
+                                <div style="width:50%;float:left">
+                                    <select style="width:80px;" name="province"></select>
+                                    <select style="width: 120px; " name="city"></select>
+                                </div>
+                                <div style="width:50%; padding-left:20px">
+                                    <select style="width: 80px; " name="area"></select>
+                                </div>
+                            </div>
+                        </dd>
+                        <br />
+                        <dt>
+                            详细地址：
+                        </dt>
+                        <dd>
+                            <input type="text" name="DetailedAddress" id="DetailedAddress" />
+                        </dd>
+                        <dt>
+                            备注：
+                        </dt>
+                        <dd>
+                            <input type="text" name="Remark" id="Remark" />
+                        </dd>
+                    </dl>
+                    <div class="text-center">
+                        <span>总计：</span>
+                        <span id="totalmoney"></span>
+                    </div>
+                </div>
+
+            </div>
+            <button type="button" class="address-add f" onclick="CheckFrom()">确认支付</button>
         </div>
-        <button type="submit" class="address-add f">确认支付</button>
-    </div>
-    }
+    </form>
 </body>
 </html>

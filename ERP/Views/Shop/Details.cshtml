@@ -19,9 +19,9 @@
     @*<script src="~/FileCss/js/MapWrapper.min.js"></script>*@
     @*<link href="~/FileCss/spinner/jquery.spinner.css" rel="stylesheet" />*@
     @*<script src="~/FileCss/js/zepto.min.js?debug=847" type="text/javascript"></script>*@
-    <script src="~/FileCss/js/main.js?debug=847" type="text/javascript"></script>
+    @*<script src="~/FileCss/js/main.js?debug=847" type="text/javascript"></script>
     <script src="~/FileCss/js/distpicker.data.js"></script>
-    <script src="~/FileCss/js/distpicker.js"></script>
+     <script src="~/FileCss/js/distpicker.js"></script>*@
 
     @*<script src="~/FileCss/spinner/jquery.spinner.js"></script>*@
     <script src="~/FileCss/jq/jquery.fly.min.js"></script>
@@ -159,7 +159,7 @@
         </script>
         <div class="pro_kc">
             <dl class="yanse">
-                <dt>
+                @*<dt>
                     收货人：
                 </dt>
                 <dd>
@@ -195,7 +195,7 @@
                 <dd>
                     <input type="text" name="ConsigneAaddress" id="ConsigneAaddress" />
                 </dd>
-                <br />
+                <br />*@
                 <dt>
                     数量：
                 </dt>
@@ -207,7 +207,7 @@
                     </div>
                 </dd>
             </dl>
-            <dl id="_address" class="yanse" style="display: none;"></dl>
+            @*<dl id="_address" class="yanse" style="display: none;"></dl>*@
         </div>
         <div class="btn_box border_top">
             <div style="float:left;width:58px;overflow:hidden;">
@@ -375,28 +375,28 @@
                   var ConsigneeName = $('#ConsigneeName').val();
                   var ConsigneePhone = $('#ConsigneePhone').val();
                   var ConsigneAaddress = $('#ConsigneAaddress').val();
-                  if (ConsigneeName == '' || ConsigneeName == null) {
-                      layer.open({
-                          content: '收货人姓名不能为空'
-                     , skin: 'msg'
-                     , time: 2 //2秒后自动关闭
-                      });
-                      return false;
-                  }
-                  if (ConsigneePhone == '' || ConsigneePhone == null) {
-                      layer.open({
-                          content: '收货人电话不能为空'
-                         , skin: 'msg'
-                         , time: 2 //2秒后自动关闭
-                      }); return false;
-                  }
-                  if (ConsigneAaddress == '' || ConsigneeName == null) {
-                      layer.open({
-                          content: '收货人地址不能为空'
-                         , skin: 'msg'
-                         , time: 2 //2秒后自动关闭
-                      }); return false;
-                  }
+                  //if (ConsigneeName == '' || ConsigneeName == null) {
+                  //    layer.open({
+                  //        content: '收货人姓名不能为空'
+                  //   , skin: 'msg'
+                  //   , time: 2 //2秒后自动关闭
+                  //    });
+                  //    return false;
+                  //}
+                  //if (ConsigneePhone == '' || ConsigneePhone == null) {
+                  //    layer.open({
+                  //        content: '收货人电话不能为空'
+                  //       , skin: 'msg'
+                  //       , time: 2 //2秒后自动关闭
+                  //    }); return false;
+                  //}
+                  //if (ConsigneAaddress == '' || ConsigneeName == null) {
+                  //    layer.open({
+                  //        content: '收货人地址不能为空'
+                  //       , skin: 'msg'
+                  //       , time: 2 //2秒后自动关闭
+                  //    }); return false;
+                  //}
                   if (num == '' || num == null || num <= 0) {
                       layer.open({
                           content: '购买数量必须大于1'
