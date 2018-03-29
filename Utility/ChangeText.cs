@@ -1,7 +1,11 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -79,7 +83,7 @@ namespace Utility
             var ran = new Random();
             return string.Format("{0}{1}", DateTime.Now.ToString("yyyyMMddHHmmssms"), ran.Next(999));
         }
-        public static int GetUsersId() 
+        public static int GetUsersId()
         {
             //若读取不到账户信息
             if (HttpContext.Current.Session["UsersId"] != null)
@@ -118,7 +122,7 @@ namespace Utility
             return "";
         }
 
-        public static string GetOpenId() 
+        public static string GetOpenId()
         {
             //若读取不到账户信息
             if (HttpContext.Current.Session["OpenId"] != null)
@@ -127,7 +131,47 @@ namespace Utility
             }
             return "";
         }
+        /// <summary>
+        /// 保存图片(base64转图片)
+        /// </summary>        
+        /// <returns></returns>
+        public static string SaveUploadFile(string base64, string folder)
+        {
+            if (base64 == null)
+            {
+                return "";
+            }
+            //
 
+            System.Drawing.Image originalImg = null;   //原图
+
+
+            byte[] bytes = Convert.FromBase64String(base64);
+            MemoryStream memStream = new MemoryStream(bytes);
+            BinaryFormatter binFormatter = new BinaryFormatter();
+            Image img = (Image)binFormatter.Deserialize(memStream);
+            originalImg = img;
+
+            #region 大图
+            var LargeFilePath = AppDomain.CurrentDomain.BaseDirectory + folder + "/Large";
+            string LargelocalPath = Path.Combine(LargeFilePath, "jpg");
+            string dire = Path.GetDirectoryName(LargelocalPath);
+            if (!Directory.Exists(dire + "\\"))
+            {
+                Directory.CreateDirectory(dire + "\\");
+            }
+            string newname = Guid.NewGuid().ToString() + ".jpg";
+
+            originalImg.Save(dire + "\\" + newname);
+            //保存缩略图                   
+
+            #endregion
+
+            //string filename = Path.GetFileName(file.FileName);//文件名
+            //string newname = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            //file.SaveAs(dire + "\\" + newname);
+            return folder + "/Large/" + newname;
+        }
         /// <summary>
         /// 保存文件 type img attach
         /// </summary>
@@ -161,10 +205,10 @@ namespace Utility
                     if (type.IndexOf("jpeg") > -1 || type.IndexOf("gif") > -1 || type.IndexOf("png") > -1)
                     {
                         string folder = "/Upload/" + uploadType;
-                        return SaveUploadFile(file, folder, null);
+                        return SaveUploadFile(file, folder, uploadType);
                     }
                 }
-                else if (uploadType=="xls")
+                else if (uploadType == "xls")
                 {
                     string type = file.ContentType;
                     if (type != null && type != "")
@@ -206,27 +250,79 @@ namespace Utility
         /// <param name="folder"></param>
         /// <param name="httpurl"></param>
         /// <returns></returns>
-        public static string SaveUploadFile(HttpPostedFileBase file, string folder, string httpurl)
+        public static string SaveUploadFile(HttpPostedFileBase file, string folder, string type)
         {
             if (file == null || file.ContentLength == 0)
             {
                 return "";
             }
-            var serverPath = AppDomain.CurrentDomain.BaseDirectory + folder;
+            //           
+            //System.IO.Stream myStream = null;
+            //System.Drawing.Image originalImg = null;   //原图
+            //System.Drawing.Image thumbImg = null;      //缩放图  
+            //myStream = file.InputStream;//上传文件的Stream
 
-            string localPath = Path.Combine(serverPath, file.FileName);
-            string dire = Path.GetDirectoryName(localPath);
+            //originalImg = System.Drawing.Image.FromStream(myStream);//从数据流创建图片           
+
+
+            #region 大图
+            string LargeFilePath = AppDomain.CurrentDomain.BaseDirectory + folder + "/Large";
+            string LargelocalPath = Path.Combine(LargeFilePath, file.FileName);
+            string dire = Path.GetDirectoryName(LargelocalPath);
             if (!Directory.Exists(dire + "\\"))
             {
                 Directory.CreateDirectory(dire + "\\");
             }
-
-            string filename = Path.GetFileName(file.FileName);//文件名
             string newname = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            file.SaveAs(dire + "\\" + newname);
-            return folder + "/" + newname;
+            string filepath = dire + "\\" + newname;
+            string newfilepath = dire + "\\" + "ThumbNail" + newname;
+            file.SaveAs(filepath);
+            int maxWidth = 400;  //最大宽度
+            int maxHeight = 532;  //最大高度 
+            if (type=="FlowerPhoto")
+            {
+                maxWidth = 600;
+                maxHeight = 732;
+            }
+            RemoveRotateFlip(filepath, newfilepath,maxWidth,maxHeight);
+            #endregion
+            //            
+            //string filename = Path.GetFileName(file.FileName);//文件名
+            //string newname = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            //file.SaveAs(dire + "\\" + newname);
+            return folder + "/Large/" + "ThumbNail" + newname;
         }
+        /// <summary>  
+        /// 移除图片的翻转旋转设置  
+        /// </summary>  
+        /// <param name="srcPathName">原文件名</param>  
+        /// <param name="newPathName">新文件名</param>  
+        public static void RemoveRotateFlip(string srcPathName, string newPathName, int maxWidth = 400, int maxHeight = 532)
+        {
+            Image image = new Bitmap(srcPathName);//初始化图片对象             
+            foreach (PropertyItem p in image.PropertyItems)
+            {
+                if (p.Id == 0x112)
+                {
+                    RotateFlipType rft = p.Value[0] == 6 ? RotateFlipType.Rotate90FlipNone
+                            : p.Value[0] == 3 ? RotateFlipType.Rotate180FlipNone
+                            : p.Value[0] == 8 ? RotateFlipType.Rotate270FlipNone
+                            : p.Value[0] == 1 ? RotateFlipType.RotateNoneFlipNone
+                            : RotateFlipType.RotateNoneFlipNone;
+                    p.Value[0] = 0;  //旋转属性值设置为不旋转  
+                    image.SetPropertyItem(p); //回拷进图片流  
+                    image.RotateFlip(rft);
+                }
 
+            }
+                        
+            System.Drawing.Image thumbImg = null;      //缩放图  
+            thumbImg = PubClass.GetThumbNailImage(image, maxWidth, maxHeight);  //按宽、高缩放                
+            thumbImg.Save(newPathName, ImageFormat.Jpeg); //重新保存为正常的图片 
+            thumbImg.Dispose();
+            image.Dispose(); //释放图片对象资源  
+            PubClass.FileDel(srcPathName);//这里是否删除，根据业务需要定  
+        }
         /// <summary>
         /// 保存excel
         /// </summary>
@@ -250,7 +346,7 @@ namespace Utility
             }
 
             string filename = Path.GetFileName(file.FileName);//文件名
-            string newname =fileName + Path.GetExtension(file.FileName);
+            string newname = fileName + Path.GetExtension(file.FileName);
             file.SaveAs(dire + "\\" + newname);
             return folder + "/" + newname;
         }
