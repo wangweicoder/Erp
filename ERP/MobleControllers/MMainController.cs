@@ -71,7 +71,67 @@ namespace ERP.MobleControllers
             }
            
         }
-        //
+        public ActionResult GetArrangementInfos()
+        {
+            try
+            {
+
+                string id = Request["ArrangementId"];
+                Business.Sys_FlowerArrangement Sys_FlowerArrangement = new Business.Sys_FlowerArrangement();
+                Model.FlowerArrangement FlowerArrangement = Sys_FlowerArrangement.GetModel(id);
+                if (FlowerArrangement.belongUsersId != 0)
+                {
+                    DateTime dt = Sys_FlowerArrangement.GetFlowerTreatmentModel(FlowerArrangement.belongUsersId.ToString()).time;
+                    ViewBag.Treattime = dt;
+                    ViewBag.PlanTreatTime = dt.AddDays(7);
+                }
+                if (Session["RoleCode"] != null && Session["RoleCode"].ToString() == "Tourist")
+                {
+                    ViewData["IsTourist"] = 1;
+                }
+                ViewData["IsAllower"] = 1;
+                //当操作人不是对应绑定客户与超级管理员时,判断是否为养护人员,如果为养护人员则判断是否有权限操作此更换花卉
+                if (Session["RoleCode"] != null)
+                {
+                    if (Session["RoleCode"].ToString() != "Customer" && Session["RoleCode"].ToString() != "SuperAdministrator")
+                    {
+                        if (Session["RoleCode"].ToString() == "	yanghu")
+                        {
+                            Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
+                            List<Model.UserAdmin> UserAdminList = new List<Model.UserAdmin>();
+
+                            UserAdminList = Sys_UserAdmin.GetUserAdminListByRoleCode("Customer", Utility.ChangeText.GetUsersId());
+                            //判断所属客户权限中是否包含此客户
+                            UserAdminList = UserAdminList.Where(x => x.ID == FlowerArrangement.belongUsersId).ToList();
+                            if (UserAdminList.Count() > 0)
+                            {
+                                ViewData["IsAllower"] = 1;
+                            }
+                            else
+                            {
+                                ViewData["IsAllower"] = 0;
+                            }
+                        }
+                        else
+                        {
+                            ViewData["IsAllower"] = 0;
+                        }
+                    }
+                    else
+                    {
+                        ViewData["IsAllower"] = 1;
+                    }
+                }
+
+                return View(FlowerArrangement);
+            }
+            catch (Exception ex)
+            {
+                Utility.Log.WriteTextLog("扫码页面", "MMain", ex.Message, "GetArrangementInfo", ex.ToString());
+                return null;
+            }
+
+        }
         // GET: /MMain/
         public ActionResult Index()
         {

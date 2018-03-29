@@ -1,0 +1,267 @@
+﻿@model Model.FlowerArrangement
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>商品详情</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />     
+    @*@Styles.Render("~/bootstrap/css/bootstrap.min.css")
+    <link href="~/FileCss/css/Buttons.css" rel="stylesheet" />*@
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?version=847" />  
+    <script src="~/layui/layui.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    @Scripts.Render("~/Thems/js/layer/layer.js")
+  
+    <style>
+        .gw_num {
+            border: 1px solid #dbdbdb;
+            width: 110px;
+            line-height: 26px;
+            overflow: hidden;
+        }
+
+            .gw_num em {
+                display: block;
+                height: 26px;
+                width: 26px;
+                float: left;
+                color: #7A7979;
+                border-right: 1px solid #dbdbdb;
+                text-align: center;
+                cursor: pointer;
+            }
+
+            .gw_num .num {
+                display: block;
+                float: left;
+                text-align: center;
+                width: 52px;
+                font-style: normal;
+                font-size: 14px;
+                line-height: 24px;
+                border: 0;
+            }
+
+            .gw_num em.add {
+                float: right;
+                border-right: 0;
+                border-left: 1px solid #dbdbdb;
+            }
+
+        .cart {
+            display: inline-block;
+            width: 37%;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            color: #fff;
+            background: #f44623;
+            margin: 0 10px;
+            border-radius: 3px;
+        }
+
+        .gwfnum {
+            font-size: 12px;
+            font-weight: 400;
+            color: #fff;
+            display: block;
+            width: 19px;
+            height: 15px;
+            margin-top: -20px;
+            margin-left: 16px;
+            background-color: red;
+            border-radius: 16px;
+            text-align: center;
+            line-height: 12px;
+        }
+        <!---->
+        .spanstyle {
+            font-weight: 600;
+            float: left;
+        }
+        .week {
+        display: inline-block;
+        width: 27%;
+        height: 26px;
+        text-align: center;
+        line-height: 24px;
+        color: #fff;
+        background: #a0c716;
+        margin: 7px 10px;
+        border-radius: 11px;
+    }
+    </style>
+
+</head>
+<body>    
+    <header id="header" style="background:#ffffff">
+        <div class="topbar">
+            <a href="javascript:history.back();" class="back_btn"><i class="iconfont">ş</i></a>
+            <a href="javascript:;" class="top_home"><i class="iconfont">ƙ</i></a>
+            <h1 class="page_title">花卉详情</h1>
+        </div>
+        <div class="home_menu" id="hMenu">
+            <a href="/Shop/Index"><i class="iconfont">Ő</i><span>我要买花</span></a>
+            <a href="/MFlower/ConservationFlowers"><i class="iconfont">Ɔ</i><span>养护花卉</span></a>
+            <a href="/MFlower/ChangeFlowers"><i class="iconfont">ŭ</i><span>更换花卉</span></a>
+            <a href="/MMIndex/Index"><i class="iconfont">Œ</i><span>会员中心</span></a>
+        </div>
+    </header>     
+        <div class="product" style="position:relative;">
+            <div id="bigImg">
+                <div id="pro_img" class="pro_img">
+                    <div class="pro_img_box">
+                        <ul>
+                            <li>
+                                <div class="pro_img_wrap">
+                                    <img src="@Model.Photo" />
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="pro_img_nav">
+                        @*<i class="iconfont pro_img_item cur">Ƴ</i>
+                        <i class="iconfont pro_img_item">Ƴ</i>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pro_tit border_bottom">
+            <h2 class="spanstyle">花卉名称: @Model.FlowerWatchName </h2>
+                <div  class="week left">每周<span id="kly">@Model.Weekly</span>养护 </div>
+            <div style="padding-top:8px;padding-left: 72%;">
+            <img width="20" height="20" src="~/static/image/1160675719.jpg" />
+            规格: <span style="color:#f44623">@Model.Specifications </span>  </div>         
+            <p>               
+            </p>
+        </div>
+        
+        <div class="jb_canshu" style="margin-bottom:20px;">            
+            <ul>
+                @if (!string.IsNullOrEmpty(Model.OwnedCompany))
+                {
+                    <li>【单位】@Model.OwnedCompany </li>
+                }
+                @if (!string.IsNullOrEmpty(Model.XiXin))
+                {
+                    <li>【习性】@Model.XiXin</li>
+                }
+                @if (!string.IsNullOrEmpty(Model.YangHuFangFa))
+                {
+                    <li><span class="spanstyle">&nbsp;养护方法：</span><span id="fangfa">@Model.YangHuFangFa</span></li>
+                }                
+                <li>
+                      <span class="spanstyle">&nbsp;养护时间：</span>@ViewBag.Treattime
+                </li>
+                <li>
+                    <span class="spanstyle">&nbsp;预计下次养护时间：</span>@ViewBag.PlanTreatTime
+                </li>   
+            </ul>            
+        </div>
+     
+    <div class="jb_canshu" style="margin-bottom:20px;">
+        <h4>基本信息 </h4>
+        <ul>
+            @if (!string.IsNullOrEmpty(Model.FlowerWatchType))
+            {
+                <li>花卉品种：@Model.FlowerWatchType</li>
+            }
+            @if (!string.IsNullOrEmpty(Model.XiXin))
+            {
+                <li>花卉习性：@Model.XiXin</li>
+            }
+            @if (!string.IsNullOrEmpty(Model.YangHuFangFa))
+            {
+                <li>养护方法：@Model.YangHuFangFa</li>
+            }
+           
+        </ul>
+    </div>
+    <div style="height:25px"></div>
+    <div class="btn_box border_top">
+        <div style="float:left;width:58px;overflow:hidden;">
+            <a id="mybuycarer" href="/Shop/GetCartList" class="buycarerNormal"
+               style="position: relative;display:block;float:left;">
+                <em style="position: absolute; top: -5px; right: 0; background: #f44623;
+                color: #fff; display: block; height: 14px; line-height: 14px; padding: 0 3px; border-radius:
+                 14px; display: none;" id="cartCount">0</em>
+                <img src="~/FileCss/images/de_gouwuche.png" width="20" height="20"
+                     style="display: block; margin-left: 5px;" />
+                <span id="end" class="gwfnum"></span>
+                <span style="font-size: 12px; padding-top: 5px;color: #2c3e50; display: block; width: 40px; height: 25px;">购物车</span>
+            </a>
+        </div>
+        <div style="margin-left:12px;">
+            <a href="javascript:void(0)" data-src="" class="cart left addcar">加入购物车</a>
+            <a href="javascript:void(0)" data-src="" onclick="SubmitIinfo()" class="cart right">下单支付</a>
+        </div>
+
+    </div>
+    
+    <script>
+    layui.use('upload', function () {
+        var upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#test8' //绑定元素
+          , url: '/FlowerArrangement/Upload' //上传接口
+          , bindAction: '#test9'
+          , auto: false
+          , data: { "FlowerArrangementId": $("#FlowerArrangementId").val() }
+          , done: function (res) {
+              //layer.alert('提交成功');
+              layer.msg('提交成功');
+              $(this).show();
+              //location.reload();
+          }
+          , error: function () {
+              //请求异常回调
+          }
+        });
+    });
+    //
+    $(function () {
+        //图片正方形
+        var width = $(".pro_img_box li img").width();
+        $(".pro_img_box li img").height(width);
+        //数字转换星期
+        var oldv = $("#kly").text().trim();
+        var show_day = new Array('一', '二', '三', '四', '五', '六', '日');
+        $("#kly").text(show_day[oldv - 1]);
+        //
+        $("#test9").click(function () {
+            $this = $(this);
+            // 保存原按钮的text值
+            var oldText = $this.val();
+            // 设置计时的开始值,5s要从6开始减
+            var i = 6;
+            //禁用按钮
+            $this.attr('disabled', true);
+            //设置定时器
+            var btnTimer = null;
+            btnTimer = setInterval(function () {
+                // 开始计数
+                i--;
+                // 注意clearInterval一定要最后，不然attr和text函数不会执行
+                if (i <= 0) {
+                    $this.removeAttr('disabled');
+                    $this.val(oldText);
+                    clearInterval(btnTimer);
+                }
+                else { $this.val(i); }
+            }, 1000);
+
+        });
+    });
+    </script>
+
+
+    
+</body>
+</html>
