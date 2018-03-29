@@ -84,12 +84,15 @@ namespace WxHelper
                 #region 通过传入的参数得到url请求
                 detail = Utility.PostData.GetData(apiurl);
                 //有可能出错
-                Utility.Log.WriteTextLog("获得ticket", "WxMain/GetTicket", detail, "", "");
+                //Utility.Log.WriteTextLog("获得ticket", "WxMain/GetTicket", detail, "", "");
                 WX_JSSDK WX_JSSDK = JsonConvert.DeserializeObject<WX_JSSDK>(detail);
                 if (WX_JSSDK.access_token != null)//为空时出错
-                { Utility.CacheHelper.SetCache("jsapi_access_token", WX_JSSDK.access_token); }
-            }
+                {
+                    Utility.CacheHelper.SetCache("jsapi_access_token", WX_JSSDK.access_token);
+                }
                 #endregion
+            }
+                
 
             #endregion
 

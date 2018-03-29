@@ -1,0 +1,71 @@
+﻿@model Model.FlowerActive
+@{
+    Layout = null;
+}
+
+@Styles.Render("~/bootstrap/css/bootstrap.css")
+@using (Html.BeginForm("Add", "FlowerActive", FormMethod.Post, new { onsubmit = "return  CheckFrom()", enctype = "multipart/form-data" }))
+{ 
+
+    <div class="box-body">
+        <br />
+        <div class="form-group" style="height:30px;width:100%;">
+            
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>内容</span>
+                <div class="col-sm-6">
+                    @Html.TextAreaFor(m => m.Content, new { @class = "form-control" })
+                </div>
+                <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>对应花卉</span>
+                <div class="col-sm-6">
+                    <select id="FlowerId" name="FlowerId" style="width:200px" class="companyid form-control"></select>     
+                </div>
+                
+         </div>
+    </div>
+
+
+    @Scripts.Render("~/Plugins/jQuery/jquery-2.2.3.min.js")
+    @Scripts.Render("~/Thems/js/layer/layer.js")
+    <script src="~/Scripts/jquery.valiedate.form.js"></script>
+    <script type="text/javascript">
+        function CheckFrom() {
+            if ($("#Content").val().length == 0) {
+                layer.msg('活动内容不能为空');
+                return false;
+            }
+            return true;
+        }
+        ///返回主页的数据，为提交做准备
+        var callbackdata = function () {
+            var d = {};
+            var t = $('form').serializeArray();
+            $.each(t, function () {
+                d[this.name] = this.value;
+            });
+            return d;
+        }
+        $(function () {
+            onloadDropdownlist();
+        });
+
+        //加载
+        function onloadDropdownlist() {
+            var html;
+            $.ajax({
+                url: "/FlowerActive/GetFlowerList",
+                type: "get",
+                dataType: "json",
+                success: function (data, state) {
+                    var companylist = data;
+                    for (var i = 0; i < companylist.length; i++) {
+                        html += '<option value="' + companylist[i].id + '">' + companylist[i].FlowerWatchName + '</option>';
+                    }
+                    $(".companyid").append(html);
+                },
+                error: function (m) { parent.layer.msg("error"); }
+
+            });
+
+        }
+    </script>
+}

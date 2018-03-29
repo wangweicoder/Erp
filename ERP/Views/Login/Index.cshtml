@@ -11,17 +11,33 @@
     <meta name="viewport" content="width=device-width" />
     <title>淘花运</title>
     @Styles.Render("~/bootstrap/css/bootstrap.min.css")
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">*@
     @Styles.Render("~/Thems/css/AdminLTE.min.css")
     @Styles.Render("~/Thems/css/skins/_all-skins.min.css")
     @Styles.Render("~/plugins/iCheck/flat/blue.css")
     @Styles.Render("~/plugins/morris/morris.css")
     @Styles.Render("~/plugins/jvectormap/jquery-jvectormap-1.2.2.css")
-    @Styles.Render("~/plugins/datepicker/datepicker3.css")
-    @Styles.Render("~/plugins/daterangepicker/daterangepicker.css")
+   @* @Styles.Render("~/plugins/datepicker/datepicker3.css")
+    @Styles.Render("~/plugins/daterangepicker/daterangepicker.css")*@
     @Styles.Render("~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css")
     @Styles.Render("~/plugins/iCheck/square/blue.css")
+    @Scripts.Render("~/plugins/jQuery/jquery-2.2.3.min.js")
+    <!-- jQuery UI 1.11.4 -->
+    @*<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <!-- Bootstrap 3.3.6 -->
+    @Scripts.Render("~/bootstrap/js/bootstrap.min.js")*@
+    <!-- iCheck -->
+    @Scripts.Render("~/plugins/iCheck/icheck.min.js")
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+        });
+    </script>
     <script>
         if (self != top) {
             top.location = self.location;
@@ -78,22 +94,7 @@
             </div>
             <!-- /.login-box-body -->
         </div>
-        @Scripts.Render("~/plugins/jQuery/jquery-2.2.3.min.js")
-        <!-- jQuery UI 1.11.4 -->
-        <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-        <!-- Bootstrap 3.3.6 -->
-        @Scripts.Render("~/bootstrap/js/bootstrap.min.js")
-        <!-- iCheck -->
-        @Scripts.Render("~/plugins/iCheck/icheck.min.js")
-        <script>
-            $(function () {
-                $('input').iCheck({
-                    checkboxClass: 'icheckbox_square-blue',
-                    radioClass: 'iradio_square-blue',
-                    increaseArea: '20%' // optional
-                });
-            });
-        </script>
+       
     }
 </body>
 </html>

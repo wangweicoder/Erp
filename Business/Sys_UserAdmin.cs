@@ -75,25 +75,52 @@ namespace Business
         /// <returns></returns>
         public List<Model.UserAdmin> GetUserAdminUsByRoleCode(string RoleCode, int WorkUsersId)
         {
-            string sql =
-@"SELECT * FROM UserAdmin WHERE   RoleCode=@RoleCode AND id=@WorkUsersId order by Weekly";
+            string sql =@"SELECT * FROM UserAdmin WHERE  RoleCode=@RoleCode AND id=@WorkUsersId order by Weekly";
             return Factory.DBHelper.Query<Model.UserAdmin>(SQLConString, sql.ToString(), new DynamicParameters(new { RoleCode, WorkUsersId }));
         }
+        /// <summary>
+        /// 查询客户列表
+        /// </summary>
         public List<Model.UserAdmin> GetAdminInfoList(string RoleCode)
         {
-            string sql =@"SELECT * FROM UserAdmin WHERE   RoleCode=@RoleCode  order by Weekly";
+            StringBuilder sql = new StringBuilder();
+            sql.Append("SELECT * FROM UserAdmin WHERE  RoleCode=@RoleCode ");            
+            sql.Append("order by Weekly");
             return Factory.DBHelper.Query<Model.UserAdmin>(SQLConString, sql.ToString(), new DynamicParameters(new { RoleCode }));
         }
         /// <summary>
-        /// 查询指定角色的用户
+        /// 查询客户列表
+        /// </summary>
+        /// <param name="RoleCode">角色编号</param>
+        /// <param name="week">周次</param>
+        /// <returns></returns> 
+        public List<Model.UserAdmin> GetAdminInfoListbyweek(string RoleCode,int week)
+        {
+            StringBuilder sql = new StringBuilder();
+            sql.Append("SELECT * FROM UserAdmin WHERE  RoleCode=@RoleCode ");
+            if(week!=0){
+                sql.Append("AND  Weekly=@week");
+            }
+            else
+             sql.Append(" order by Weekly");
+            return Factory.DBHelper.Query<Model.UserAdmin>(SQLConString, sql.ToString(), new DynamicParameters(new { RoleCode ,week}));
+        }
+        /// <summary>
+        /// 查询Customer的用户
         /// </summary>
         /// <param name="RoleCode"></param>
         /// <returns></returns>
-        public List<Model.UserAdmin> GetUserAdminListByWorkUsersId(int WorkUsersId)
+        public List<Model.UserAdmin> GetUserAdminListByWorkUsersId(string RoleCode,int WorkUsersId,int week)
         {
-            string sql =
-@"SELECT * FROM UserAdmin WHERE charindex( ','+'" + WorkUsersId + "'+',',','+cast(WorkUsersId as varchar)+',')>0  AND  RoleCode like 'Customer'";
-            return Factory.DBHelper.Query<Model.UserAdmin>(SQLConString, sql.ToString(), new DynamicParameters(new {  }));
+            StringBuilder sql = new StringBuilder();
+            sql.Append("SELECT * FROM UserAdmin WHERE charindex( ','+'" + WorkUsersId + "'+',',','+cast(WorkUsersId as varchar)+',')>0 AND  RoleCode=@RoleCode ");
+            if (week != 0)
+            {
+                sql.Append("AND Weekly=@week ");
+            }
+            else
+            sql.Append("order by Weekly");
+            return Factory.DBHelper.Query<Model.UserAdmin>(SQLConString, sql.ToString(), new DynamicParameters(new { RoleCode,week }));
         }
 
 
@@ -104,8 +131,7 @@ namespace Business
         /// <returns></returns>
         public List<Model.UserAdmin> GetUserAdminListByRoleCodeNo(string RoleCode)
         {
-            const string sql =
-@"SELECT * FROM UserAdmin WHERE  RoleCode!=@RoleCode";
+            const string sql =@"SELECT * FROM UserAdmin WHERE  RoleCode!=@RoleCode";
             return Factory.DBHelper.Query<Model.UserAdmin>(SQLConString, sql.ToString(), new DynamicParameters(new { RoleCode }));
         }
 

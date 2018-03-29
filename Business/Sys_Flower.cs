@@ -175,8 +175,7 @@ FlowerStock=@FlowerStock,FlowerIntroduction=@FlowerIntroduction,FlowerWatchType=
 
         public List<Model.Flower> GetFlowerList() 
         {
-            const string sql =
-@"SELECT * FROM Flower";
+            const string sql =@"SELECT * FROM Flower";
             return Factory.DBHelper.Query<Model.Flower>(SQLConString, sql.ToString(), new DynamicParameters(new {  }));
         }
     }

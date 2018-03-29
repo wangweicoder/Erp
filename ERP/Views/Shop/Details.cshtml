@@ -11,24 +11,16 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="location" content="province=;city=;coord=" />  
-    <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?debug=847" />
-    <script src="~/FileCss/js/jquery.min.js"></script>
-    @*<script src="~/FileCss/js/jquery.touchslider.min.js"></script>*@
-    @*<script src="~/FileCss/js/main.js"></script>*@@*//cooker*@
+    <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?version=847" />    
+    @*<script src="~/FileCss/js/jquery.touchslider.min.js"></script>*@   
     @*<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&amp;ak=2E9486ae97437e84c519f008952b67ae"></script>*@
     @*<script src="~/FileCss/js/MapWrapper.min.js"></script>*@
     @*<link href="~/FileCss/spinner/jquery.spinner.css" rel="stylesheet" />*@
     @*<script src="~/FileCss/js/zepto.min.js?debug=847" type="text/javascript"></script>*@
     @*<script src="~/FileCss/js/main.js?debug=847" type="text/javascript"></script>
     <script src="~/FileCss/js/distpicker.data.js"></script>
-     <script src="~/FileCss/js/distpicker.js"></script>*@
-
+     <script src="~/FileCss/js/distpicker.js"></script>//cooker*@
     @*<script src="~/FileCss/spinner/jquery.spinner.js"></script>*@
-    <script src="~/FileCss/jq/jquery.fly.min.js"></script>
-    <script src="~/Thems/js/layer/mobile/layer.js"></script>
-
-</head>
-<body>
     <style>
         .gw_num {
             border: 1px solid #dbdbdb;
@@ -88,39 +80,27 @@
             margin-left: 16px;
             background-color: red;
             border-radius: 16px;
-            text-align: center;line-height: 12px;
+            text-align: center;
+            line-height: 12px;
         }
     </style>
-    <script>
-        $(document).ready(function () {
-            //加的效果
-            $(".add").click(function () {
-                var n = $(this).prev().val();
-                var num = parseInt(n) + 1;
-                if (num <= 0) {
-                    num = 1;
-                    //return;
-                }
-                $(this).prev().val(num);
-            });
-            //减的效果
-            $(".jian").click(function () {
-                var n = $(this).next().val();
-                var num = parseInt(n) - 1;
-                if (num <= 0) {
-                    num = 1;
-                    //return;
-                }
-                $(this).next().val(num);
-            });
-            //图片正方形
-            var width = $(".pro_img_box li img").width();
-            $(".pro_img_box li img").height(width);
-            
-        })
-    </script>
 
-    @Html.Partial("header")
+</head>
+<body>    
+    <header id="header" style="background:#ffffff">
+        <div class="topbar">
+            <a href="javascript:history.back();" class="back_btn"><i class="iconfont">ş</i></a>
+            <a href="javascript:;" class="top_home"><i class="iconfont">ƙ</i></a>
+            <h1 class="page_title">花卉详情</h1>
+        </div>
+        <div class="home_menu" id="hMenu">
+            <a href="/Shop/Index"><i class="iconfont">Ő</i><span>我要买花</span></a>
+            <a href="/MFlower/ConservationFlowers"><i class="iconfont">Ɔ</i><span>养护花卉</span></a>
+            <a href="/MFlower/ChangeFlowers"><i class="iconfont">ŭ</i><span>更换花卉</span></a>
+            <a href="/MMIndex/Index"><i class="iconfont">Œ</i><span>会员中心</span></a>
+        </div>
+    </header>
+    @*@Html.Partial("header")*@
     <form action="/Shop/PayOrders" method="post" id="fromInfo">
         <div class="product" style="position:relative;">
             <div id="bigImg">
@@ -209,25 +189,7 @@
             </dl>
             @*<dl id="_address" class="yanse" style="display: none;"></dl>*@
         </div>
-        <div class="btn_box border_top">
-            <div style="float:left;width:58px;overflow:hidden;">
-                <a id="mybuycarer" href="/Shop/GetCartList"  class="buycarerNormal"
-                   style="position: relative;display:block;float:left;">
-                    <em style="position: absolute; top: -5px; right: 0; background: #f44623;
-                color: #fff; display: block; height: 14px; line-height: 14px; padding: 0 3px; border-radius:
-                 14px; display: none;" id="cartCount">0</em>
-                    <img src="~/FileCss/images/de_gouwuche.png" width="20" height="20"
-                         style="display: block; margin-left: 5px;" />
-                    <span id="end" class="gwfnum"></span>
-                    <span style="font-size: 12px; padding-top: 5px;color: #2c3e50; display: block; width: 40px; height: 25px;">购物车</span>
-                </a>
-            </div>
-            <div style="margin-left:12px;">
-                <a href="javascript:void(0)" data-src="" class="cart left addcar">加入购物车</a>
-                <a href="javascript:void(0)" data-src="" onclick="SubmitIinfo()" class="cart right">下单支付</a>
-            </div>
-
-        </div>
+        
     </form>
     <div class="jb_canshu" style="margin-bottom:20px;">
         <h4>基本信息 </h4>
@@ -250,6 +212,30 @@
             }
         </ul>
     </div>
+    <div style="height:25px"></div>
+    <div class="btn_box border_top">
+        <div style="float:left;width:58px;overflow:hidden;">
+            <a id="mybuycarer" href="/Shop/GetCartList" class="buycarerNormal"
+               style="position: relative;display:block;float:left;">
+                <em style="position: absolute; top: -5px; right: 0; background: #f44623;
+                color: #fff; display: block; height: 14px; line-height: 14px; padding: 0 3px; border-radius:
+                 14px; display: none;" id="cartCount">0</em>
+                <img src="~/FileCss/images/de_gouwuche.png" width="20" height="20"
+                     style="display: block; margin-left: 5px;" />
+                <span id="end" class="gwfnum"></span>
+                <span style="font-size: 12px; padding-top: 5px;color: #2c3e50; display: block; width: 40px; height: 25px;">购物车</span>
+            </a>
+        </div>
+        <div style="margin-left:12px;">
+            <a href="javascript:void(0)" data-src="" class="cart left addcar">加入购物车</a>
+            <a href="javascript:void(0)" data-src="" onclick="SubmitIinfo()" class="cart right">下单支付</a>
+        </div>
+
+    </div>
+    <script src="~/FileCss/js/main.js"></script>
+    <script src="~/FileCss/js/jquery.min.js"></script>
+    <script src="~/FileCss/jq/jquery.fly.min.js"></script>
+    <script src="~/Thems/js/layer/mobile/layer.js"></script>
     <script>
         $('.pcfuwu').click(function () {
             var el = $(this), f = el.hasClass('active'),
@@ -258,7 +244,7 @@
             else { el.addClass(cn) };
             return false;
         });
-        //
+        //飞入购物车
         (function ($) {
             $.extend({
                 tipsBox: function (options) {
@@ -299,6 +285,29 @@
     </script>
     <script>
         $(function () {
+            //加的效果
+            $(".add").click(function () {
+                var n = $(this).prev().val();
+                var num = parseInt(n) + 1;
+                if (num <= 0) {
+                    num = 1;
+                    //return;
+                }
+                $(this).prev().val(num);
+            });
+            //减的效果
+            $(".jian").click(function () {
+                var n = $(this).next().val();
+                var num = parseInt(n) - 1;
+                if (num <= 0) {
+                    num = 1;
+                    //return;
+                }
+                $(this).next().val(num);
+            });
+            //图片正方形
+            var width = $(".pro_img_box li img").width();
+            $(".pro_img_box li img").height(width);
             //添加购物车
             $(".addcar").click(function (event) {
                 var num = $('#FlowerNum').val();
@@ -363,7 +372,12 @@
                 prop.find('i').removeClass('niceIn');
             }, 1000);
         }
-
+        //菜单显示隐藏
+        //$(".top_home").click(function () {
+        //    var target = $(".home_menu");
+        //    if (target.slideToggle) target.slideToggle();
+        //    else target.toggle();
+        //});
         function SubmitIinfo() {
             //询问框
             layer.open({

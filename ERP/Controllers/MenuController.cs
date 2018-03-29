@@ -10,7 +10,7 @@ namespace ERP.Controllers
     public class MenuController : LoginFilter
     {
         //
-        // GET: /Menu/
+        [OutputCache(Duration=20,VaryByParam="none",Location=System.Web.UI.OutputCacheLocation.Client)]
         public ActionResult Index()
         {
             return View();
@@ -22,7 +22,7 @@ namespace ERP.Controllers
         /// <param name="offset"></param>
         /// <param name="MenuCode"></param>
         /// <param name="MenuName"></param>
-        /// <returns></returns>
+        /// <returns></returns>      
         public ActionResult GetMenuList(int limit, int offset, string MenuCode, string MenuName)
         {
             Business.Sys_Menu Sys_Menu = new Business.Sys_Menu();

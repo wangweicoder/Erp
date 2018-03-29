@@ -6,77 +6,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>首页</title>
-
     <link href="~/points/css/base.css" rel="stylesheet" />
     <link href="~/points/css/index.css" rel="stylesheet" />
     <link href="~/points/css/mui.min.css" rel="stylesheet" />
     <link href="~/points/css/loaders.min.css" rel="stylesheet" />
     <link href="~/points/css/loading.css" rel="stylesheet" />
     <link href="~/points/css/swiper.min.css" rel="stylesheet" />
-
-    <script src="~/points/js/rem.js"></script>
-    <script src="~/points/js/jquery-1.8.3.min.js"></script>
-    <script src="~/points/js/swiper.jquery.min.js"></script>
-    <script src="~/points/js/others.js"></script>
-    <script src="~/Thems/js/layer/mobile/layer.js"></script>
-    @*加载弹出层
-    @Scripts.Render("~/Thems/js/layer/layer.js")*@
-    <script type="text/javascript">
-        $(window).load(function () {
-            $(".loading").addClass("loader-chanage")
-            $(".loading").fadeOut(300)
-        })
-
-        $(function () {
-            $("#down").click(function () {
-                var count = $("#count").html();
-                if (count > 1) {
-                    $("#count").html($("#count").html() - 1);
-                } else {
-                    $("#count").html(1);
-                }
-            })
-            //
-            $(".gouwu").click(function () {
-                var gid = $(this).attr("gid");
-                layer.open({
-                    content: '您确定将此商品加入购物车吗？'
-                 , btn: [ '确定','取消']
-                 , yes: function (index) {
-                var num = 1;              
-                $.ajax({
-                    url: '/BuyCart/AddToCart',
-                    data: { "FlowerId": gid, "Num": num },
-                    dataType: "json",
-                    success: function (data, status) {
-                        if (data.code == 1) {
-                            layer.open({
-                                content: '添加购物车成功!'
-                                             , skin: 'msg'
-                                             , time: 2 //2秒后自动关闭
-                            });
-                        }
-                    },
-                })//提示
-                
-                 },
-                 no: function (index) {
-                     layer.close(index);
-                 }
-                });
-            });
-            //
-        });
-        function jian() {
-            var count = $("#count").html();
-            if (count > 1) {
-                $("#count").html($("#count").html() - 1);
-            } else {
-                $("#count").html(1);
-            }
-        }
-
-        </script>
     <style>
         .gouwu {
             margin-top: -19%;
@@ -102,7 +37,8 @@
     <!--头部区域-->
     <header class="mui-bar mui-bar-nav" id="header">
         <h4>淘花运</h4>
-
+        <a href="/MOrders/MIndex" style="color: #fff; font-size: 13px; width: 90px;">我的订单
+        </a> 
     </header>
     <div id="main" class="clearfloat warp">
         <div class="mui-content">
@@ -183,6 +119,67 @@
             </ul>
         </footer>*@
     <!--footer end-->
+    <script src="~/points/js/jquery-1.8.3.min.js"></script>
+    <script src="~/points/js/rem.js"></script>    
+    <script src="~/points/js/swiper.jquery.min.js"></script>
+    <script src="~/points/js/others.js"></script>  
+    <script src="~/Thems/js/layer/mobile/layer.js"></script>
+    @*加载弹出层
+        @Scripts.Render("~/Thems/js/layer/layer.js")*@
+    <script type="text/javascript">
+        $(window).load(function () {
+            $(".loading").addClass("loader-chanage")
+            $(".loading").fadeOut(300)
+        });
 
+        $(function () {
+            $("#down").click(function () {
+                var count = $("#count").html();
+                if (count > 1) {
+                    $("#count").html($("#count").html() - 1);
+                } else {
+                    $("#count").html(1);
+                }
+            })
+            //
+            $(".gouwu").click(function () {
+                var gid = $(this).attr("gid");
+                layer.open({
+                    content: '您确定将此商品加入购物车吗？'
+                 , btn: ['确定', '取消']
+                 , yes: function (index) {
+                     var num = 1;
+                     $.ajax({
+                         url: '/BuyCart/AddToCart',
+                         data: { "FlowerId": gid, "Num": num },
+                         dataType: "json",
+                         success: function (data, status) {
+                             if (data.code == 1) {
+                                 layer.open({
+                                     content: '添加购物车成功!'
+                                                  , skin: 'msg'
+                                                  , time: 2 //2秒后自动关闭
+                                 });
+                             }
+                         },
+                     })//提示
+
+                 },
+                    no: function (index) {
+                        layer.close(index);
+                    }
+                });
+            });
+            //
+        });
+        //function jian() {
+        //    var count = $("#count").html();
+        //    if (count > 1) {
+        //        $("#count").html($("#count").html() - 1);
+        //    } else {
+        //        $("#count").html(1);
+        //    }
+        //}
+    </script>
 </body>
 </html>

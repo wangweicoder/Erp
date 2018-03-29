@@ -86,7 +86,7 @@
 
     <script src="~/points/js/rem.js"></script>
     <script src="~/points/js/jquery-1.8.3.min.js"></script> 
-    <script src="~/Bootstrap/js/jquery.bootstrap-touchspin.min.js"></script>
+    @*<script src="~/Bootstrap/js/jquery.bootstrap-touchspin.min.js"></script>*@
     <script src="~/points/js/swiper.jquery.min.js"></script>
     <script src="~/FileCss/js/distpicker.data.js"></script>
     <script src="~/FileCss/js/distpicker.js"></script>
@@ -187,8 +187,17 @@
              '&Remark=' + $("#Remark").val() +
              '&DetailedAddress=' + adr + adr1 + adr2 + $("#DetailedAddress").val() +
              '&ConsigneeName=' + $("#ConsigneeName").val() +
-             '&ConsigneePhone=' + $("#ConsigneePhone").val(),
-               type: "get",              
+             '&ConsigneePhone=' + $("#ConsigneePhone").val(),               
+               type: "get",
+               async: true,
+               success: function (data) {
+                   layer.msg('提交');
+                   //console.log(data);
+                   location.href = '/WxPay/Index?OrdersId=' + data.OrdersId + '&PayTotal=' + data.PayTotal;
+               },
+               error: function (err) {
+                   layer.msg(err);
+               }
             })
         }
     </script>
@@ -230,30 +239,33 @@
                                 <div class="col-md-3 column productbox">
                                     @*@Html.Hidden("Id", item.Id)*@
                                     @Html.Hidden("FlowerId", item.FlowerId)
-                                    <div class="producttitle">
+                                    <div class="producttitle" style="padding-bottom: 10px;">
                                         <div class="productname">
                                             <img src="@item.FlowerWatchPhoto" style="width: 70px; height: 80px;padding-top:10px" class="img-responsive">
                                         </div>
                                         <div class="productdes">
                                             <table>
                                                 <tr>
-                                                    <td style="width:45px;">单价：</td>
-                                                    <td name="demo1">@item.FlowerSalesPrice</td>
+                                                    <td>@item.FlowerWatchName</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>数量：</td>
-                                                    <td>
+                                                      <td>
                                                         <div class="gw_num">
                                                             <em class="jian">-</em>
                                                             <input type="text" value="@item.Num" class="num" name="FlowerNum" id="FlowerNum" />
                                                             <em class="add">+</em>
                                                         </div>
                                                     </td>
+                                                    
                                                 </tr>
+                                                <tr><td><span>¥</span><span name="demo1">@item.FlowerSalesPrice</span></td></tr>
                                             </table>
                                         </div>
                                     </div>
-
+                                    <div class="productprice">
+                                        <div class="text-center">
+                                        </div>
+                                    </div>
                                 </div>
                             }
 

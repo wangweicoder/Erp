@@ -22,14 +22,14 @@ function jsonDateFormat(jsonDate) {//json日期格式转换为正常格式
     }
 }
 
-(function (i, s, o, g, r, a, m) {
-    i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-        (i[r].q = i[r].q || []).push(arguments)
-    }, i[r].l = 1 * new Date(); a = s.createElement(o),
-m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-ga('create', 'UA-36708951-1', 'wenzhixin.net.cn');
-ga('send', 'pageview');
+//(function (i, s, o, g, r, a, m) {
+//    i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+//        (i[r].q = i[r].q || []).push(arguments)
+//    }, i[r].l = 1 * new Date(); a = s.createElement(o),
+//m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+//})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+//ga('create', 'UA-36708951-1', 'wenzhixin.net.cn');
+//ga('send', 'pageview');
 
 
 var TableInit = function () {
@@ -103,7 +103,7 @@ var TableInit = function () {
     oTableInit.queryParams = function (params) {
         var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
             limit: params.limit,   //页面大小
-            offset: (params.offset + 1),  //页码
+            offset: (params.offset + 1),  //从第几条开始(1,11,21)偏移量
             FlowerNumber: $("#FlowerNumber").val(),
             deptSelectItems: $("#deptSelectItems").find("option:selected").val()
         };

@@ -6,9 +6,6 @@ function farword(href){
 }
 
 function black(div){
-
     $(div).css({"color":"#337ab7"});
-
     history.back();
-
 }

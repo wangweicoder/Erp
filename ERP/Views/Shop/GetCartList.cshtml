@@ -109,7 +109,7 @@
                     $(".btn_box a").css("background", " #f44623");
                     fnum = allfnum;
                     //总计
-                    var tyuj = $(this).closest("div.productbox table").find("[name='demo1']").text();
+                    var tyuj = $(this).closest("div.productbox").find("[name='demo1']").text();
                     fmoney += parseInt(tyuj) * parseInt(tyu);
                     $("#totalmoney").text("¥" + fmoney);
                 } else {
@@ -151,7 +151,7 @@
                     var tyu = $(this).closest("div.productbox").find("input[name^='demo2']").val();
                     fnum += parseInt(tyu);
                     $("#totalpkg").text(fnum);
-                    var tyuj = $(this).closest("div.productbox table").find("[name='demo1']").text();
+                    var tyuj = $(this).closest("div.productbox").find("[name='demo1']").text();
                     fmoney+=parseInt(tyuj)*parseInt(tyu);
                     $("#totalmoney").text("¥"+fmoney);
                 } else {
@@ -159,7 +159,7 @@
                     fnum -= parseInt(tyu);
                     $("#totalpkg").text(fnum);//件数
                     //总计
-                    var tyuj = $(this).closest("div.productbox table").find("[name='demo1']").text();
+                    var tyuj = $(this).closest("div.productbox").find("[name='demo1']").text();
                     fmoney-=parseInt(tyuj)*parseInt(tyu);
                     $("#totalmoney").text("¥"+fmoney);
                 }
@@ -207,7 +207,19 @@
 
 </head>
 <body>   
-    @Html.Partial("header")   
+    <header id="header" style="background:#ffffff">
+        <div class="topbar">
+            <a href="javascript:history.back();" class="back_btn"><i class="iconfont">ş</i></a>
+            <a href="javascript:;" class="top_home"><i class="iconfont">ƙ</i></a>
+            <h1 class="page_title">购物车</h1>
+        </div>
+        <div class="home_menu" id="hMenu">
+            <a href="/Shop/Index"><i class="iconfont">Ő</i><span>我要买花</span></a>
+            <a href="/MFlower/ConservationFlowers"><i class="iconfont">Ɔ</i><span>养护花卉</span></a>
+            <a href="/MFlower/ChangeFlowers"><i class="iconfont">ŭ</i><span>更换花卉</span></a>
+            <a href="/MMIndex/Index"><i class="iconfont">Œ</i><span>会员中心</span></a>
+        </div>
+    </header>
     <div class="container">
         <div class="row">
             @for (int i = 0; i < Model.Products.Count; i++)
@@ -226,29 +238,31 @@
                     <div class="producttitle">
                         @*<div class="productname">@item.FlowerWatchName</div>
                         <div class="productdes">@item.FlowerIntroduction</div>*@
+                       
                         <div class="productname">
-                            <a href="/Shop/Details?id=@item.FlowerId">
-                                <img src="@item.FlowerWatchPhoto" style="width: 70px; height: 80px;padding-top:10px" class="img-responsive">
-                            </a>
+                            <div style="width:22px;float:left;padding-top:35px"><input type="checkbox" class="checkbox" id="chk_@item.Id" /></div> 
+                            <div style="float:left;">
+                                <a href="/Shop/Details?id=@item.FlowerId">
+                                    <img src="@item.FlowerWatchPhoto" style="width: 70px; height: 80px;padding-top:10px" class="img-responsive">
+                                </a>
+                            </div>
                         </div>
                         <div class="productdes">
                             <table>
                                 <tr>
-                                    <td style="width:45px;">单价：</td>
-                                    <td name="demo1">@item.FlowerSalesPrice</td>
+                                    <td >@item.FlowerWatchName</td>
                                 </tr>
-                                <tr>
-                                    <td>数量：</td>
+                                <tr>                                    
                                     <td>
                                         <input class="demo2" type="text" value="@item.Num" name="demo2" />
                                     </td>
+                                    <td style="padding-left:10px"><input class="btn btn-default btn-sm" type="button" value="移除" /></td>
                                 </tr>
-                                <tr>
-                                    <td><input type="checkbox" class="checkbox" id="chk_@item.Id" /></td>                                   
-                                    <td style="padding-right: 20px;">小计：@((item.Num * item.FlowerSalesPrice).ToString("c"))</td>
-                                    <td>
-                                        <input class="btn btn-default btn-sm" type="button" value="移除" />
-                                    </td>
+                                <tr>                                   
+                                    <td>¥<span name="demo1">@item.FlowerSalesPrice</span></td>
+                                    @*<td>
+                                        @((item.Num * item.FlowerSalesPrice).ToString("c"))
+                                    </td>*@
                                 </tr>
                             </table>
                         </div>

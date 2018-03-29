@@ -17,9 +17,7 @@
     <link rel="apple-touch-icon-precomposed" href="~/FileCss/images/screenLogo.png?debug=847" />
     <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?debug=89559" />
     @*<link href="~/points/css/base.css" rel="stylesheet" />*@
-    <link href="~/points/css/UserIndexfoot.css" rel="stylesheet" />
-    <script src="~/FileCss/js/zepto.min.js?debug=847" type="text/javascript"></script>
-    <script src="~/FileCss/js/main.js?debug=847" type="text/javascript"></script>
+    <link href="~/points/css/UserIndexfoot.css" rel="stylesheet" />    
    <style type="text/css">
     * {
         margin: 0;
@@ -45,9 +43,21 @@
     </style >
 </head>
 <html>
-<body>   @*style="background-color: #f0f0f0;height:100%;border:1px solid red"</span><span>*@
-    @Html.Partial("header")
-
+<body>   @*style="background-color: #f0f0f0;height:100%;border:1px solid red"</span><span>
+    @Html.Partial("header")*@
+    <header id="header" style="background:#ffffff">
+        <div class="topbar">
+            <a href="javascript:history.back();" class="back_btn"><i class="iconfont">ş</i></a>
+            <a href="javascript:;" class="top_home"><i class="iconfont">ƙ</i></a>
+            <h1 class="page_title">个人中心</h1>
+        </div>
+        <div class="home_menu" id="hMenu">
+            <a href="/Shop/Index"><i class="iconfont">Ő</i><span>我要买花</span></a>
+            <a href="/MFlower/ConservationFlowers"><i class="iconfont">Ɔ</i><span>养护花卉</span></a>
+            <a href="/MFlower/ChangeFlowers"><i class="iconfont">ŭ</i><span>更换花卉</span></a>
+            <a href="/MMIndex/Index"><i class="iconfont">Œ</i><span>会员中心</span></a>
+        </div>
+    </header>
     <div class="vip-header">
             <dl>
                 <dt>
@@ -55,7 +65,7 @@
                     @*<img src="~/FileCss/images/user.png"  height="400"/>*@
                 </dt>
                 <dd>
-                    <h4><span>@Utility.ChangeText.GetUserName()  VIP</span></h4>
+                    <h4><span>@Utility.ChangeText.GetRealName()  VIP</span></h4>
                     @*<p><span>积分：<i>30</i></span>&nbsp;&nbsp;<span>红包：<i>0</i></span></p>*@
                 </dd>
             </dl>
@@ -94,12 +104,38 @@
         <ul>
             <li class="border_bottom"> 
             <a href="/MMain/ClockAttendance" class="border_right"><i class="iconfont" style="font-size:22px;">
-                </i><span class="FontMenu"><em>考勤打卡</em></span></a>
-             <a href="/MFlower/ConservationFlowers"><i class="iconfont" style="font-size:24px;">
-                 </i><span class="FontMenu"><em>养护花卉</em></span></a> </li>
-            <li class="border_bottom"> <a href="/MFlower/ChangeFlowers" class="border_right"><i class="iconfont" style="font-size:24px;"></i><span class="FontMenu"><em>更换花卉</em></span></a> <a href="/MMain/ProblemsAndSuggestions"><i class="iconfont" style="font-size:24px;"></i><span class="FontMenu"><em>问题建议</em></span></a> </li>
-            <li class="border_bottom"> <a href="/MMain/CustomRequirements" class="border_right"><i class="iconfont"></i><span class="FontMenu"><em>定制需求</em></span></a> <a href="/ServiceIntroduction/ShowInfo"><i class="iconfont" style="font-size:20px; text-indent:2px;"></i><span class="FontMenu"><em>服务介绍</em></span></a> </li>
-            <li class="border_bottom"> <a href="/FlowerTreatment/MIndex" class="border_right"><i class="iconfont"></i><span class="FontMenu"><em>养护记录</em></span></a> <a href="/FlowerChange/MIndex"><i class="iconfont" style="font-size:20px; text-indent:2px;"></i><span class="FontMenu"><em>更换记录</em></span></a> </li>
+                </i><span class="FontMenu"><em>考勤打卡</em></span></a>             
+                <a href="/MMain/ProblemsAndSuggestions">
+                    <i class="iconfont" style="font-size:24px;">
+                        
+                    </i><span class="FontMenu"><em>问题建议</em></span>
+                </a>
+            </li>
+            <li class="border_bottom"> 
+            <a href="/MFlower/ChangeFlowers" class="border_right">
+                <i class="iconfont" style="font-size:24px;">
+                </i><span class="FontMenu"><em>更换花卉</em></span></a> 
+                <a href="/FlowerChange/MIndex">
+                    <i class="iconfont" style="font-size:24px;">                        
+                    </i><span class="FontMenu"><em>更换记录</em></span>
+                </a>
+             </li>
+            <li class="border_bottom">
+             <a href="/MMain/CustomRequirements" class="border_right"><i class="iconfont">
+                 </i><span class="FontMenu"><em>定制需求</em></span></a> 
+            <a href="/ServiceIntroduction/ShowInfo"><i class="iconfont" style="font-size:20px; text-indent:2px;">
+                </i><span class="FontMenu"><em>服务介绍</em></span></a> 
+            </li>
+            <li class="border_bottom">
+                <a href="/MFlower/ConservationFlowers" class="border_right">
+                    <i class="iconfont">                        
+                    </i><span class="FontMenu"><em>养护花卉</em></span>
+                </a> 
+                <a href="/FlowerTreatment/MIndex">
+                    <i class="iconfont" style="font-size:20px; text-indent:2px;">                        
+                    </i><span class="FontMenu"><em>养护记录</em></span>
+                </a> 
+            </li>
          </ul>
     </div>
 
@@ -122,20 +158,34 @@
                     <li><a href="/product/31578.html"><img src="images/20150603130933769.jpg" width="80" height="80" alt="img" /><em>魅族 魅蓝note2（M571）公开版</em><b>￥880.00</b></a></li>
                 </ul>
             </div>
-        </div>*@
-    <script>
-        var num_li = Number($(".pj_box li").length);
-        $(".pj_box ul").css("width", (num_li * 100));
-    </script>
-    @Html.Partial("FootView")
+        </div>
+        <script>
+            var num_li = Number($(".pj_box li").length);
+            $(".pj_box ul").css("width", (num_li * 100));
+        </script>
+    @Html.Partial("FootView")*@
     <footer id="footer" >
         <div class="footbar" id="noLogin">
-            <a id="f1_btnLogin" href="/MLogin/Index?LoginOut=1" class="login_btn">退出</a>
-            @*<a href="http://m.ch999.com/register.aspx">注册</a>*@
-            <a href="#" class="backtop_btn">↑回顶部</a>
+            @*<a id="f1_btnLogin" href="/MLogin/Index?LoginOut=1" class="login_btn">退出</a>       
+            <a href="#" class="backtop_btn">↑回顶部</a>*@
+            @{
+                var fa = ViewData["FlowerActive"] as List<Model.FlowerActive>;
+                if (fa.Count > 0)
+                {
+            <div style="z-index:1; float:left;width:290px;">
+               <img src="~/static/image/check1.png" />
+                <marquee behavior="scroll" scrollamount="5" 
+                 style="float:left;margin-top:-59px;margin-left:29px;background:url(/static/image/hou.png) no-repeat">
+                <div>
+                     <a href="/Shop/Details?id=@fa[0].FlowerId" style="color:red">@fa[0].Content</a>
+                </div>
+                </marquee>
+            </div>
+            
+                }
+             }
         </div>
-    </footer>
-    <script>var url = location.href; var platfomrs = ["360ad", "goad", "juxad", "zhtad", "ttad", "tead", "snswxtsad", "snswxgnad", "snsxlad", "snstxad", "snsqzad", "snstbzad", "snstbwad", "snsblad", "snshzad", "snsqtad", "mgzhad", "mttad"]; for (index in platfomrs) { if (url.indexOf(platfomrs[index]) > 0) { Cookie.Set("sem", "on", 60 * 60 * 3); } }</script>
+    </footer>  
     <!--将以下代码放在Footer文件中-->
     <div  style ="position: fixed; bottom: 0; width: 100%;">
         <div class="UserIndex_menu" id="hMenu">
@@ -145,5 +195,9 @@
             <a href="/MLogin/Index?LoginOut=1"><i class="iconfont">Œ</i><span>退出</span></a>
         </div>
     </div>
+
+    @*<script src="~/FileCss/js/zepto.min.js?debug=847" type="text/javascript"></script>
+    <script src="~/FileCss/js/main.js?debug=847" type="text/javascript"></script>*@
+    
 </body>
 </html>

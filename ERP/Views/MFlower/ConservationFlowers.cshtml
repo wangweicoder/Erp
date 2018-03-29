@@ -2,24 +2,62 @@
 @{
     Layout = null;
 }
-
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-dpi, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>养护花卉</title>
-    @Styles.Render("~/static/css/bootstrap.css")
-    <script src="~/static/js/jquery.js"></script>
-    <script src="~/static/js/util.js"></script>
-    <script src="~/Thems/js/layer/mobile/layer.js"></script>
-    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    @*@Styles.Render("~/static/css/bootstrap.css")*@
+    @Styles.Render("~/bootstrap/css/bootstrap.min.css")    
     <style>
         table tr {
             height: 20px;
         }
-    </style>
+    </style>    
+</head>
+<body>
+    <form id="formInfo" style="width: 80%; margin: 70px auto;">
+        <div class="navbar navbar-fixed-top" data-id="top">
+            <div class="navbar-inner" style="text-align: center; background-color: #79ca06; height: 50px; color: #FFFFFF; line-height: 50px; font-size: 18px;">
+                <div style="float: left;margin-left: 10px; " onmousedown="black(this)">
+                    <i class="glyphicon glyphicon-arrow-left"></i>
+                </div>
+                养护花卉
+            </div>
+            <input type="hidden" name="latitude" id="latitude" />
+            <input type="hidden" name="longitude" id="longitude" />
+            <input type="hidden" id="msg" value="@ViewData["success"]" />
+        </div>
+        <input type="hidden" value="@ViewBag.LoginError" id="InfoShow" />
+        <div class="form-group">
+            <label for="exampleInputEmail1">养护时间</label>
+            <select id="sitemweek" class="form-control">
+                <option value="0">--请选择--</option>
+                <option value="1">周一</option>
+                <option value="2">周二</option>
+                <option value="3">周三</option>
+                <option value="4">周四</option>
+                <option value="5">周五</option>
+                <option value="6">周六</option>
+                <option value="7">周日</option>
+            </select>
+            <label for="exampleInputEmail1">养护花卉所属客户</label>
+            <select id="deptSelectItems" class="form-control">
+              </select>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">备注</label>
+                    @Html.TextAreaFor(x => x.ContentMsg, new { @class = "form-control", @placeholder = "请输入备注" })
+                </div>
+                <div style="float: right; margin-bottom: 10px;">
+                    <button type="button" onclick="SumbitInfo()" class="btn btn-primary glyphicon glyphicon-ok">提交</button>
+                </div>
+</div>
+    </form>
+    <script src="~/static/js/jquery.js"></script>
+    <script src="~/static/js/util.js"></script>
+    <script src="~/Thems/js/layer/mobile/layer.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
     <script>
         wx.config({
             debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -74,7 +112,6 @@
                 });
             }
 
-
             if ($("#InfoShow").val() != "") {
                 //信息框
                 layer.open({
@@ -82,16 +119,19 @@
                   , btn: '我知道了'
                 });
             }
-        })
-
-        function SumbitInfo()
-        {
+            onloadDropdownlist(0);
+            
+        });
+        $("#sitemweek").change(function () {
+            var week = $(this).val();
+            onloadDropdownlist(week);
+        });
+        function SumbitInfo() {
             $.ajax({
                 url: '/MFlower/ConservationFlowers',
                 data: $("#formInfo").serialize(),
-                type:'POST',
-                success: function (data)
-                {
+                type: 'POST',
+                success: function (data) {
                     if (data == "1") {
                         //信息框
                         layer.open({
@@ -110,37 +150,27 @@
                     }
                 }
             })
-        }
-        function CheckFrom() {
-            return true;
+        }       
+        //加载公司
+        function onloadDropdownlist(week) {          
+            $.ajax({
+                url: "/MFlower/GetCompanyList?week=" + week,
+                type: "get",
+                dataType: "json",
+                success: function (data, state) {
+                    var companylist = data;
+                    var html =null;
+                    for (var i = 0; i < companylist.length; i++) {
+                        html += '<option value="' + companylist[i].Value + '">' + companylist[i].Text + '</option>';
+                    }
+                    $("#deptSelectItems").html(html);
+                },
+                error: function (m) { parent.layer.msg("error"); }
+
+            });
+
         }
     </script>
-</head>
-<body>
-    <form id="formInfo" style="width: 80%; margin: 70px auto;">
-        <div class="navbar navbar-fixed-top" data-id="top">
-            <div class="navbar-inner" style="text-align: center; background-color: #79ca06; height: 50px; color: #FFFFFF; line-height: 50px; font-size: 20px;">
-                <div style="float: left;margin-left: 10px; " onmousedown="black(this)">
-                    <i class="glyphicon glyphicon-arrow-left"></i>
-                </div>
-                养护花卉
-            </div>
-            <input type="hidden" name="latitude" id="latitude" />
-            <input type="hidden" name="longitude" id="longitude" />
-            <input type="hidden" id="msg" value="@ViewData["success"]" />
-        </div>
-        <input type="hidden" value="@ViewBag.LoginError" id="InfoShow" />
-        <div class="form-group">
-            <label for="exampleInputEmail1">养护花卉所属客户</label>
-            @Html.DropDownList("deptSelectItems", ViewData["deptSelectItems"] as List<SelectListItem>, new { @class = "form-control" })
-            <div class="form-group">
-                <label for="exampleInputPassword1">备注</label>
-                @Html.TextAreaFor(x => x.ContentMsg, new { @class = "form-control", @placeholder = "请输入备注" })
-            </div>
-            <div style="float: right; margin-bottom: 10px;">
-                <button type="button" onclick="SumbitInfo()" class="btn btn-primary glyphicon glyphicon-ok">提交</button>
-            </div>
-        </div>
-    </form>
+
 </body>
 </html>

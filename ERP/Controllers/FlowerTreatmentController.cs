@@ -101,7 +101,7 @@ namespace ERP.Controllers
             {
                 sb.Append(" and OwnedUsersId='" + Utility.ChangeText.GetUsersId() + "'");
             }
-            return View(Sys_FlowerTreatment.FlowerTreatmentList(0, 1, sb.ToString()));
+            return View(Sys_FlowerTreatment.FlowerTreatmentList(10, 1, sb.ToString()));
         }
 
         public ActionResult GetMobleListMore()
@@ -120,12 +120,13 @@ namespace ERP.Controllers
             }
             Utility.Log.WriteTextLog("testsql", "", "", Request["page"], sb.ToString());
             int page = int.Parse(Request["page"]);
+            //(@pagesize*(@pagenumber-1)+1) and (@pagesize*@pagenumber)按第几页
             if (page > 1)
             {
-                page = (page - 1) * 10 + 1;
+                page = (page - 1) * 10 + 1;//按偏移量
             }
-            List<Model.FlowerTreatment> List = Sys_FlowerTreatment.FlowerTreatmentList(0, Convert.ToInt32(page), sb.ToString());
-            return Content(JsonConvert.SerializeObject(List));
+            List<Model.FlowerTreatment> List = Sys_FlowerTreatment.FlowerTreatmentList(10, Convert.ToInt32(page), sb.ToString());
+            return Json(List,JsonRequestBehavior.AllowGet);
         }
 
 

@@ -24,11 +24,11 @@ namespace Factory
                 if (_obj == null)
                 {
                     //配置数据库类型 调用底层类
-                    //string m_className = "Factory." + dataAccessType;
-                    //_obj = (IDataBase)Assembly.Load("DBHelper").CreateInstance(m_className);
+                    string m_className = "Factory." + dataAccessType;
+                    _obj = (IDataBase)Assembly.Load("DBHelper").CreateInstance(m_className);
 
                     //MSSQL
-                    _obj = new SqlHelper();
+                    //_obj = new SqlHelper();
                 }
                 return _obj;
             }

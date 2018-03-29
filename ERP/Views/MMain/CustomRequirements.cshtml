@@ -72,12 +72,12 @@
     @using (Html.BeginForm("CustomRequirements", "MMain", FormMethod.Post, new { onsubmit = "return  CheckFrom()", style = "width: 80%; margin: 70px auto;" }))
     {
         <div class="navbar navbar-fixed-top" data-id="top">
-            <div class="navbar-inner" style="text-align:center; background-color: #438eb9; height: 50px; color: #FFFFFF; line-height: 50px; font-size: 20px;">
+            <div class="navbar-inner" style="text-align: center; background-color: #79ca06; height: 50px; color: #FFFFFF; line-height: 50px; font-size: 20px;">
                 <div style="float: left;margin-left: 10px; " onmousedown="black(this)">
                     <i class="glyphicon glyphicon-arrow-left"></i>
                 </div>
-                业务需求
-                <input type="hidden"  value="@ViewData["success"]" id="ErrorInfo" />
+                定制需求
+                <input type="hidden" value="@ViewData["success"]" id="ErrorInfo" />
             </div>
         </div>
         <input type="hidden" value="@ViewBag.LoginError" id="InfoShow" />

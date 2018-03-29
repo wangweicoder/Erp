@@ -49,16 +49,16 @@ namespace ERP.MobleControllers
             try
             {
                 string xml = Utility.PostData.PostInput();
-                Utility.Log.WriteTextLog("微信支付回掉", "", "", "", xml);
+                Utility.Log.WriteTextLog("微信支付回调", "", "", "", xml);
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.LoadXml(xml);
                 string out_trade_no = xmlDoc.SelectSingleNode("/xml/out_trade_no").InnerText;
                 Business.Sys_OrdersManaage Sys_OrdersManaage = new Business.Sys_OrdersManaage();
-                Sys_OrdersManaage.OrdersPay(out_trade_no, xmlDoc.SelectSingleNode("/xml/transaction_id").InnerText, "", 2);    
+                Sys_OrdersManaage.OrdersPay(out_trade_no, xmlDoc.SelectSingleNode("/xml/transaction_id").InnerText, Utility.ChangeText.GetUserName(), 2);    
             }
             catch (Exception ex)
             {
-                Utility.Log.WriteTextLog("微信支付回掉", "", "", "", ex.ToString());
+                Utility.Log.WriteTextLog("微信支付回调", "", "", "", ex.ToString());
             }
             return Content("<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>");
         }

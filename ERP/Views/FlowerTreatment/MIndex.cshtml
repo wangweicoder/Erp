@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>养护花卉</title>
+    <title>养护记录</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -12,10 +12,7 @@
     <meta name="location" content="province=;city=;coord=" />
     <meta name="format-detection" content="telephone=no" />
     <link rel="apple-touch-icon-precomposed" href="~/FileCss/images/screenLogo.png?debug=847" />
-    <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?debug=847" />
-    <script src="~/FileCss/js/zepto.min.js?debug=847" type="text/javascript"></script>
-    <script type="text/javascript" src="~/FileCss/js/main.js?debug=847"></script>
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?debug=848" />    
     <style>
         #tj_sx .sx_div {
             min-height: 360px;
@@ -94,7 +91,7 @@
         <div class="topbar">
             <a href="javascript:history.back();" class="back_btn"><i class="iconfont">ş</i></a>
             <a href="javascript:;" class="top_home"><i class="iconfont">ƙ</i></a>
-            <h1 class="page_title">养护花卉</h1>
+            <h1 class="page_title">养护记录</h1>
         </div>
         <div class="home_menu" id="hMenu">
             <a href="/Shop/Index"><i class="iconfont">Ő</i><span>首页</span></a>
@@ -102,18 +99,19 @@
             <a href="/MFlower/ChangeFlowers"><i class="iconfont">ŭ</i><span>更换花卉</span></a>
             <a href="/MMIndex/Index"><i class="iconfont">Œ</i><span>会员中心</span></a>
         </div>
-    </header>
+    </header>   
     <div class="list">
         <ul id="prolist">
             @foreach (Model.FlowerTreatment item in Model)
             {
                 <li>
                     <span class="list_img">
-                        <img src="@item.LogoPhoto" width="100" height="100" />
+                        <img src="@item.LogoPhoto" onclick="ShowPhotoInfo('@item.LogoPhoto')" width="100" height="100"  />
                     </span>
                     <span class="list_info">
-                        <strong>所属公司: @item.OwnedCompany</strong>
-                        <strong>养护人: @item.UserRealName</strong> <em>养护内容: @item.ContentMsg</em> @*<b>@item.Number</b>*@ <small>
+                        <strong >所属公司: @item.OwnedCompany</strong>
+                        <strong>养护人: @item.UserRealName</strong> <em>养护内容: @item.ContentMsg</em> @*<b>@item.Number</b>*@
+                         <small>
                             操作时间:
                             <s>
                                 @item.time
@@ -125,126 +123,153 @@
             }
         </ul>
     </div>
-    <a href="javascript:;" class="loadmore">加载更多商品</a>
-    <script type="text/javascript" src="http://www.86y.org/js/jquery.min.js"></script>
+    <div id="PhotoShowDiv"><img src="" id="ShowPhotoImg" style="max-height:400px;max-width:300px;" /></div>
+    <a href="javascript:;" class="loadmore">加载更多</a>
+    <a href="#" class="backtop_btn" style="position:fixed;bottom:0;left:85%;">↑回顶部</a>
+    @*<script src="~/FileCss/js/zepto.min.js?debug=847" type="text/javascript"></script>
+    <script type="text/javascript" src="~/FileCss/js/main.js?debug=847"></script>*@
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    @Scripts.Render("~/Thems/js/layer/layer.js")
     <script>
-        var page = 2;
-        var finished = 0;
-        var sover = 0;
-
-        //如果屏幕未到整屏自动加载下一页补满
-        var setdefult = setInterval(function () {
-            if (sover == 1)
-                clearInterval(setdefult);
-            else if ($("#prolist").height() < $(window).height())
-                loadmore($(window));
-            else
-                clearInterval(setdefult);
-        }, 500);
-
-        //加载完
-        function loadover() {
-            if (sover == 1) {
-                var overtext = "Duang～到底了";
-                $(".loadmore").remove();
-                if ($(".loadover").length > 0) {
-                    $(".loadover span").eq(0).html(overtext);
-                }
-                else {
-                    var txt = '<div class="loadover"><span>' + overtext + '</span></div>'
-                    $("body").append(txt);
-                }
-            }
-        }
-
-        //加载更多
-        var vid = 0;
-        function loadmore(obj) {
-            if (finished == 0 && sover == 0) {
-                var scrollTop = $(obj).scrollTop();
-                var scrollHeight = $(document).height();
-                var windowHeight = $(obj).height();
-
-                if ($(".loadmore").length == 0) {
-                    var txt = '<div class="loadmore"><span class="loading"></span>加载中..</div>'
-                    $("body").append(txt);
-                }
-
-                if (scrollTop + windowHeight - scrollHeight <= 50) {
-                    //此处是滚动条到底部时候触发的事件，在这里写要加载的数据，或者是拉动滚动条的操作
-
-
-                    //防止未加载完再次执行
-                    finished = 1;
-
-                    //var result = "";
-                    //for (var i = 0; i < 6; i++) {
-                    //    vid++;
-                    //    result += '<li>'
-                    //                + '<a href="/product/24786.html"> <span class="list_img"> <img src="images/20140723145737178.jpg" width="100" height="100" /> </span><span class="list_img"> <img src="images/20140723145737178.jpg" width="100" height="100" /> </span> <span class="list_info"> <strong>小米手机4 移动4G版</strong> <em>【现货、价低、不用抢】不锈钢全金属边框！绝佳握感！高色饱和屏！索尼高画质！极速顶级内存！依然是全球顶配性能王者！</em> <b>￥1599.00</b> <small>已有 <s> 347 </s>人评价， <s>871 </s>人咨询</small> </span> </a>'
-                    //            + '</li>'
-                    //}
-                    //setTimeout(function () {
-                    //    //$(".loadmore").remove();
-
-                    //    $('#prolist').append(result);
-                    //    page += 1;
-                    //    finished = 0;
-                    //    //最后一页
-                    //    if (page == 10) {
-                    //        sover = 1;
-                    //        loadover();
-                    //    }
-                    //}, 1000);
-                    $.ajax({
-                        type: 'GET',
-                        url: '/FlowerTreatment/GetMobleListMore?page=' + page,
-                        dataType: 'json',
-                        success: function (data) {
-                            console.log(data);
-                            if (data == "" || data == null) {
-                                console.log('数据加载完了');
-                                sover = 1;
-                                loadover();
-                                if (page == 1) {
-                                    $("#no_msg").removeClass("hidden");
-                                    $(".loadover").remove();
-                                }
-                            }
-                            else {
-                                var result = ''
-                                for (var i = 0; i < data.length; i++) {
-                                    result += ' <li><span class="list_img"><img src="' + data[i].Photo + '" width="100" height="100" /> </span><span class="list_info"> <strong>更换人:' + data[i].UserRealName + '</strong> <em>更换内容: ' + data[i].ContentMsg + '</em><small>操作时间:<s>  ' + data[i].time + '</s></small></span></li>';
-
-
-                                }
-
-                                //为了测试，延迟1秒加载
-                                setTimeout(function () {
-                                    $(".loadmore").remove();
-                                    console.log(result);
-                                    $('#prolist').append(result);
-                                    page += 1;
-                                    finished = 0;
-                                    //最后一页
-                                    if (page == 10) {
-                                        sover = 1;
-                                        loadover();
-                                    }
-                                }, 1000);
-                            }
-                        },
-                        error: function (xhr, type) {
-                            alert('Ajax error!');
-                        }
-                    });
-                }
-            }
-        }
-        //页面滚动执行事件
-        $(window).scroll(function () {
-            loadmore($(this));
+    $(function () {
+        $(".top_home").click(function () {
+            var target = $(".home_menu");
+            if (target.slideToggle) target.slideToggle();
+            else target.toggle();
         });
+        $(".backtop_btn").click(function () {
+            $("html,body").animate({ scrollTop: 0 }, 500);
+        });
+    });
+    
+    function jsonDateFormat(jsonDate) {//json日期格式转换为正常格式
+        try {
+            var date = new Date(parseInt(jsonDate.replace("/Date(", "").replace(")/", ""), 10));
+            var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+            var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var seconds = date.getSeconds();
+            return date.getFullYear() + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+        } catch (ex) {
+            return "";
+        }
+    }
+    function ShowPhotoInfo(values) {
+        parent.layer.closeAll();
+        $("#ShowPhotoImg").attr("src", values);
+        var layindex = parent.layer.open({
+            type: 1,
+            shade: false,
+            title: false, //不显示标题
+            content: $('#PhotoShowDiv').html(), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+            cancel: function () {
+                parent.layer.close(layindex);
+            }
+        });
+        $("#ShowPhotoImg").attr("src", "");
+    }
+    var page = 2;
+    var finished = 0;
+    var sover = 0;
+
+    //如果屏幕未到整屏自动加载下一页补满
+    var setdefult = setInterval(function () {
+        if (sover == 1)
+            clearInterval(setdefult);
+        else if ($("#prolist").height() < $(window).height()) {
+            //console.log($("#prolist").height());
+            //console.log($(window).height());
+            loadmore($(window));
+        }
+        else
+            clearInterval(setdefult);
+    }, 500);
+
+    //加载完
+    function loadover() {
+        if (sover == 1) {
+            var overtext = "Duang～到底了";
+            $(".loadmore").remove();
+            if ($(".loadover").length > 0) {
+                $(".loadover span").eq(0).html(overtext);
+            }
+            else {
+                var txt = '<div class="loadover"><span>' + overtext + '</span></div>'
+                $("body").append(txt);
+            }
+        }
+    }
+
+    //加载更多
+    var vid = 0;
+    function loadmore(obj) {
+        if (finished == 0 && sover == 0) {
+            var scrollTop = $(obj).scrollTop();
+            var scrollHeight = $(document).height();
+            var windowHeight = $(obj).height();
+
+            if ($(".loadmore").length == 0) {
+                var txt = '<div class="loadmore"><span class="loading"></span>加载中..</div>'
+                $("body").append(txt);
+            }
+
+            if (scrollTop + windowHeight - scrollHeight <= 50) {
+                //此处是滚动条到底部时候触发的事件，在这里写要加载的数据，或者是拉动滚动条的操作
+
+
+                //防止未加载完再次执行
+                finished = 1;
+                
+                $.ajax({
+                    type: 'GET',
+                    url: '/FlowerTreatment/GetMobleListMore?page=' + page,
+                    dataType: 'json',
+                    success: function (data) {
+                        //console.log(data);
+                        if (data == "" || data == null) {
+                            console.log('数据加载完了');
+                            sover = 1;
+                            loadover();
+                            if (page == 1) {
+                                $("#no_msg").removeClass("hidden");
+                                $(".loadover").remove();
+                            }
+                        }
+                        else {
+                            var result = ''
+                            for (var i = 0; i < data.length; i++) {
+                                result += ' <li><span class="list_img"><img src="' + data[i].LogoPhoto + '" onclick=ShowPhotoInfo("' + data[i].LogoPhoto + '")  width="100" height="100" />';
+                                result += ' </span><span class="list_info"><strong>所属公司: ' + data[i].OwnedCompany + '</strong><strong>养护人:' + data[i].UserRealName + '</strong> <em>养护内容: ' + data[i].ContentMsg + '</em><small>操作时间:<s>' + jsonDateFormat(data[i].time) + '</s></small></span></li>';
+
+                            }
+
+                            //为了测试，延迟1秒加载
+                            setTimeout(function () {
+                                $(".loadmore").remove();
+                                //console.log(result);
+                                $('#prolist').append(result);
+                                page += 1;
+                                finished = 0;
+                                //最后一页
+                                if (page == 10) {
+                                    sover = 1;
+                                    loadover();
+                                }
+                            }, 1000);
+                        }
+                    },
+                    error: function (xhr, type) {
+                        alert('Ajax error!');
+                    }
+                });
+            }
+        }
+    }
+    //页面滚动执行事件
+    $(window).scroll(function () {
+        loadmore($(this));
+    });
     </script>
 </body>
 </html>

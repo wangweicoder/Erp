@@ -1,10 +1,13 @@
 ﻿using ERP.Filter;
+using ICSharpCode.SharpZipLib.Checksums;
+using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,6 +15,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using ThoughtWorks.QRCode.Codec;
+using Utility;
 
 namespace ERP.Controllers
 {
@@ -347,21 +351,18 @@ namespace ERP.Controllers
                 {
                     task.Wait();
                 }
-                string weburl=System.Configuration.ConfigurationManager.AppSettings["WebImgUrl"];
-                string localurl = System.Configuration.ConfigurationManager.AppSettings["localurl"];
-                if (task.Status == TaskStatus.RanToCompletion)
-                {
-                    string dir = Server.MapPath("/Upload/OrCodepic");                   
-                    DirectoryInfo theFolder = new DirectoryInfo(dir);
-                    //获得文件列表并按时间倒序
-                    var fileInfo = theFolder.GetFiles().OrderByDescending(x => x.CreationTime);
-                    foreach (FileInfo NextFile in fileInfo)  //遍历文件
-                    {
-                        DownloadOneFileByURLWithWebClient(NextFile.Name, weburl, localurl);
-                    }
+               
+                string dpath = "/Upload/OrCodepic";
+                if (task.Status == TaskStatus.RanToCompletion) 
+                {                    
+                    string dir = Server.MapPath("/Upload/OrCodepic");
+                    PubClass.FileDel(dir + "/zipfile.zip");
+                    
+                    ZipFileFromDirectory(dpath, dir+"/zipfile.zip", 2);
+                    
                 }
-                return Json(new {code="1",msg=localurl },JsonRequestBehavior.AllowGet);
-                //return File(filePath, "text/plain", "demo.zip"); //客户端保存的名字
+                return Json(new { code = "1", msg = dpath + "/zipfile.zip" }, JsonRequestBehavior.AllowGet);
+                //return File(dpath, "text/plain", "zipfile.zip"); //客户端保存的名字
             }
             catch (Exception ex)
             {
@@ -399,7 +400,7 @@ namespace ERP.Controllers
         /// <param name="fileName"></param>
         /// <param name="url"></param>
         /// <param name="localPath"></param> 
-        public  static  void  DownloadOneFileByURLWithWebClient(string  fileName,  string  url,  string  localPath)
+        public   void  DownloadOneFileByURLWithWebClient(string  fileName,  string  url,  string  localPath)
         {
             System.Net.WebClient wc  =   new  System.Net.WebClient();   
              if (System.IO.File.Exists(localPath  +  fileName))
@@ -410,92 +411,59 @@ namespace ERP.Controllers
              { 
                  Directory.CreateDirectory(localPath);
              }
-             wc.DownloadFile(url  +  fileName, localPath  +  fileName);
+             //wc.DownloadFile(url  +  fileName,  fileName);//下载到了网站bin目录
+             byte[] mybyte;
+             mybyte = wc.DownloadData(url  +  fileName);
+             //MemoryStream ms = new MemoryStream(mybyte);
+             //System.Drawing.Image img;
+             //img = System.Drawing.Image.FromStream(ms);
+             Response.ClearContent();
+             Response.ContentType = "image/gif";
+             Response.BinaryWrite(mybyte);
          }
 
-         //public string zip() 
-         //{
-         //    //每次下载的时候都会把文件放到这个文件夹下然后前台通过这个地址进行下载，所以我每次都会删除上次导出时候创建的文件夹，然后在重新创建，这样做的效果就是这个文件夹里永远只有一个最新的文件；
-         //    //这里放的是jpeg格式的图片，因为我从服务器上获取的不是jpeg的文件，是dicm的文件，我需要把这个dicm文件转换成jpeg转换成之后，我需要临时存放到这个文件夹里面以备后面压缩。
-         //    string weburl = "d:\\webtupian";
-         //    if (Directory.Exists(weburl))
-         //    {
-         //        DirectoryInfo direct = new DirectoryInfo(weburl);
-         //        direct.Delete(true);
-         //    }
-         //    //这个是压缩包zip存放的地方
-         //    string lurl = HttpContext.Server.MapPath("../linshi");
-         //    if (Directory.Exists(lurl))
-         //    {
-         //        DirectoryInfo direct1 = new DirectoryInfo(lurl);
-         //        direct1.Delete(true);
-         //    }
-         //    string modality = "";
-         //    if (request.Params["modality"] != null && request.Params["modality"].ToString() != "")
-         //    {
-         //        modality = request.Params["modality"].ToString();
-         //    }
-         //    //获取特定的数据集信息
-         //    DataSet ds = dall.getimgdaochu(where, modality);
-         //    StringBuilder html = new StringBuilder();
+        /// <summary>  
+        /// 压缩目录（包括子目录及所有文件）  
+        /// </summary>  
+        /// <param name="rootPath">要压缩的根目录</param>  
+        /// <param name="destinationPath">保存路径</param>  
+        /// <param name="compressLevel">压缩程度，范围0-9，数值越大，压缩程序越高</param>  
+        public bool ZipFileFromDirectory(string rootPath, string destinationPath, int compressLevel)
+        {
+            string dir = Server.MapPath(rootPath);
+            DirectoryInfo theFolder = new DirectoryInfo(dir);
+            //获得文件列表并按时间倒序
+            var fileInfo = theFolder.GetFiles().OrderByDescending(x => x.CreationTime);
 
-         //    string zipedFile = string.Empty;
-         //    List<Byte[]> lstFI = new List<Byte[]>();
-         //    List<string> listimage = new List<string>();
-         //    byte[] img = null;
-         //    if (ds != null && ds.Tables[0].Rows.Count > 0)
-         //    {
-         //        int i = 1;
-         //        foreach (DataRow row in ds.Tables[0].Rows)
-         //        {
-         //            context.Response.ClearContent();
-         //            string dcm_path = row["REFERENCE_FILE"].ToString();//这是dicm文件的地址
-         //            string share_ip = SYS_APP_CONFIG.GetAppConfigValue("dcm_share_ip");//这是服务器的ip地址
-         //            zipedFile = row["PATIENT_ID"].ToString();//这是数据的编号。
-         //            string tuname = row["PATIENT_NAME"].ToString();//这是当前这个数据人的名字
-         //            img = DicomUtility.GetJpegFromDcm(dcm_path, System.Drawing.Imaging.ImageFormat.Jpeg);//这是通过dicm文件的地址和ip什么的，把dicm文件转换成图片格式的byte字节。
-         //            Image imgg = BytToImg(img);//这是通过byte字节获取jpeg的图片
-         //            zipname = tupian_url + tuname + i.ToString() + "张";//压缩zip的名字
-         //            url = "d:\\webtupian";
-         //            if (!Directory.Exists(url))
-         //            {
-         //                Directory.CreateDirectory("d:\\webtupian");//创建新路径
-         //            }
-         //            string name = tuname + i.ToString();
-         //            imgg.Save("d:\\webtupian" + "/" + name + ".jpeg");//图片保存
-         //            listimage.Add("d:\\webtupian" + "/" + name + ".jpeg");//把当前图片保存的路径保存起来，用于后面的zip通过路径压缩文件。
-         //            i++;
-         //            imgg.Dispose();
-         //        }
-         //        //压缩成zip，需要下载ionic的dll然后引用。
-         //        //zipname这个是zip的名字
-         //        using (Ionic.Zip.ZipFile zip = new Ionic.Zip.ZipFile(zipname, Encoding.Default))
-         //        {
-         //            foreach (string fileToZip in listimage)
-         //            {
-         //                using (FileStream fs = new FileStream(fileToZip, FileMode.Open, FileAccess.ReadWrite))//根据路径把文件转换成文件流
-         //                {
-         //                    byte[] buffer = new byte[fs.Length];//把文件流转换成byte字节
-         //                    fs.Read(buffer, 0, buffer.Length);
-         //                    string fileName = fileToZip.Substring(fileToZip.LastIndexOf("\\") + 1);
-         //                    zip.AddEntry(fileName, buffer);
-         //                }
-         //            }
-         //            if (!Directory.Exists(HttpContext.Current.Server.MapPath("../linshi")))
-         //            {
-         //                Directory.CreateDirectory(HttpContext.Current.Server.MapPath("../linshi"));//创建新路径
-         //            }
-         //            zip.Save(HttpContext.Current.Server.MapPath("../linshi/" + zipname + ".zip"));
-         //        }
-         //        //为了防止乱码，把数据封装了一下，到前台用unescape()解析就可以了。
-         //        return Microsoft.JScript.GlobalObject.escape(zipname + "1");//返回zip的名字和拼接的字符串1,1是代表有数据可以导出
-         //    }
-         //    else
-         //    {
-         //        return "当前该人员没有图片可供导出。2";
-         //    }
-         
-         //}
+            string rootMark = "Upload\\OrCodepic\\";//得到当前路径的位置，以备压缩时将所压缩内容转变成相对路径。  
+            Crc32 crc = new Crc32();
+            ZipOutputStream outPutStream = new ZipOutputStream(System.IO.File.Create(destinationPath));
+            outPutStream.SetLevel(compressLevel); // 0 - store only to 9 - means best compression  
+            foreach (FileInfo NextFile in fileInfo)  //遍历文件
+            {
+                if (NextFile.Extension.ToLower().Contains(".jpg"))
+                {
+                    string file = NextFile.FullName;
+                    FileStream fileStream = System.IO.File.OpenRead(file);//打开压缩文件  
+                    byte[] buffer = new byte[fileStream.Length];
+                    fileStream.Read(buffer, 0, buffer.Length);                   
+                    ZipEntry entry = new ZipEntry(file.Replace(rootMark, string.Empty));
+                    entry.DateTime = DateTime.Now;
+                    entry.Size = fileStream.Length;
+                    fileStream.Close();
+                    crc.Reset();
+                    crc.Update(buffer);
+                    entry.Crc = crc.Value;
+                    outPutStream.PutNextEntry(entry);
+                    outPutStream.Write(buffer, 0, buffer.Length);
+                }
+            }  
+            outPutStream.Finish();
+            outPutStream.Close();
+            GC.Collect();
+            return true;
+            
+        }
         /// <summary>
         /// 导入Excel文件
         /// </summary>

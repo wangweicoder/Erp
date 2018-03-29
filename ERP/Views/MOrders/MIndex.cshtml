@@ -1,0 +1,320 @@
+﻿@model  List<Model.Orders>
+<!DOCTYPE html>
+<html lang="zh-CN" style="font-size: 38.333px;">
+<head>
+    <meta charset="UTF-8" />
+    <title>我的订单</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <link href="~/points/css/base.css" rel="stylesheet" />
+    <link href="~/points/css/list.css" rel="stylesheet" />
+    <link href="~/points/css/mui.min.css" rel="stylesheet" />
+    <link href="~/points/css/loaders.min.css" rel="stylesheet" />
+    <link href="~/points/css/loading.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?debug=847" />
+    @*<script src="~/FileCss/js/zepto.min.js?debug=847" type="text/javascript"></script>*@
+    @*<script type="text/javascript" src="~/FileCss/js/main.js?debug=8478"></script>*@
+    <style>
+        /*----------*/
+        .active {
+            background: #ff6a00;
+            border-radius: 3px;
+        }
+    </style>
+
+</head>
+<body>
+    <!--loading页开始-->
+    <div class="loading">
+        <div class="loader">
+            <div class="loader-inner pacman">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+    <!--loading页结束-->
+    <header id="header" style="background:#ffffff">
+        <div class="topbar">
+            <a href="javascript:history.back();" class="back_btn"><i class="iconfont">ş</i></a>
+            @*<a href="javascript:;" class="top_home"><i class="iconfont">ƙ</i></a>*@
+            <h1 class="page_title">我的订单</h1>
+        </div>      
+    </header>
+    <!--商品区域-->
+    <div class="clearfloat">
+        <div class="lists clearfloat">
+            <div class="top clearfloat">
+                <ul>
+                    <li class="active" state="">所有订单</li>
+                    <li state="1">待付款</li>
+                    <li state="2">配送中</li>
+                </ul>
+            </div>
+            <div class="bottom clearfloat">
+                @foreach (var item in Model)
+                {
+                    <div class="lie clearfloat">
+                        <a href="/MOrders/OrderDetails?OrdersId=@item.OrderId">
+                            <div class="tu clearfloat fl">
+                                @{ var value = item.OrdersState.ToString();
+                                 var aa = "";
+                                 if (value == "1")
+                                 {
+                                     aa = "待支付";
+                                 }
+                                 if (value == "2")
+                                 {
+                                     aa = "待发货";
+                                 }
+                                 if (value == "3")
+                                 {
+                                     aa = "已发货";
+                                 }
+                                 if (value == "4")
+                                 {
+                                     aa = "已签收";
+                                 }
+                                 if (value == "5")
+                                 {
+                                     aa = "取消订单";
+                                 }
+
+                                }
+                                <div>状态：</div>
+                                <span style="color:#ff6a00">@aa</span>
+                            </div>
+                        </a>
+                        <div class="right clearfloat fl">
+                            <a href="/MOrders/OrderDetails?OrdersId=@item.OrderId">
+                                <div>订单号:</div>
+                                <p class="tit">@item.OrderId</p>
+                            </a>
+                            <div class="xia clearfloat">
+                                <a href="/MOrders/OrderDetails?OrdersId=@item.OrderId">
+                                    <p class="jifen fl over">总价:@item.SellingPrice</p>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <a href="javascript:;" class="loadmore">加载更多</a>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript">
+        $(window).load(function () {
+            $(".loading").addClass("loader-chanage")
+            $(".loading").fadeOut(300)
+        })
+    </script>
+    <script>
+        //按状态切换
+        $("ul li").click(function () {
+            $(this).addClass("active");
+            OrderState = $(this).attr("state");
+            $(this).siblings("li").removeClass("active");
+            $.ajax({
+                type: 'GET',
+                url: '/MOrders/GetMobleListMore?page=' + 1 + '&OrderState=' + OrderState,
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    if (data == "" || data == null) {
+                        console.log('数据加载完了?');
+                        sover = 1;
+                        loadover();
+                        if (page == 1) {
+                            $("#no_msg").removeClass("hidden");
+                            $(".loadover").remove();
+                        }
+                    }
+                    else {
+                        var result = ''
+                        for (var i = 0; i < data.length; i++) {
+                            var value = data[i].OrdersState;
+                            var aa = "";
+                            if (value == "1") {
+                                aa = "待支付";
+                            }
+                            if (value == "2") {
+                                aa = "待发货";
+                            }
+                            if (value == "3") {
+                                aa = "已发货";
+                            }
+                            if (value == "4") {
+                                aa = "已签收";
+                            }
+                            if (value == "5") {
+                                aa = "取消订单";
+                            }
+
+                            result += '<div class="lie clearfloat"><a href="/MOrders/OrderDetails?OrdersId=' + data[i].OrderId + '">';
+                            result += '<div class="tu clearfloat fl"><div>状态：</div>';
+                            result += '<span style="color:#ff6a00">' + aa + '</span></div></a>';
+                            result += '<div class="right clearfloat fl"><a href="/MOrders/OrderDetails?OrdersId=' + data[i].OrderId + '"><div>订单号:</div>';
+                            result += '<p class="tit">' + data[i].OrderId + '</p></a><div class="xia clearfloat">';
+                            result += '<a href="/MOrders/OrderDetails?OrdersId=' + data[i].OrderId + '"><p class="jifen fl over">总价:' + data[i].SellingPrice + '</p>';
+                            result += '</a></div></div></div>';
+                        }
+
+                        //为了测试，延迟1秒加载
+                        setTimeout(function () {
+                            $(".loadmore").remove();
+                            //console.log(result);
+                            //console.log($('.bottom').html());
+                            $('.bottom').html(result);
+                            //$('.bottom').append(result);
+                            page += 1;
+                            finished = 0;
+                            //最后一页
+                            if (page == 10) {
+                                sover = 1;
+                                loadover();
+                            }
+                        }, 300);
+                    }
+                },
+                error: function (xhr, type) {
+                    alert('Ajax error!');
+                }
+            });
+        });
+        //菜单显示隐藏
+        $(".top_home").click(function () {
+            var target = $(".home_menu");
+            if (target.slideToggle) target.slideToggle();
+            else target.toggle();
+        });
+        var page = 2;
+        var finished = 0;
+        var sover = 0;
+        var OrderState = "";
+        //如果屏幕未到整屏自动加载下一页补满
+        var setdefult = setInterval(function () {
+            if (sover == 1)
+                clearInterval(setdefult);
+            else if ($(".clearfloat").height() < $(window).height()) {
+                //console.log($(".clearfloat").height());
+                //console.log($(window).height());
+                loadmore($(window));
+                //console.log(1);
+            }
+            else
+                clearInterval(setdefult);
+        }, 500);
+
+        //加载完
+        function loadover() {
+            if (sover == 1) {
+                var overtext = "Duang～到底了";
+                $(".loadmore").remove();
+                if ($(".loadover").length > 0) {
+                    $(".loadover span").eq(0).html(overtext);
+                }
+                else {
+                    var txt = '<div class="loadover"><span>' + overtext + '</span></div>'
+                    $("body").append(txt);
+                }
+            }
+        }
+
+        //加载更多
+        var vid = 0;
+        function loadmore(obj) {
+            if (finished == 0 && sover == 0) {
+                var scrollTop = $(obj).scrollTop();
+                var scrollHeight = $(document).height();
+                var windowHeight = $(obj).height();
+
+                if ($(".loadmore").length == 0) {
+                    var txt = '<div class="loadmore"><span class="loading"></span>加载中..</div>'
+                    $("body").append(txt);
+                }
+
+                if (scrollTop + windowHeight - scrollHeight <= 50) {
+                    //此处是滚动条到底部时候触发的事件，在这里写要加载的数据，或者是拉动滚动条的操作
+
+                    //防止未加载完再次执行
+                    finished = 1;
+
+                    $.ajax({
+                        type: 'GET',
+                        url: '/MOrders/GetMobleListMore?page=' + page + '&OrderState=' + OrderState,
+                        dataType: 'json',
+                        success: function (data) {
+                            console.log(data);
+                            if (data == "" || data == null) {
+                                console.log('数据加载完了');
+                                sover = 1;
+                                loadover();
+                                if (page == 1) {
+                                    $("#no_msg").removeClass("hidden");
+                                    $(".loadover").remove();
+                                }
+                            }
+                            else {
+                                var result = ''
+                                for (var i = 0; i < data.length; i++) {
+                                    var value = data[i].OrdersState;
+                                    var aa = "";
+                                    if (value == "1") {
+                                        aa = "待支付";
+                                    }
+                                    if (value == "2") {
+                                        aa = "待发货";
+                                    }
+                                    if (value == "3") {
+                                        aa = "已发货";
+                                    }
+                                    if (value == "4") {
+                                        aa = "已签收";
+                                    }
+                                    if (value == "5") {
+                                        aa = "取消订单";
+                                    }
+                                    result += '<div class="lie clearfloat"><a href="/MOrders/OrderDetails?OrdersId=' + data[i].OrderId + '">';
+                                    result += '<div class="tu clearfloat fl"><div>状态：</div>';
+                                    result += '<span style="color:#ff6a00">' + aa + '</span></div></a>';
+                                    result += '<div class="right clearfloat fl"><a href="/MOrders/OrderDetails?OrdersId=' + data[i].OrderId + '"><div>订单号:</div>';
+                                    result += '<p class="tit">' + data[i].OrderId + '</p></a><div class="xia clearfloat">';
+                                    result += '<a href="/MOrders/OrderDetails?OrdersId=' + data[i].OrderId + '"><p class="jifen fl over">总价:' + data[i].SellingPrice + '</p>';
+                                    result += '</a></div></div></div>';
+
+                                }
+
+                                //为了测试，延迟1秒加载
+                                setTimeout(function () {
+                                    $(".loadmore").remove();
+                                    console.log(result);
+                                    $('.bottom').append(result);
+                                    page += 1;
+                                    finished = 0;
+                                    //最后一页
+                                    if (page == 10) {
+                                        sover = 1;
+                                        loadover();
+                                    }
+                                }, 1000);
+                            }
+                        },
+                        error: function (xhr, type) {
+                            alert('Ajax error!');
+                        }
+                    });
+                }
+            }
+        }
+        //页面滚动执行事件
+        $(window).scroll(function () {
+            loadmore($(this));
+        });
+    </script>
+</body>
+</html>

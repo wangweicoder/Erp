@@ -26,11 +26,22 @@ namespace Business
             {
                 strSql.Append(" where  1=1 " + StrWhere);
             }
-            strSql.Append(")T inner join [dbo].[UserAdmin] u on u.ID=T.OwnedUsersId  where t.rn between   @offset and (@offset+9)");
+            strSql.Append(")T inner join [dbo].[UserAdmin] u on u.ID=T.OwnedUsersId  where t.rn between   @offset and (@offset+@limit-1)");
             
-            return Factory.DBHelper.Query<Model.FlowerTreatment>(SQLConString, strSql.ToString(), new DynamicParameters(new { offset }));
+            return Factory.DBHelper.Query<Model.FlowerTreatment>(SQLConString, strSql.ToString(), new DynamicParameters(new { offset,limit }));
         }
+        public List<Model.FlowerTreatment> MFlowerTreatmentList(int pagesize, int pagenumber, string StrWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("SELECT u.OwnedCompany as CompanyName,T.* FROM ( SELECT ROW_NUMBER() over(order by id desc) as rn ,* FROM FlowerTreatment");
+            if (!string.IsNullOrEmpty(StrWhere))
+            {
+                strSql.Append(" where  1=1 " + StrWhere);
+            }
+            strSql.Append(")T inner join [dbo].[UserAdmin] u on u.ID=T.OwnedUsersId  where t.rn between  (@pagesize*(@pagenumber-1)+1) and (@pagesize*@pagenumber)");
 
+            return Factory.DBHelper.Query<Model.FlowerTreatment>(SQLConString, strSql.ToString(), new DynamicParameters(new { pagenumber, pagesize }));
+        }
         /// <summary>
         /// 获得总记录数
         /// </summary>

@@ -24,10 +24,15 @@ namespace ERP.MobleControllers
         {
             string id = Request["id"];
             Business.Sys_Flower Sys_Flower = new Business.Sys_Flower();
-
+            Business.Sys_OrdersManaage Sys_OrdersManaage = new Business.Sys_OrdersManaage();           
             return View(Sys_Flower.GetFlower(id));
         }
-
+        /// <summary>
+        /// 购物车跳转
+        /// </summary>
+        /// <param name="goodnum"></param>
+        /// <param name="FlowerNums"></param>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult PayOrders(string goodnum, string FlowerNums)
         {
@@ -49,6 +54,11 @@ namespace ERP.MobleControllers
             //return Redirect("/WxPay/Index?OrdersId=" + Orders.OrderId + "&PayTotal=" + Flower.FlowerSalesPrice * int.Parse(OrdersNum));
             
         }
+        /// <summary>
+        /// 单商品购物
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult PayOrders(string id)
         {
@@ -104,9 +114,10 @@ namespace ERP.MobleControllers
             fc.Num = int.Parse(Request["FlowerNum"]);
             fc.FlowerSalesPrice=flower.FlowerSalesPrice;
             fc.FlowerWatchPhoto = flower.FlowerWatchPhoto;
+            fc.FlowerWatchName = flower.FlowerWatchName;
             List<Model.FlowerCartVM> list = new List<Model.FlowerCartVM> { fc};
             Model.CartLine model = new Model.CartLine();
-            model.Products = list;
+            model.Products = list;           
             return View(model);            
         }
         public ActionResult PayOrdersNow(string Remark)
@@ -164,9 +175,8 @@ namespace ERP.MobleControllers
 
             #endregion
             Sys_OrdersManaage.TransactionAddOrders(Orders, OrdersDetailsList, OrdersLog);
-            //
-            return Redirect("/WxPay/Index?OrdersId=" + Orders.OrderId + "&PayTotal=" + Orders.SellingPrice);
-          
+            //return Redirect("/WxPay/Index?OrdersId=" + Orders.OrderId + "&PayTotal=" + Orders.SellingPrice);
+            return Json(new { OrdersId = Orders.OrderId ,PayTotal= Orders.SellingPrice}, JsonRequestBehavior.AllowGet);
         }
 
         public void AddInfo()

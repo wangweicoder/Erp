@@ -10,9 +10,9 @@
 <script src="~/Scripts/jquery.valiedate.form.js"></script>
 <script>
     $(function () {
-        if ($('#success').val() != '') {
-            layer.msg($('#success').val());
-        }
+        //if ($('#success').val() != '') {
+        //    layer.msg($('#success').val());
+        //}
     })
     function CheckFrom() {
         if ($("#FlowerWatchName").val() == "") {
@@ -105,7 +105,7 @@
             <div style="width:50%;float:right">
                 <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>花卉图片</span>
                 <div class="col-sm-6">
-                    <input type="file" class="form-control" id="attach_path" name="attach_path" />
+                    <input type="file"  class="form-control" id="attach_path" name="attach_path" />
                 </div>
             </div>
             <div style="width:50%;float:left">
@@ -125,7 +125,7 @@
                 <div class="col-sm-6">
                     @Html.TextAreaFor(m => m.FlowerIntroduction, new { @class = "form-control" })
                 </div>
-                <input type="hidden" value="@ViewData["success"]" id="success" />
+                @*<input type="hidden" value="@ViewData["success"]" id="success" />*@
             </div>
             @Html.HiddenFor(m=>m.id)
             @Html.HiddenFor(m => m.FlowerWatchPhoto, new { @class = "form-control" })

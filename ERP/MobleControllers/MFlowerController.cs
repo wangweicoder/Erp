@@ -21,7 +21,7 @@ namespace ERP.MobleControllers
         {
             try
             {
-                ViewData["deptSelectItems"] = GetdeptSelectItems();
+                //ViewData["deptSelectItems"] = GetdeptSelectItems(0);
 
                 //access_token来获取jsapi_ticket  
                 string ticket = WxHelper.WxMain.GetTicket();
@@ -29,7 +29,7 @@ namespace ERP.MobleControllers
                 string nonceStr = WxHelper.WxMain.getNoncestr();
                 //设置参数  
                 StringBuilder sb = new StringBuilder();
-                sb.Append("jsapi_ticket=" + ticket);
+                //sb.Append("jsapi_ticket=" + ticket);
                 sb.Append("&noncestr=" + nonceStr);
                 sb.Append("&timestamp=" + timeStamp);
                 sb.Append("&url=" + Request.Url.AbsoluteUri);
@@ -43,12 +43,11 @@ namespace ERP.MobleControllers
             }
             catch (Exception ex)
             {
-                Utility.Log.WriteTextLog("log","","","","251241");
+                Utility.Log.WriteTextLog("log", "ConservationFlowers",ex.Message, "养护花卉", "需要把ip加入微信公众开发平台的白名单");
               
             }
             return null;
         }
-
 
         [HttpPost]
         public ActionResult ConservationFlowers(Model.FlowerTreatment FlowerTreatment)
@@ -72,9 +71,9 @@ namespace ERP.MobleControllers
                 detail = detail.Replace("renderReverse&&renderReverse(", "");
                 detail = detail.TrimEnd(')');
                 ERP.MobleControllers.MMainController.GetAddressNew GetAddress = JsonConvert.DeserializeObject<ERP.MobleControllers.MMainController.GetAddressNew>(detail);
-                Utility.Log.WriteTextLog("返回定位", "", "", "", detail);
+                Utility.Log.WriteTextLog("返回定位", "花卉养护当前地址", GetAddress.result.formatted_address, "detail", detail);
                 Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
-                ViewData["deptSelectItems"] = GetdeptSelectItems();
+                //ViewData["deptSelectItems"] = GetdeptSelectItems();
                 Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
                 int userid = Utility.ChangeText.GetUsersId();
                 FlowerTreatment.FlowerTreatmentType = "养护花卉";
@@ -112,7 +111,7 @@ namespace ERP.MobleControllers
             }
             catch (Exception ex)
             {
-                Utility.Log.WriteTextLog("返回定位错误", "", "", "", ex.ToString());
+                Utility.Log.WriteTextLog("返回定位错误", "ConservationFlowers", "养护花卉", "post方法", ex.ToString());
                 return View();
             }
         }
@@ -169,7 +168,8 @@ namespace ERP.MobleControllers
                     FlowerChange.WorkUsersRealName = UserAdmin.RealName;
                     openId = UserAdmin.OpenId;
                 }
-                FlowerChange.FlowerTreatmentType = "更换花卉"; FlowerChange.UsersId = Utility.ChangeText.GetUsersId();
+                FlowerChange.FlowerTreatmentType = "更换花卉"; 
+                FlowerChange.UsersId = Utility.ChangeText.GetUsersId();
                 HttpPostedFileBase file = Request.Files["attach_path"];
                 FlowerChange.Photo = Utility.ChangeText.SaveUploadPicture(file, "attach");
 
@@ -201,7 +201,7 @@ namespace ERP.MobleControllers
             catch (Exception ex)
             {
 
-                Utility.Log.WriteTextLog("更换花卉","","","",ex.Message);
+                Utility.Log.WriteTextLog("更换花卉", "ChangeFlowers", "更换花卉", "post", ex.Message);
             }
           
             return View();
@@ -268,23 +268,33 @@ namespace ERP.MobleControllers
             return GetdeptSelectItemsByWorkUsersId;
         }
 
+        /// <summary>
+        /// 获得公司json数据
+        /// </summary>
+        /// <author>wangwei</author>
+        /// <returns></returns>
+        public JsonResult GetCompanyList(int week)
+        {            
+            List<SelectListItem> hourList = new List<SelectListItem>();
+            hourList = GetdeptSelectItems(week);
+            return Json(hourList, JsonRequestBehavior.AllowGet);
+        }
 
 
-
-        public List<SelectListItem> GetdeptSelectItems()
+        public List<SelectListItem> GetdeptSelectItems(int week)
         {
             Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
             List<Model.UserAdmin> UserAdminList = new List<Model.UserAdmin>();
             if (Utility.ChangeText.GetUserName() == "admin")
-            {
-                UserAdminList = Sys_UserAdmin.GetAdminInfoList("Customer");
+            {               
+                UserAdminList = Sys_UserAdmin.GetAdminInfoListbyweek("Customer",week);
             }
             else if (Session["RoleName"].ToString() == "客户")
             {
                  UserAdminList = Sys_UserAdmin.GetUserAdminUsByRoleCode("Customer", Utility.ChangeText.GetUsersId());
             }
             else {
-                UserAdminList = Sys_UserAdmin.GetUserAdminListByRoleCode("Customer", Utility.ChangeText.GetUsersId());
+                UserAdminList = Sys_UserAdmin.GetUserAdminListByWorkUsersId("Customer", Utility.ChangeText.GetUsersId(),week);
             }
          
             List<SelectListItem> deptSelectItems = new List<SelectListItem>();

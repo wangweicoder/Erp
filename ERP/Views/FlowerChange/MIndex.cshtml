@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>更换花卉</title>
+    <title>更换记录</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -12,10 +12,7 @@
     <meta name="location" content="province=;city=;coord=" />
     <meta name="format-detection" content="telephone=no" />
     <link rel="apple-touch-icon-precomposed" href="~/FileCss/images/screenLogo.png?debug=847" />
-    <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?debug=847" />
-    <script src="~/FileCss/js/zepto.min.js?debug=847" type="text/javascript"></script>
-    <script type="text/javascript" src="~/FileCss/js/main.js?debug=8478"></script>
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?debug=847" />   
     <style>
         #tj_sx .sx_div {
             min-height: 360px;
@@ -97,15 +94,14 @@
         .shaixuan {
             z-index: 100;
         }
-    </style>
-    <script>var CategoryID = "2";</script>
+    </style>   
 </head>
 <body>
     <header id="header" style="">
         <div class="topbar">
             <a href="javascript:history.back();" class="back_btn"><i class="iconfont">ş</i></a>
             <a href="javascript:;" class="top_home"><i class="iconfont">ƙ</i></a>
-            <h1 class="page_title">更换花卉</h1>
+            <h1 class="page_title">更换记录</h1>
         </div>
         <div class="home_menu" id="hMenu">
             <a href="/Shop/Index"><i class="iconfont">Ő</i><span>我要买花</span></a>
@@ -115,56 +111,62 @@
         </div>
     </header>
     <div class="list">
-        <table>
+        <table style ="width:100%">
             <thead>
                 <tr><th>更换前</th><th>更换后</th><th>详情</th></tr>
             </thead>
             <tbody>
-                       @foreach (Model.FlowerChange item in Model)
-                      {
-                <tr>
-                    <td>
-                        @*<ul id="prolist">*@
-                           
-                                @*<li>*@
-                                    <span class="list_img">
-                                        <img src="@item.Photo" width="100" height="100" />
-                                    </span>
-                                </td>
-                    <td>
-                        <span class="list_img">
-                            @if (string.IsNullOrEmpty(item.ChangePhoto))
-                            {
-                                <a href="/MFlower/AddFlowersPhotoInfo?Number=@item.Number">上传新植物</a>
-                            }
-                            else
-                            {
-                                <img src="@item.ChangePhoto" width="100" height="100" />
-                            }
+                @foreach (Model.FlowerChange item in Model)
+                {
+                    <tr>
+                        <td>
+                            @*<ul id="prolist">*@
 
-                        </span>
-                    </td>
-                    <td>
-                        <span class="gh">
-                            <strong>提交人: @item.UserName</strong>
-                             <em>更换内容: @item.ContentMsg <br />
-                             所属公司: @item.OwnedCompany <br /> 
-                            位置: @item.PlacingPosition <br /> 
-                            操作时间: @item.time.ToString("yyyy-MM-dd")<br /> 
-                            状态:@item.State
-                            </em>
-                        </span>
-                        @*</li>*@
+                            @*<li>*@
+                            <span class="list_img">
+                                <img src="@item.Photo" class="imgphoto" width="100" height="100" />
+                            </span>
+                        </td>
+                        <td>
+                            <span class="list_img">
+                                @if (string.IsNullOrEmpty(item.ChangePhoto))
+                                {
+                                    <a href="/MFlower/AddFlowersPhotoInfo?Number=@item.Number">上传新植物</a>
+                                }
+                                else
+                                {
+                                    <img src="@item.ChangePhoto" class="imgphoto" width="100" height="100" />
+                                }
 
-                        @*</ul>*@
-                    </td>
-                </tr>
-                      }
+                            </span>
+                        </td>
+                        <td>
+                            <span class="gh">
+                                <strong>提交人: @item.UserName</strong>
+                                <em>
+                                    更换内容: @item.ContentMsg <br />
+                                    所属公司: @item.OwnedCompany <br />
+                                    位置: @item.PlacingPosition <br />
+                                    操作时间: @item.time.ToString("yyyy-MM-dd")<br />
+                                    状态:@item.State
+                                </em>
+                            </span>
+                            @*</li>*@
+
+                            @*</ul>*@
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
-    <a href="javascript:;" class="loadmore">加载更多商品</a>
-    <script type="text/javascript" src="http://www.86y.org/js/jquery.min.js"></script>
+    <div id="PhotoShowDiv"><img src="" id="ShowPhotoImg" style="max-height:400px;max-width:300px;" /></div>
+    <a href="javascript:;" class="loadmore">加载更多</a>
+    <a href="#" class="backtop_btn" style="position:fixed;bottom:0;left:85%;">↑回顶部</a>
+    @*<script src="~/FileCss/js/zepto.min.js?debug=847" type="text/javascript"></script>
+    <script type="text/javascript" src="~/FileCss/js/main.js?debug=8478"></script>*@
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    @Scripts.Render("~/Thems/js/layer/layer.js")
     <script>
         $(function () {
             $(".top_home").click(function () {
@@ -173,7 +175,28 @@
                 else target.toggle();
             });
         });
-       
+        $(".imgphoto").click(function () {
+            var url = $(this).attr("src");           
+            ShowPhotoInfo(url);
+        });
+        $(".backtop_btn").click(function () {
+            $("html,body").animate({ scrollTop: 0 }, 500);
+        });
+        function ShowPhotoInfo(values) {
+            
+            parent.layer.closeAll();
+            $("#ShowPhotoImg").attr("src", values);
+            var layindex = parent.layer.open({
+                type: 1,
+                shade: false,
+                title: false, //不显示标题
+                content: $('#PhotoShowDiv').html(), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                cancel: function () {
+                    parent.layer.close(layindex);
+                }
+            });
+            $("#ShowPhotoImg").attr("src", "");
+        }
         var page = 2;
         var finished = 0;
         var sover = 0;
@@ -223,34 +246,15 @@
                     //防止未加载完再次执行
                     finished = 1;
 
-                    //var result = "";
-                    //for (var i = 0; i < 6; i++) {
-                    //    vid++;
-                    //    result += '<li>'
-                    //                + '<a href="/product/24786.html"> <span class="list_img"> <img src="images/20140723145737178.jpg" width="100" height="100" /> </span><span class="list_img"> <img src="images/20140723145737178.jpg" width="100" height="100" /> </span> <span class="list_info"> <strong>小米手机4 移动4G版</strong> <em>【现货、价低、不用抢】不锈钢全金属边框！绝佳握感！高色饱和屏！索尼高画质！极速顶级内存！依然是全球顶配性能王者！</em> <b>￥1599.00</b> <small>已有 <s> 347 </s>人评价， <s>871 </s>人咨询</small> </span> </a>'
-                    //            + '</li>'
-                    //}
-                    //setTimeout(function () {
-                    //    //$(".loadmore").remove();
-
-                    //    $('#prolist').append(result);
-                    //    page += 1;
-                    //    finished = 0;
-                    //    //最后一页
-                    //    if (page == 10) {
-                    //        sover = 1;
-                    //        loadover();
-                    //    }
-                    //}, 1000);
                     $.ajax({
                         type: 'GET',
                         url: '/FlowerChange/GetMobleListMore?page=' + page,
                         dataType: 'json',
                         success: function (data) {
-                            console.log(data);
+                            //console.log(data);
                             if(data==""||data==null)
                             {
-                                console.log('数据加载完了');
+                                //console.log('数据加载完了');
                                 sover = 1;
                                 loadover();
                                 if (page == 1) {
@@ -262,7 +266,7 @@
                             {
                                 var result = ''
                                 for (var i = 0; i < data.length; i++) {
-                                    result += ' <li><span class="list_img"><img src="' + data[i].Photo + '" width="100" height="100" /></span><span class="list_img"> <img src="' + data[i].ChangePhoto + '" width="100" height="100" /> </span><span class="list_info"> <strong>更换人:' + data[i].WorkUsersRealName + '</strong> <em>更换内容: ' + data[i].ContentMsg + '</em><b>' + data[i].Number + '</b><small>操作时间:<s>  ' + data[i].time + '</s></small></span></li>';
+                                    result += ' <li><span class="list_img"><img src="' + data[i].Photo + '" class="imgphoto" width="100" height="100" /></span><span class="list_img"> <img src="' + data[i].ChangePhoto + '"  class="imgphoto" width="100" height="100" /> </span><span class="list_info"> <strong>更换人:' + data[i].WorkUsersRealName + '</strong> <em>更换内容: ' + data[i].ContentMsg + '</em><b>' + data[i].Number + '</b><small>操作时间:<s>  ' + data[i].time + '</s></small></span></li>';
                                     
                                    
                                 }
@@ -270,7 +274,7 @@
                                 //为了测试，延迟1秒加载
                                 setTimeout(function(){
                                     $(".loadmore").remove();
-                                    console.log(result);
+                                    //console.log(result);
                                     $('#prolist').append(result);
                                     page+=1;
                                     finished=0;

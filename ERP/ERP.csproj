@@ -41,6 +41,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\packages\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="LitJSON, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\LitJson.0.11.0\lib\net45\LitJSON.dll</HintPath>
       <Private>True</Private>
@@ -178,6 +181,7 @@
     <Compile Include="Controllers\EmployeeSalaryController.cs" />
     <Compile Include="Controllers\FlowerArrangementController.cs" />
     <Compile Include="Controllers\FlowerChangeController.cs" />
+    <Compile Include="Controllers\FlowerActiveController.cs" />
     <Compile Include="Controllers\FlowerController.cs" />
     <Compile Include="Controllers\FlowerTreatmentController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -733,6 +737,7 @@
     <Content Include="Scripts\Admin\Employee.js" />
     <Content Include="Scripts\Admin\EmployeeSalary.js" />
     <Content Include="Scripts\Admin\Flower.js" />
+    <Content Include="Scripts\Admin\FlowerActive.js" />
     <Content Include="Scripts\Admin\FlowerArrangement.js" />
     <Content Include="Scripts\Admin\FlowerCategory.js" />
     <Content Include="Scripts\Admin\FlowerChange.js" />
@@ -842,6 +847,8 @@
     <Content Include="static\css\bootstrap.css" />
     <Content Include="static\css\bootstrap.min.css" />
     <Content Include="static\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="static\image\check1.png" />
+    <Content Include="static\image\hou.png" />
     <Content Include="static\image\weixin.png" />
     <Content Include="static\image\zhifubao.png" />
     <Content Include="static\js\bootstrap.js" />
@@ -1865,8 +1872,6 @@
     <Content Include="uploadify\jquery.uploadify.min.js" />
     <Content Include="uploadify\uploadify.css" />
     <Content Include="uploadify\uploadify.swf" />
-    <Content Include="Upload\Attach\64ce7f17-e175-4f6c-98ba-cfb65c5373bf.jpg" />
-    <Content Include="Upload\Attach\QQ图片20170926221447.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1969,11 +1974,15 @@
     <Content Include="Views\FlowerArrangement\AddByExcel.cshtml" />
     <Content Include="Views\Text\Index.cshtml" />
     <Content Include="Views\Flower\AddByExcel.cshtml" />
+    <Content Include="Views\MOrders\MIndex.cshtml" />
+    <Content Include="Views\MOrders\OrderDetails.cshtml" />
+    <Content Include="Views\FlowerActive\Add.cshtml" />
+    <Content Include="Views\FlowerActive\Index.cshtml" />
+    <Content Include="Views\FlowerActive\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Cart\" />
+    <Folder Include="Upload\" />
     <Folder Include="Views\MLoginFilter\" />
-    <Folder Include="Views\MOrders\" />
     <Folder Include="Views\WxHelper\" />
   </ItemGroup>
   <ItemGroup>

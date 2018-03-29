@@ -12,12 +12,6 @@
 
     @Styles.Render("~/Bootstrap/css/bootstrap.min.css")
     @Styles.Render("~/Bootstrap/bootstrap-table/bootstrap-table.min.css")
-    @*
-      @Scripts.Render("~/Bootstrap/js/bootstrap.js")
-      @Scripts.Render("~/Bootstrap/bootstrap-table/bootstrap-table.js")
-      @Scripts.Render("~/Bootstrap/bootstrap-table/locale/bootstrap-table-zh-CN.min.js")*@   
-    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">*@
  
     <style>
         .companyclass {
@@ -36,27 +30,19 @@
 <body>
     <div class="panel-body" style="padding-bottom:0px;">
         <div class="panel panel-default">
-            <div class="panel-heading">花卉摆放位置列表</div>
+            <div class="panel-heading">花卉活动列表</div>
             <div class="panel-body">
                 <div id="formSearch" class="form-horizontal">
-                    <div class="form-group" style="width:100%;height:30px;">
-                        <div style="width:33%;float:left">
+                    <div class="form-group" style="width:100%;height:30px;">                        
+                        <div style="width:45%;float:left">
                             <label class="control-label col-sm-2" for="txt_search_departmentname">
-                                位置：
+                               花卉：
                             </label>
-                            <div class="col-sm-2">
-                                <input type="text" class="form-control" id="arrangement">
-                            </div>
-                          </div>
-                        <div style="width:33%;float:left">
-                            <label class="control-label col-sm-2" for="txt_search_departmentname">
-                                公司：
-                            </label>
-                            <select id="belongUsersId" class="companyid companyclass">
-                                <option value="0"></option>
+                            <select id="FlowerId" class="companyid companyclass">
+                                <option value="0"></option>                            
                             </select>           
                         </div>
-                        <div style="width:33%;float:right">
+                        <div style="width:54%;float:right">
                             <div class="col-sm-3" style="text-align:left;">
                                 <button type="button" class="btn btn-default" onclick="onloadTable();">
                                     查询 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
@@ -76,29 +62,17 @@
             </button>
             <button id="btn_delete" type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 删除
-            </button>
-            <button type="button" class="btn btn-default">
-                <a href="/FlowerArrangement/LownExcel"><span class="glyphicon glyphicon-download" aria-hidden="true"></span> 下载Excel模板</a> 
-            </button>
-            <button type="button" class="btn btn-default" onclick="AlretAddByExcel()">
-                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导入Excel
-            </button>
-            <button type="button" class="btn btn-default" onclick="DownExcel()">
-                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出Excel
-            </button>
-            <button id="btn_ByOrcode" type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出二维码
-            </button>
+            </button>                     
         </div>
         <table id="tb_departments" data-reorderable-columns="true"></table>
-        <div id="PhotoShowDiv"><img src="" id="ShowPhotoImg" style="max-height:500px;max-width:400px;" /></div>
+        
     </div>
    </div>
     @Scripts.Render("~/plugins/jQuery/jquery-2.2.3.min.js")
     @Scripts.Render("~/Bootstrap/js/bootstrap")
     @*加载弹出层*@
     @Scripts.Render("~/Thems/js/layer/layer.js")
-    <script src="~/Scripts/Admin/FlowerArrangement.js"></script>    
+    <script src="~/Scripts/Admin/FlowerActive.js"></script>    
 </body>
 </html>
 

@@ -24,7 +24,7 @@ namespace Business
         /// <param name="offset"></param>
         /// <param name="StrWhere"></param>
         /// <returns></returns>
-        public object GetOrdersList(int limit, int offset, string StrWhere)
+        public List<Model.Orders> GetOrdersList(int limit, int offset, string StrWhere)
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("select * from (select ROW_NUMBER() over (order by Orders.id desc ) as rn ,OrderId,SellingPrice,CostPrice,profit,GoodsSum,CreateTime,UserAdmin.UserName,UserAdmin.RealName,OrdersState from Orders");
@@ -129,12 +129,13 @@ namespace Business
         }
 
 
-        public int GetPayOrdersSum(string OrdersId)
+        public IList<Model.OrdersDetails> GetPayOrdersSum(string OrdersId)
         {
-            const string sql =
-@"SELECT SUM(OrdersDetails.SellingNum) as id FROM OrdersDetails   WHERE OrderId=@OrdersId ";
+            //const string sql =@"SELECT SUM(OrdersDetails.SellingNum) as id FROM OrdersDetails   WHERE OrderId=@OrdersId ";
+            const string sql = @"
+  SELECT SUM(OrdersDetails.SellingNum) as SellingNum,FlowerNumber FROM OrdersDetails   WHERE OrderId=@OrdersId  group by FlowerNumber";
             List<Model.OrdersDetails> OrdersDetails = Factory.DBHelper.Query<Model.OrdersDetails>(SQLConString, sql.ToString(), new DynamicParameters(new { OrdersId }));
-            return OrdersDetails.Count() > 0 ? OrdersDetails[0].id : 0;
+            return OrdersDetails.Count() > 0 ? OrdersDetails : null;
 
         }
 
@@ -181,12 +182,24 @@ namespace Business
                 OrdersState
             }));
 
-            int OrdersInfoSum = GetPayOrdersSum(OrdersId);
-            string sql = @"UPDATE Flower set FlowerStock=FlowerStock-" + OrdersInfoSum + "  WHERE OrderId=@OrdersId ";
-            Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
+            //int OrdersInfoSum = GetPayOrdersSum(OrdersId);
+            //string sql = @"UPDATE Flower set FlowerStock=FlowerStock-" + OrdersInfoSum + "  WHERE OrderId=@OrdersId ";
+            //Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
+            //{
+            //    OrdersId,
+            //}));
+            #region 修改花卉数量
+            IList<Model.OrdersDetails> ordersDetailList = GetPayOrdersSum(OrdersId);
+            foreach (Model.OrdersDetails item in ordersDetailList)
             {
-                OrdersId,
-            }));
+                string sql = @"UPDATE Flower set FlowerStock=FlowerStock-@SellingNum  WHERE FlowerNumber=@FlowerNumber ";
+                Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
+                {
+                    item.FlowerNumber,
+                    item.SellingNum,
+                }));
+            }
+            #endregion
             return true;
         }
 
@@ -324,7 +337,7 @@ LogisticsNumber=@LogisticsNumber,OrderDelivery=getdate()  where OrderId=@OrdersI
         /// <returns></returns>
         public bool TransactionAddOrders(Model.Orders orders, List<Model.OrdersDetails> ordersDetailList, Model.OrdersLog ordersLog)
         {
-            using (SqlConnection conn = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["SQLConString"]))
+            using (SqlConnection conn = new SqlConnection(SQLConString))
             {
                 conn.Open();                
                 SqlTransaction tr = conn.BeginTransaction();//声明事务

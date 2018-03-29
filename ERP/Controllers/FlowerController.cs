@@ -52,10 +52,10 @@ namespace ERP.Controllers
             Flower.FlowerNumber = GetFlowerNum();
             Flower.FlowerWatchPhoto = Utility.ChangeText.SaveUploadPicture(file, "FlowerPhoto");
             Business.Sys_Flower Sys_Flower = new Business.Sys_Flower();
-            ViewData["success"] = "添加失败";
+            //ViewData["success"] = "添加失败";
             if (Sys_Flower.InsertFlowerWatch(Flower))
             {
-                ViewData["success"] = "添加成功";
+                //ViewData["success"] = "添加成功";
             }
             Response.Write("<script>parent.layer.closeAll();</script>");
             return View();
@@ -67,29 +67,30 @@ namespace ERP.Controllers
             Business.Sys_Flower Sys_Flower = new Business.Sys_Flower();
             return View(Sys_Flower.GetFlower(id));
         }
+        
         [HttpPost]
         public ActionResult Edit(Model.Flower Flower)
         {
             Business.Sys_Flower Sys_Flower = new Business.Sys_Flower();
-            Model.Flower Flowers = Sys_Flower.GetFlowerByFlowerNumber(Flower.FlowerNumber);
+            //Model.Flower Flowers = Sys_Flower.GetFlowerByFlowerNumber(Flower.FlowerNumber);
 
             if (Request.Files["attach_path"] != null)
             {
-                HttpPostedFileBase file = Request.Files["attach_path"];
+                HttpPostedFileBase file = Request.Files["attach_path"];               
                 if (!string.IsNullOrEmpty(file.FileName))
                 {
                     DeleteFlowerPhoto(Flower.FlowerWatchPhoto);
                     Flower.FlowerWatchPhoto = Utility.ChangeText.SaveUploadPicture(file, "FlowerPhoto");
                 }         
             }
-            else 
-            {
-                Flower.FlowerWatchPhoto = Flowers.FlowerWatchPhoto;
-            }
-            ViewData["success"] = "修改失败";
+            //else 
+            //{
+            //    Flower.FlowerWatchPhoto = Flowers.FlowerWatchPhoto;
+            //}
+            //ViewData["success"] = "修改失败";
             if (Sys_Flower.UpdateFlowerWatch(Flower))
             {
-                ViewData["success"] = "修改成功";
+               // ViewData["success"] = "修改成功";
             }
             Response.Write("<script>parent.layer.closeAll();</script>");
             return View();

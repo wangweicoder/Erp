@@ -7,7 +7,7 @@ a{color:#676b70;text-decoration:none;hide-focus:expression(this.hideFocus=true);
 table{border-collapse:collapse;border-spacing:0;}
 fieldset,img,area,a,button{border:0;outline:0;}
 address,caption,cite,code,dfn,em,th,var,i{font-style:normal;font-weight:normal;}
-input,textarea,button,select{-webkit-tap-highlight-color: rgba(0,0,0,0);-webkit-appearance:none;-moz-appearance:none;border-radius:0;}
+input,textarea,button,select{-webkit-tap-highlight-color: rgba(0,0,0,0);-webkit-appearance:none;-moz-appearance:none;border-radius:4px;}
 ol,ul{list-style:none;}
 small{font-size:12px}
 h1,h2,h3,h4,h5,h6{font-size:100%;}
@@ -609,8 +609,8 @@ footer { background:#fff;padding-bottom:70px;clear:both;}
 .list{background:#fff;}
 .list ul li{height:120px;position:relative;border-bottom:solid 1px #dadada;-webkit-border-image: url(../images/border.gif) 2 0 round;border-image: url(../images/border.gif) 2 0 round;border-width: 0 0 1px 0;}
 .list ul li a{display:block;padding:10px;overflow:hidden;}
-.list_img{float:left;width:100px;height:100px;display:block;}
-.list_info { margin-left:110px;display:block;}
+.list_img{float:left;width:100px;height:100px;display:block;padding-top:12px;}
+.list_info { margin-left:110px;display:block;padding-top:16px;}
 .list_info strong{display:block;color:#2c3e50;height:22px;overflow:hidden;}
 .list_info em{display:block;overflow:hidden;font-size:12px;}
 .list_info b{color:#f44623;}
@@ -668,7 +668,7 @@ footer { background:#fff;padding-bottom:70px;clear:both;}
 .se_yanse dl dd { margin-left:70px;}
 .se_yanse dl dd button { height:30px;padding:0 10px;border:0;border-radius:3px;margin-right:10px;background:#08c;color:#fff;}
 
-.btn_box { height:40px;position:fixed;bottom:0;left:0;width:100%;background:#f6f6f6;padding:10px 0;}
+.btn_box { height:40px;position:fixed;bottom:0;left:0;width:100%;background:#f6f6f6;padding:5px 0;}
 .btn_box a { margin:0 7px;}
 
 .pro_info{margin-top:10px;clear:both;}
