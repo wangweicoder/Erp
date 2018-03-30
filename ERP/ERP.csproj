@@ -1971,7 +1971,7 @@
     <Content Include="Views\EmployeeSalary\Add.cshtml" />
     <Content Include="Views\EmployeeSalary\Edit.cshtml" />
     <Content Include="Views\TestImg\Index.cshtml" />
-    <Content Include="Views\MMain\GetArrangementInfo.cshtml" />
+    <Content Include="Views\MMain\GetArrangementInfos.cshtml" />
     <Content Include="Views\FlowerArrangement\AddByExcel.cshtml" />
     <Content Include="Views\Text\Index.cshtml" />
     <Content Include="Views\Flower\AddByExcel.cshtml" />
@@ -1980,7 +1980,7 @@
     <Content Include="Views\FlowerActive\Add.cshtml" />
     <Content Include="Views\FlowerActive\Index.cshtml" />
     <Content Include="Views\FlowerActive\Edit.cshtml" />
-    <Content Include="Views\MMain\GetArrangementInfos.cshtml" />
+    <Content Include="Views\MMain\GetArrangementInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />

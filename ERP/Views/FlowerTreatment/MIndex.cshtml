@@ -125,7 +125,7 @@
     </div>
     <div id="PhotoShowDiv"><img src="" id="ShowPhotoImg" style="max-height:400px;max-width:300px;" /></div>
     <a href="javascript:;" class="loadmore">加载更多</a>
-    <a href="#" class="backtop_btn" style="position:fixed;bottom:0;left:85%;">↑回顶部</a>
+    
     @*<script src="~/FileCss/js/zepto.min.js?debug=847" type="text/javascript"></script>
     <script type="text/javascript" src="~/FileCss/js/main.js?debug=847"></script>*@
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
@@ -216,8 +216,8 @@
 
             if (scrollTop + windowHeight - scrollHeight <= 50) {
                 //此处是滚动条到底部时候触发的事件，在这里写要加载的数据，或者是拉动滚动条的操作
-
-
+                var ht = '<a href="#" class="backtop_btn" style="position:fixed;bottom:0;left:85%;">↑回顶部</a>';
+                $("body").append(ht);
                 //防止未加载完再次执行
                 finished = 1;
                 
