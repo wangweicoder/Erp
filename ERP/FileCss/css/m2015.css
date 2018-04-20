@@ -625,12 +625,12 @@ footer { background:#fff;padding-bottom:70px;clear:both;}
 
 /*商品详细页*/
 .product{height:300px;background:#fff;}
-.pro_img{margin:0 10px;}
-.pro_img {width:97%;height:300px;position:relative;background:#fff;}
+.pro_img{margin:0 }
+.pro_img {width:100%;height:300px;position:relative;background:#fff;}
 .pro_img .pro_img_nav{position:absolute;top:5px;left:0;width:300px;text-align:center;}
 .pro_img .pro_img_nav i{font-size:14px;color:#eee;}
 .pro_img .pro_img_nav i.cur{color:#f44623;}
-.pro_img_box {text-align:center; margin-right: 10px;}
+.pro_img_box {text-align:center; margin-right: 0px;}
 .pro_img_box li{float:left;width:100%;}
 .pro_img_box li img{width:100%;}
 .bigImg {position:fixed;top:10px;min-width:320px;min-height:320px;width:100%;height:100%;z-index:100; }

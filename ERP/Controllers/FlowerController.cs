@@ -244,8 +244,8 @@ namespace ERP.Controllers
         /// <returns></returns>
         public ActionResult DownExcel()
         {
-            string filePath = Server.MapPath("~/Excel/Flowerdemo.xlt");//路径
-            return File(filePath, "text/plain", "Flowerdemo.xlt"); //客户端保存的名字
+            string filePath = Server.MapPath("~/Excel/Flowerdemo.xls");//路径
+            return File(filePath, "text/plain", "Flowerdemo.xls"); //客户端保存的名字
         }
         public ActionResult AddByExcel()
         {

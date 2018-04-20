@@ -266,7 +266,7 @@ namespace ERP.Controllers
             QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
             bt = qrCodeEncoder.Encode(enCodeString, Encoding.UTF8);
 
-            string filename = DateTime.Now.ToString("yyyymmddhhmmss");
+            string filename = "arr"+DateTime.Now.ToString("yyyymmddhhmmss")+ArrangementId;
             string path = Server.MapPath("/Upload/Attach/") + filename + ".jpg";
             bt.Save(path);
             return "/Upload/Attach/" + filename + ".jpg";
@@ -497,7 +497,7 @@ namespace ERP.Controllers
                 {
                     Model.FlowerArrangement model = new Model.FlowerArrangement();
                     model.arrangement = dt.Rows[i][0].ToString();
-                    model.Specifications = dt.Rows[i][1].ToString();
+                    model.Specifications = Convert.ToDecimal(dt.Rows[i][1]).ToString();
                     model.UnitPrice = Convert.ToDecimal(dt.Rows[i][2]);
                     model.Count = Convert.ToInt32(dt.Rows[i][3].ToString());
                     model.Total = Convert.ToDecimal(dt.Rows[i][4].ToString());
@@ -536,8 +536,8 @@ namespace ERP.Controllers
         /// <returns></returns>
         public ActionResult LownExcel() 
         {
-            string filePath = Server.MapPath("~/Excel/demo.xlt");//路径
-            return File(filePath, "text/plain", "demo.xlt"); //客户端保存的名字
+            string filePath = Server.MapPath("~/Excel/demo.xls");//路径
+            return File(filePath, "text/plain", "demo.xls"); //客户端保存的名字
         }
     }
 }

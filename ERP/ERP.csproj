@@ -1747,8 +1747,8 @@
     <Content Include="layui\font\iconfont.ttf" />
     <Content Include="layui\font\iconfont.woff" />
     <Content Include="App_Data\ShoppingCartInMVC-master.zip" />
-    <Content Include="Excel\demo.xlt" />
-    <Content Include="Excel\Flowerdemo.xlt" />
+    <Content Include="Excel\demo.xls" />
+    <Content Include="Excel\Flowerdemo.xls" />
     <None Include="Properties\PublishProfiles\1.pubxml" />
     <None Include="Properties\PublishProfiles\11.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -1873,6 +1873,8 @@
     <Content Include="uploadify\jquery.uploadify.min.js" />
     <Content Include="uploadify\uploadify.css" />
     <Content Include="uploadify\uploadify.swf" />
+    <Content Include="uploadify\webuploader.css" />
+    <Content Include="uploadify\webuploader.html5only.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1981,6 +1983,7 @@
     <Content Include="Views\FlowerActive\Index.cshtml" />
     <Content Include="Views\FlowerActive\Edit.cshtml" />
     <Content Include="Views\MMain\GetArrangementInfo.cshtml" />
+    <Content Include="Views\Text\yIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />

@@ -18,7 +18,11 @@ namespace ERP.MobleControllers
         {
             string id = Request["id"];
             HttpPostedFileBase file = Request.Files["Filedata"];
-            return null;
+            return Json(new { result = "OK", msg = "更换花卉成功" }, "text/html", JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult yIndex()
+        {
+            return View();
         }
     }
 }
