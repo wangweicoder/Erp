@@ -22,8 +22,8 @@ namespace ERP
             }
             if (System.Web.HttpContext.Current.Session["UsersId"] == null)
             {
-                //string gzhurl = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=" + System.Configuration.ConfigurationManager.AppSettings["WxAppId"] +"&scene=110#wechat_redirect";
-                //Response.Redirect(gzhurl);
+                //string gzhurl = "https://open.weixin.qq.com/connect/qrconnect?appid=" + System.Configuration.ConfigurationManager.AppSettings["WxAppId"]  +"&redirect_uri=" + System.Web.HttpUtility.UrlEncode("http://www.thuay.com/WxHelper/GetCode?id=" + Request["ArrangementId"] + "&way=" + Request["way"]) + "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect ";
+                //Response.Redirect(gzhurl,true);
                 TimeSpan SessTimeOut = new TimeSpan(0, 0, System.Web.HttpContext.Current.Session.Timeout, 0, 0);
                 Response.Redirect("/MLogin/Index", true);
                 Response.End();
