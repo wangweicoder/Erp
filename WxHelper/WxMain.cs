@@ -34,7 +34,7 @@ namespace WxHelper
         }
 
         /// <summary>
-        /// 获得微信access_token
+        /// 通过 appid + appsecert 获取公众号的 access_token
         /// </summary>
         /// <returns></returns>
         public static string Getaccess_token()
