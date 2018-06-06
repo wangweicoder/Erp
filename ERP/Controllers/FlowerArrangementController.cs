@@ -19,14 +19,14 @@ using Utility;
 
 namespace ERP.Controllers
 {
-    
+
     public class FlowerArrangementController : LoginFilter
     {
         //
         // GET: /FlowerArrangement/
         // [SysAuthAttribute]
         public ActionResult Index()
-        {          
+        {
             return View();
         }
 
@@ -45,9 +45,9 @@ namespace ERP.Controllers
             if (!string.IsNullOrEmpty(arrangement))
             {
                 sb.Append(" and arrangement  like '%" + arrangement + "%'");
-               
+
             }
-            if (belongUsersId.ToString()!="0")
+            if (belongUsersId.ToString() != "0")
             {
                 sb.Append(" and belongUsersId  = '" + belongUsersId + "'");
             }
@@ -75,11 +75,11 @@ namespace ERP.Controllers
             }
             Business.Sys_FlowerArrangement Sys_FlowerArrangement = new Business.Sys_FlowerArrangement();
             int id = Sys_FlowerArrangement.Add(FlowerArrangement);
-            Sys_FlowerArrangement.UpdateImgORCodePath(CreateORCode(id), id);            
+            Sys_FlowerArrangement.UpdateImgORCodePath(CreateORCode(id), id);
             return Content("");
         }
 
-        public ActionResult Edit() 
+        public ActionResult Edit()
         {
             Business.Sys_FlowerArrangement Sys_FlowerArrangement = new Business.Sys_FlowerArrangement();
             Model.FlowerArrangement FlowerArrangement = Sys_FlowerArrangement.GetModel(Request["id"]);
@@ -99,14 +99,14 @@ namespace ERP.Controllers
             }
             Sys_FlowerArrangement.Edit(FlowerArrangement);
             if (string.IsNullOrEmpty(FlowerArrangement.ImgORCodePath))
-               Sys_FlowerArrangement.UpdateImgORCodePath(CreateORCode(FlowerArrangement.id), FlowerArrangement.id);
+                Sys_FlowerArrangement.UpdateImgORCodePath(CreateORCode(FlowerArrangement.id), FlowerArrangement.id);
             //Response.Write("<script>parent.layer.closeAll();</script>");
             return Content("");
         }
 
-        public ActionResult Delete(string id) 
+        public ActionResult Delete(string id)
         {
-            Business.Sys_FlowerArrangement Sys_FlowerArrangement = new Business.Sys_FlowerArrangement();            
+            Business.Sys_FlowerArrangement Sys_FlowerArrangement = new Business.Sys_FlowerArrangement();
             Model.FlowerArrangement FlowerArrangement = Sys_FlowerArrangement.GetModel(id);
             string path = Server.MapPath("~") + FlowerArrangement.ImgORCodePath;
             //删除二维码图片
@@ -126,25 +126,25 @@ namespace ERP.Controllers
         {
             Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
             List<Model.UserAdmin> UserAdminList = Sys_UserAdmin.GetAdminInfoList("Customer");
-            List<SelectListItem> hourList = new List<SelectListItem>();           
+            List<SelectListItem> hourList = new List<SelectListItem>();
             foreach (var item in UserAdminList)
-            {                
+            {
                 hourList.Add(new SelectListItem { Text = item.OwnedCompany, Value = item.ID.ToString() });
             }
-            return Json(hourList,JsonRequestBehavior.AllowGet);
+            return Json(hourList, JsonRequestBehavior.AllowGet);
         }
-        public List<SelectListItem> GetOwnedCompanyList(int  UsersId=0)
+        public List<SelectListItem> GetOwnedCompanyList(int UsersId = 0)
         {
             Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
             List<Model.UserAdmin> UserAdminList = Sys_UserAdmin.GetAdminInfoList("Customer");
-            List<SelectListItem> hourList = new List<SelectListItem>();          
+            List<SelectListItem> hourList = new List<SelectListItem>();
             foreach (var item in UserAdminList)
             {
-                if (UsersId!=0)
+                if (UsersId != 0)
                 {
-                    if (item.ID==UsersId)
+                    if (item.ID == UsersId)
                     {
-                        hourList.Add(new SelectListItem { Text = item.OwnedCompany, Value = item.ID.ToString(),Selected=true });
+                        hourList.Add(new SelectListItem { Text = item.OwnedCompany, Value = item.ID.ToString(), Selected = true });
                         continue;
                     }
                 }
@@ -156,7 +156,7 @@ namespace ERP.Controllers
         public List<SelectListItem> GetShopList(int ShopId = 0)
         {
             Business.Sys_Flower Sys_Flower = new Business.Sys_Flower();
-            List<Model.Flower> FlowerList= Sys_Flower.GetFlowerList();
+            List<Model.Flower> FlowerList = Sys_Flower.GetFlowerList();
             List<SelectListItem> hourList = new List<SelectListItem>();
             foreach (var item in FlowerList)
             {
@@ -164,12 +164,12 @@ namespace ERP.Controllers
                 {
                     if (item.id == ShopId)
                     {
-                        hourList.Add(new SelectListItem { Text = item.FlowerWatchName+"("+item.FlowerWatchType+")", Value = item.id.ToString(), Selected = true });
+                        hourList.Add(new SelectListItem { Text = item.FlowerWatchName + "(" + item.FlowerWatchType + ")", Value = item.id.ToString(), Selected = true });
                         continue;
                     }
                 }
                 hourList.Add(new SelectListItem { Text = item.FlowerWatchName + "(" + item.FlowerWatchType + ")", Value = item.id.ToString() });
-                
+
             }
             return hourList;
         }
@@ -182,19 +182,19 @@ namespace ERP.Controllers
         {
             try
             {
-              
+
                 string FlowerArrangementId = Request["FlowerArrangementId"];
                 HttpPostedFileBase files = Request.Files["file"];
                 Utility.Log.WriteTextLog("报错", "", "", "", files == null ? "true" : "fasle");
                 if (files == null) return Json("Faild", JsonRequestBehavior.AllowGet);
 
-                
+
                 Business.Sys_FlowerArrangement Sys_FlowerArrangement = new Business.Sys_FlowerArrangement();
                 Model.FlowerArrangement FlowerArrangement = Sys_FlowerArrangement.GetModel(FlowerArrangementId);
 
                 string FilePath = Utility.ChangeText.SaveUploadPicture(files, "img");
 
-               // Sys_FlowerArrangement.UpdateUploadImg(FilePath, int.Parse(FlowerArrangementId));
+                // Sys_FlowerArrangement.UpdateUploadImg(FilePath, int.Parse(FlowerArrangementId));
                 Business.Sys_FlowerChange Sys_FlowerChange = new Business.Sys_FlowerChange();
                 Model.FlowerChange FlowerChange = new Model.FlowerChange();
                 //增加一条更换记录
@@ -233,12 +233,12 @@ namespace ERP.Controllers
                 WxHelper.WxMain.SendMsg(JsonConvert.SerializeObject(Wx_SendMsg));
                 return Json(new { result = "OK", msg = "更换花卉成功" }, "text/html", JsonRequestBehavior.AllowGet);
             }
-            catch (Exception  ex)
+            catch (Exception ex)
             {
-                Utility.Log.WriteTextLog("报错","","","",ex.ToString());
+                Utility.Log.WriteTextLog("报错", "", "", "", ex.ToString());
                 return null;
             }
-          
+
         }
         /// <summary>
         /// 获取文件大小
@@ -258,7 +258,7 @@ namespace ERP.Controllers
         }
 
 
-        public string CreateORCode(int ArrangementId) 
+        public string CreateORCode(int ArrangementId)
         {
             string url = "http://www.thuay.com/MMain/GetArrangementInfo?way=Arrangement&ArrangementId=" + ArrangementId;
             Bitmap bt;
@@ -266,13 +266,13 @@ namespace ERP.Controllers
             QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
             bt = qrCodeEncoder.Encode(enCodeString, Encoding.UTF8);
 
-            string filename = "arr"+DateTime.Now.ToString("yyyymmddhhmmss")+ArrangementId;
+            string filename = "arr" + DateTime.Now.ToString("yyyymmddhhmmss") + ArrangementId;
             string path = Server.MapPath("/Upload/Attach/") + filename + ".jpg";
             bt.Save(path);
             return "/Upload/Attach/" + filename + ".jpg";
         }
 
-        public ActionResult AddByExcel() 
+        public ActionResult AddByExcel()
         {
             return View();
         }
@@ -284,7 +284,7 @@ namespace ERP.Controllers
         public void DownloadExcel(string ids, int limit, int offset, string arrangement, int belongUsersId)
         {
             var tableHeaderTexts = new string[] { "摆放位置", "规格(M)", "单价", "数量", "合计", "所属公司", "对应花卉名称", "对应花卉品种", "备注" };
-            List<string> list=tableHeaderTexts.ToList();
+            List<string> list = tableHeaderTexts.ToList();
             Business.Sys_FlowerArrangement Sys_FlowerArrangement = new Business.Sys_FlowerArrangement();
             StringBuilder sb = new StringBuilder();
             if (!string.IsNullOrEmpty(ids))
@@ -300,7 +300,7 @@ namespace ERP.Controllers
             {
                 sb.Append(" and belongUsersId  = '" + belongUsersId + "'");
             }
-            List<Model.FlowerArrangement> flist= Sys_FlowerArrangement.GetList(limit, offset, sb.ToString());
+            List<Model.FlowerArrangement> flist = Sys_FlowerArrangement.GetList(limit, offset, sb.ToString());
             DataTable dt = new DataTable();
             dt = Utility.ExtensionMethods.ToDataTable(flist);
             #region 删除不需要显示的列
@@ -315,7 +315,7 @@ namespace ERP.Controllers
             dt.Columns.Remove("YangHuFangFa");
             dt.Columns.Remove("FlowerSalesPrice");
             #endregion
-            Utility.Excel.ExplorerExcel(dt,list);
+            Utility.Excel.ExplorerExcel(dt, list);
         }
         /// <summary>
         /// 导出二维码
@@ -345,21 +345,20 @@ namespace ERP.Controllers
             List<Model.FlowerArrangement> flist = Sys_FlowerArrangement.GetList(limit, offset, sb.ToString());
             try
             {
-                Task task = new Task(()=> CreateImg(flist));
+                Task task = new Task(() => CreateImg(flist));
                 task.Start();
                 while (!task.IsCompleted)
                 {
                     task.Wait();
                 }
-               
+
                 string dpath = "/Upload/OrCodepic";
-                if (task.Status == TaskStatus.RanToCompletion) 
-                {                    
-                    string dir = Server.MapPath("/Upload/OrCodepic");
-                    PubClass.FileDel(dir + "/zipfile.zip");
-                    
-                    ZipFileFromDirectory(dpath, dir+"/zipfile.zip", 2);
-                    
+                if (task.Status == TaskStatus.RanToCompletion)
+                {
+                    string dir = Server.MapPath("/Upload/OrCodepic");                   
+
+                    ZipFileFromDirectory(dpath, dir + "/zipfile.zip", 2);
+
                 }
                 return Json(new { code = "1", msg = dpath + "/zipfile.zip" }, JsonRequestBehavior.AllowGet);
                 //return File(dpath, "text/plain", "zipfile.zip"); //客户端保存的名字
@@ -369,58 +368,71 @@ namespace ERP.Controllers
                 return Json(new { code = "0", msg = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
-        
+
         /// <summary>
         /// 保存图片文件
         /// </summary>
         /// <param name="flist"></param>
         private void CreateImg(List<Model.FlowerArrangement> flist)
         {
-            for (int i = 0; i < flist.Count; i++)
+            try
             {
-                string path = flist[i].ImgORCodePath;
-                int index = path.IndexOf(".");
-                string exc = path.Substring(index, path.Length - index);
-                string filename = flist[i].OwnedCompany + flist[i].arrangement + flist[i].FlowerWatchName + exc;//获得图片的真实名字
                 string dir = Server.MapPath("/Upload/OrCodepic");
-                string targetPath = dir + "/" + filename;
                 if (!System.IO.Directory.Exists(dir))
                 { // 目录不存在，建立目录  
                     System.IO.Directory.CreateDirectory(dir);
                 }
-                string abpath = Server.MapPath("~") + path;
-                System.IO.File.Copy(abpath, targetPath, true);
-            }
+                DirectoryInfo theFolder = new DirectoryInfo(dir);
+                //获得文件列表并按时间倒序
+                var fileInfo = theFolder.GetFiles().OrderByDescending(x => x.CreationTime);
+                foreach (var item in fileInfo)
+                {
+                    PubClass.FileDel(item.FullName);
+                }
 
+                for (int i = 0; i < flist.Count; i++)
+                {
+                    string path = flist[i].ImgORCodePath;
+                    int index = path.IndexOf(".");
+                    string exc = path.Substring(index, path.Length - index);
+                    string filename = flist[i].OwnedCompany + flist[i].arrangement + flist[i].FlowerWatchName + exc;//获得图片的真实名字
+                    string targetPath = dir + "/" + filename;
+                    string abpath = Server.MapPath("~") + path;
+                    System.IO.File.Copy(abpath, targetPath, true);
+                }
+            }
+            catch (Exception ex) {
+                throw;
+            }
         }
-        
+
         /// <summary>
         /// 下载到指定路径
         /// </summary>
         /// <param name="fileName"></param>
         /// <param name="url"></param>
         /// <param name="localPath"></param> 
-        public   void  DownloadOneFileByURLWithWebClient(string  fileName,  string  url,  string  localPath)
+        public void DownloadOneFileByURLWithWebClient(string fileName, string url, string localPath)
         {
-            System.Net.WebClient wc  =   new  System.Net.WebClient();   
-             if (System.IO.File.Exists(localPath  +  fileName))
-             {
-                 System.IO.File.Delete(localPath  +  fileName);
-             }
-             if  (Directory.Exists(localPath)  ==   false )  
-             { 
-                 Directory.CreateDirectory(localPath);
-             }
-             //wc.DownloadFile(url  +  fileName,  fileName);//下载到了网站bin目录
-             byte[] mybyte;
-             mybyte = wc.DownloadData(url  +  fileName);
-             //MemoryStream ms = new MemoryStream(mybyte);
-             //System.Drawing.Image img;
-             //img = System.Drawing.Image.FromStream(ms);
-             Response.ClearContent();
-             Response.ContentType = "image/gif";
-             Response.BinaryWrite(mybyte);
-         }
+            System.Net.WebClient wc = new System.Net.WebClient();
+            if (System.IO.File.Exists(localPath + fileName))
+            {
+                System.IO.File.Delete(localPath + fileName);
+            }
+            if (Directory.Exists(localPath) == false)
+            {
+                Directory.CreateDirectory(localPath);
+            }
+            //wc.DownloadFile(url  +  fileName,  fileName);//下载到了网站bin目录
+            byte[] mybyte;
+            mybyte = wc.DownloadData(url + fileName);
+            //MemoryStream ms = new MemoryStream(mybyte);
+            //System.Drawing.Image img;
+            //img = System.Drawing.Image.FromStream(ms);
+            Response.ClearContent();
+            Response.ContentType = "image/gif";
+            Response.BinaryWrite(mybyte);
+        }
 
         /// <summary>  
         /// 压缩目录（包括子目录及所有文件）  
@@ -446,7 +458,7 @@ namespace ERP.Controllers
                     string file = NextFile.FullName;
                     FileStream fileStream = System.IO.File.OpenRead(file);//打开压缩文件  
                     byte[] buffer = new byte[fileStream.Length];
-                    fileStream.Read(buffer, 0, buffer.Length);                   
+                    fileStream.Read(buffer, 0, buffer.Length);
                     ZipEntry entry = new ZipEntry(file.Replace(rootMark, string.Empty));
                     entry.DateTime = DateTime.Now;
                     entry.Size = fileStream.Length;
@@ -457,12 +469,12 @@ namespace ERP.Controllers
                     outPutStream.PutNextEntry(entry);
                     outPutStream.Write(buffer, 0, buffer.Length);
                 }
-            }  
+            }
             outPutStream.Finish();
             outPutStream.Close();
             GC.Collect();
             return true;
-            
+
         }
         /// <summary>
         /// 导入Excel文件
@@ -471,12 +483,12 @@ namespace ERP.Controllers
         /// <author>wangwei</author>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult AddByExcel(HttpPostedFileBase files) 
+        public ActionResult AddByExcel(HttpPostedFileBase files)
         {
             try
             {
                 files = Request.Files["file"];
-                string path= Utility.ChangeText.SaveUploadPicture(files, "xls");
+                string path = Utility.ChangeText.SaveUploadPicture(files, "xls");
                 Business.Sys_FlowerArrangement Sys_FlowerArrangement = new Business.Sys_FlowerArrangement();
                 DataTable dt = new DataTable();
                 string templetpath = Server.MapPath("~") + path;
@@ -492,7 +504,7 @@ namespace ERP.Controllers
                 List<Model.UserAdmin> UserAdminList = new List<Model.UserAdmin>();
                 UserAdminList = Sys_UserAdmin.GetAdminInfoList("Customer");
                 //花卉
-                List<Model.Flower> FlowerList =new Business.Sys_Flower().GetFlowerList();
+                List<Model.Flower> FlowerList = new Business.Sys_Flower().GetFlowerList();
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     Model.FlowerArrangement model = new Model.FlowerArrangement();
@@ -508,33 +520,33 @@ namespace ERP.Controllers
                     if (FlowerList.Count(n => n.FlowerWatchName == dt.Rows[i][6].ToString()) > 0)
                     {
                         model.ShopId = FlowerList.Where(n => n.FlowerWatchName.Contains(dt.Rows[i][6].ToString())).ToList()[0].id;
-                    }                   
+                    }
                     model.Remark = dt.Rows[i][8].ToString();
-                   int id=Sys_FlowerArrangement.Add(model);
-                   Sys_FlowerArrangement.UpdateImgORCodePath(CreateORCode(id),id);
+                    int id = Sys_FlowerArrangement.Add(model);
+                    Sys_FlowerArrangement.UpdateImgORCodePath(CreateORCode(id), id);
                 }
                 //删除上传的导入文件
                 if (System.IO.File.Exists(templetpath))
                 {
                     System.IO.File.Delete(templetpath);
                 }
-                Response.Write("<script>parent.layer.alert('导入成功!');parent.layer.closeAll();</script>");               
+                Response.Write("<script>parent.layer.alert('导入成功!');parent.layer.closeAll();</script>");
                 return View();
             }
             catch (Exception ex)
             {
-                Utility.Log.WriteTextLog("导入Excel","异常",ex.ToString(),"","");
+                Utility.Log.WriteTextLog("导入Excel", "异常", ex.ToString(), "", "");
                 Response.Write("<script>parent.layer.alert('表格格式或数据有误!');</script>");
                 return View();
             }
-           
+
         }
 
         /// <summary>
         /// 下载模板
         /// </summary>
         /// <returns></returns>
-        public ActionResult LownExcel() 
+        public ActionResult LownExcel()
         {
             string filePath = Server.MapPath("~/Excel/demo.xls");//路径
             return File(filePath, "text/plain", "demo.xls"); //客户端保存的名字
