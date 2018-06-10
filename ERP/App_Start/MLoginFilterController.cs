@@ -15,6 +15,7 @@ namespace ERP
             {
                 if (choose_net(Request.Headers["User-Agent"]))
                 {
+                    Utility.Log.WriteTextLog("way", "", "", "", Request["way"]);
                     string url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + System.Configuration.ConfigurationManager.AppSettings["WxAppId"] + "&redirect_uri=" + System.Web.HttpUtility.UrlEncode("http://www.thuay.com/WxHelper/GetCode?id=" + Request["ArrangementId"] + "&way=" + Request["way"]) + "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect ";
                     Response.Redirect(url, true);
                     Response.End();
@@ -22,8 +23,7 @@ namespace ERP
             }
             if (System.Web.HttpContext.Current.Session["UsersId"] == null)
             {
-                //string gzhurl = "https://open.weixin.qq.com/connect/qrconnect?appid=" + System.Configuration.ConfigurationManager.AppSettings["WxAppId"]  +"&redirect_uri=" + System.Web.HttpUtility.UrlEncode("http://www.thuay.com/WxHelper/GetCode?id=" + Request["ArrangementId"] + "&way=" + Request["way"]) + "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect ";
-                //Response.Redirect(gzhurl,true);
+                Utility.Log.WriteTextLog("way", "", "", "", System.Web.HttpContext.Current.Session["OpenId"].ToString());
                 TimeSpan SessTimeOut = new TimeSpan(0, 0, System.Web.HttpContext.Current.Session.Timeout, 0, 0);
                 Response.Redirect("/MLogin/Index", true);
                 Response.End();

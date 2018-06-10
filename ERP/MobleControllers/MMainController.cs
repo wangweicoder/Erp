@@ -29,7 +29,7 @@ namespace ERP.MobleControllers
                 {
                     ViewData["IsTourist"] = 1;
                 }
-                ViewData["IsAllower"] = 1;
+                
                 //当操作人不是对应绑定客户与超级管理员时,判断是否为养护人员,如果为养护人员则判断是否有权限操作此更换花卉
                 if (Session["RoleCode"] != null)
                 {

@@ -18,7 +18,11 @@ namespace ERP.MobleControllers
                 Session["UsersId"] = null;
                 Session["UserName"] = null;
                 Session["RealName"] = null;
-            }           
+                Session["OpenId"] = null;
+                HttpContext.Application.Lock();
+                int online = (int)HttpContext.Application["online"];
+                HttpContext.Application["online"] = online - 1;
+            }
             return View();
         }
 
@@ -40,12 +44,15 @@ namespace ERP.MobleControllers
                 Session["UserName"] = UserAdmin.UserName;
                 Session["RealName"] = UserAdmin.RealName;
                 Session["RoleName"] = UserAdmin.RoleName;
-                Sys_UserAdmin.UpdateOpenId(Session["OpenId"]!=null?Session["OpenId"].ToString():"", UserAdmin.ID);
+                Sys_UserAdmin.UpdateOpenId(Session["OpenId"] != null ? Session["OpenId"].ToString() : "", UserAdmin.ID);
                 //记录日志  跳转界面
+                HttpContext.Application.Lock();
+                int online = (int)HttpContext.Application["online"];
+                HttpContext.Application["online"] = online + 1;
                 return RedirectToAction("Index", "MMIndex");//跳转到首页。
             }
             ViewBag.LoginError = "账号或密码错误";
             return View();
         }
-	}
+    }
 }

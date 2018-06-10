@@ -247,6 +247,10 @@
                 {
                     <li>【习性】@Model.XiXin</li>
                 }
+                @if (ViewData["IsAllower"].ToString() == "1")
+                {
+                    <li>&nbsp;每周<span id="kly">@Model.Weekly</span>养护 </li>
+                }
                 @if (!string.IsNullOrEmpty(Model.YangHuFangFa))
                 {
                     <li><span class="spanstyle">&nbsp;养护方法：</span><span id="fangfa">@Model.YangHuFangFa</span></li>

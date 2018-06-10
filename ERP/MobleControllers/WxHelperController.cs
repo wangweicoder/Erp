@@ -19,6 +19,9 @@ namespace ERP.MobleControllers
         {
             try
             {
+                HttpContext.Application.Lock();
+                int online = (int)HttpContext.Application["online"];
+                HttpContext.Application["online"] = online + 1;      
                 string code = Request["code"];
                 Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
                 string OpenId = WxHelper.WxMain.Getopenid(code);
@@ -32,8 +35,8 @@ namespace ERP.MobleControllers
                     Session["RoleCode"] = UserAdmin.RoleCode;
                     if (Request["way"] == "Arrangement")
                     {
-                        string gzhurl = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=" + System.Configuration.ConfigurationManager.AppSettings["WxAppId"] + "&scene=110#wechat_redirect";
-                        Utility.PostData.GetData(gzhurl);
+                        //string gzhurl = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=" + System.Configuration.ConfigurationManager.AppSettings["WxAppId"] + "&scene=110#wechat_redirect";
+                        //Utility.PostData.GetData(gzhurl);
                         return RedirectToAction("GetArrangementInfo", "MMain", new { ArrangementId =Request["id"]});
                     }
                     else
@@ -44,8 +47,8 @@ namespace ERP.MobleControllers
                 }
                 else if (Request["way"] == "Arrangement" )
                 {
-                    string gzhurl = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=" + System.Configuration.ConfigurationManager.AppSettings["WxAppId"] + "&scene=110#wechat_redirect";
-                    Utility.PostData.GetData(gzhurl);//自动关注公众号
+                    //string gzhurl = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=" + System.Configuration.ConfigurationManager.AppSettings["WxAppId"] + "&scene=110#wechat_redirect";
+                    //Utility.PostData.GetData(gzhurl);//自动关注公众号
                     if (UserAdmin == null )
                     {
                         System.Random Random = new System.Random();
@@ -69,7 +72,7 @@ namespace ERP.MobleControllers
                     }
                     if (UserAdmin.RoleCode=="Tourist")
                     {
-                          Session["UsersId"] = UserAdmin.ID;
+                        Session["UsersId"] = UserAdmin.ID;
                         Session["UserName"] = UserAdmin.UserName;
                         Session["RealName"] = UserAdmin.RealName; Session["RoleCode"] = UserAdmin.RoleCode;
                        return RedirectToAction("GetArrangementInfo", "MMain", new { ArrangementId = Request["id"] });
