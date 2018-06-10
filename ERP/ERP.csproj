@@ -1973,7 +1973,6 @@
     <Content Include="Views\EmployeeSalary\Add.cshtml" />
     <Content Include="Views\EmployeeSalary\Edit.cshtml" />
     <Content Include="Views\TestImg\Index.cshtml" />
-    <Content Include="Views\MMain\GetArrangementInfos.cshtml" />
     <Content Include="Views\FlowerArrangement\AddByExcel.cshtml" />
     <Content Include="Views\Text\Index.cshtml" />
     <Content Include="Views\Flower\AddByExcel.cshtml" />

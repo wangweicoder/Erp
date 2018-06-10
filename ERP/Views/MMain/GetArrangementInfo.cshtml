@@ -213,15 +213,23 @@
                         </ul>
                     </div>
                     <div class="pro_img_nav">
-                        @*<i class="iconfont pro_img_item cur">Ƴ</i>
-                        <i class="iconfont pro_img_item">Ƴ</i>*@
+                  @*<i class="iconfont pro_img_item cur">Ƴ</i>
+                  <i class="iconfont pro_img_item">Ƴ</i>
+                System.Web.HttpUtility.UrlEncode(Model.OwnedCompany, System.Text.Encoding.UTF8)*@
                     </div>
                 </div>
             </div>
         </div>
         <div class="pro_tit border_bottom">
             <h2 class="spanstyle">名称: @Model.FlowerWatchName </h2>
+            @if (ViewData["IsAllower"].ToString() != "1")
+            {   
             <div class="week left">每周<span id="kly">@Model.Weekly</span>养护 </div>
+            }
+            else
+            {
+                <a href="/MFlower/ConservationFlowers?ownedcompany=@Model.OwnedCompany"><div class="week left">养护</div></a>
+            }
             <div style="padding-top:12px;padding-left: 72%;">
             <img width="20" height="20" src="~/static/image/1160675719.jpg" />
             规格: <span style="color:#f44623">@Model.Specifications </span>cm </div>         
@@ -250,20 +258,8 @@
                     <span class="spanstyle">&nbsp;预计下次养护时间：</span>@ViewBag.PlanTreatTime.ToString("yyyy-MM-dd HH:mm:ss")
                 </li>   
             </ul>            
-        </div>
-     
-    <div class="jb_canshu" style="color:#808080">       
-        <ul>
-            <li>
-            <span >运费：</span><span style='color:red'>满300免费送</span>,不满加
-                <span style='color:red'>50</span>元
-            </li>
-            <li>
-             <span >提示：</span> 当天上午<span style='color:red'>11:00</span>之前付款最晚次日专车送达，
-                <span style='color:red'>11:00</span>后付款最晚隔日专车送达
-</li>
-        </ul>
-    </div>
+        </div>     
+    
     <div class="jb_canshu">
         @if (ViewData["IsTourist"] == null)
         {

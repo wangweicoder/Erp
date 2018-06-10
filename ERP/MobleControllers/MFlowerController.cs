@@ -29,7 +29,7 @@ namespace ERP.MobleControllers
                 string nonceStr = WxHelper.WxMain.getNoncestr();
                 //设置参数  
                 StringBuilder sb = new StringBuilder();
-                //sb.Append("jsapi_ticket=" + ticket);
+                sb.Append("jsapi_ticket=" + ticket);
                 sb.Append("&noncestr=" + nonceStr);
                 sb.Append("&timestamp=" + timeStamp);
                 sb.Append("&url=" + Request.Url.AbsoluteUri);

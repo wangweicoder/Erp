@@ -99,8 +99,7 @@
             <a href="/MFlower/ChangeFlowers"><i class="iconfont">ŭ</i><span>更换花卉</span></a>
             <a href="/MMIndex/Index"><i class="iconfont">Œ</i><span>会员中心</span></a>
         </div>
-    </header>
-    @*@Html.Partial("header")*@
+    </header>   
     <form action="/Shop/PayOrders" method="post" id="fromInfo">
         <div class="product" style="position:relative;">
             <div id="bigImg">
@@ -134,48 +133,10 @@
 
             </p>
         </div>
-        <script>
-            //$('.spinner').spinner();
+        <script>            
         </script>
         <div class="pro_kc">
-            <dl class="yanse">
-                @*<dt>
-                    收货人：
-                </dt>
-                <dd>
-                    <input type="text" name="ConsigneeName" id="ConsigneeName" />
-                </dd>
-                <br />
-                <dt>
-                    收货人电话：
-                </dt>
-                <dd>
-                    <input type="text" name="ConsigneePhone" id="ConsigneePhone" />
-                </dd>
-                <br />
-                <dt>
-                    收货地址：
-                </dt>
-
-                <dd>
-                    <div style="width:100%" data-toggle="distpicker">
-                        <div style="width:50%;float:left">
-                            <select style="width:80px;" name="province"></select>
-                            <select style="width: 120px; " name="city"></select>
-                        </div>
-                        <div style="width:50%; padding-left:20px">
-                            <select style="width: 80px; " name="area"></select>
-                        </div>
-                    </div>
-                </dd>
-                <br />
-                <dt>
-                    详细地址：
-                </dt>
-                <dd>
-                    <input type="text" name="ConsigneAaddress" id="ConsigneAaddress" />
-                </dd>
-                <br />*@
+            <dl class="yanse">               
                 <dt>
                     数量：
                 </dt>
@@ -210,6 +171,18 @@
             {
                 <li>基本介绍：@Model.FlowerIntroduction</li>
             }
+        @*</ul>
+    </div>
+    <div class="jb_canshu" style="color:#808080">
+        <ul>*@
+            <li>
+                <span>运费：</span><span style='color:red'>满300免费送</span>,不满加
+                <span style='color:red'>50</span>元
+            </li>
+            <li>
+                <span>提示：</span> 当天上午<span style='color:red'>11:00</span>之前付款最晚次日专车送达，
+                <span style='color:red'>11:00</span>后付款最晚隔日专车送达
+            </li>
         </ul>
     </div>
     <div style="height:25px"></div>
@@ -389,28 +362,7 @@
                   var ConsigneeName = $('#ConsigneeName').val();
                   var ConsigneePhone = $('#ConsigneePhone').val();
                   var ConsigneAaddress = $('#ConsigneAaddress').val();
-                  //if (ConsigneeName == '' || ConsigneeName == null) {
-                  //    layer.open({
-                  //        content: '收货人姓名不能为空'
-                  //   , skin: 'msg'
-                  //   , time: 2 //2秒后自动关闭
-                  //    });
-                  //    return false;
-                  //}
-                  //if (ConsigneePhone == '' || ConsigneePhone == null) {
-                  //    layer.open({
-                  //        content: '收货人电话不能为空'
-                  //       , skin: 'msg'
-                  //       , time: 2 //2秒后自动关闭
-                  //    }); return false;
-                  //}
-                  //if (ConsigneAaddress == '' || ConsigneeName == null) {
-                  //    layer.open({
-                  //        content: '收货人地址不能为空'
-                  //       , skin: 'msg'
-                  //       , time: 2 //2秒后自动关闭
-                  //    }); return false;
-                  //}
+                  
                   if (num == '' || num == null || num <= 0) {
                       layer.open({
                           content: '购买数量必须大于1'
