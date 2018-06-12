@@ -24,12 +24,12 @@ namespace ERP.MobleControllers
                 //ViewData["deptSelectItems"] = GetdeptSelectItems(0);
 
                 //access_token来获取jsapi_ticket  
-                //string ticket = WxHelper.WxMain.GetTicket();
+                string ticket = WxHelper.WxMain.GetTicket();
                 string timeStamp = WxHelper.WxMain.getTimestamp();
                 string nonceStr = WxHelper.WxMain.getNoncestr();
                 //设置参数  
                 StringBuilder sb = new StringBuilder();
-                //sb.Append("jsapi_ticket=" + ticket);
+                sb.Append("jsapi_ticket=" + ticket);
                 sb.Append("&noncestr=" + nonceStr);
                 sb.Append("&timestamp=" + timeStamp);
                 sb.Append("&url=" + Request.Url.AbsoluteUri);
@@ -54,33 +54,30 @@ namespace ERP.MobleControllers
         {
             try
             {
-
-                //string x = string.Empty, y = string.Empty, strReturn = string.Empty;
-
-                //string apiurl = "http://api.map.baidu.com/geoconv/v1/?coords=" + Request["longitude"] + "," + Request["latitude"] + "&from=1&to=5&ak=Kl3rqGn6gECfy7mH5rS3fkGkaWYiyVlr";
-                //string detail = Utility.PostData.GetData(apiurl);
-                //ERP.MobleControllers.MMainController.BaiDuCoordinates jd = JsonConvert.DeserializeObject<ERP.MobleControllers.MMainController.BaiDuCoordinates>(detail);
-                //List<ERP.MobleControllers.MMainController.bc_result> result = jd.result;
-                //foreach (var item in result)
-                //{
-                //    x = item.x;
-                //    y = item.y;
-                //}
-                //apiurl = "http://api.map.baidu.com/geocoder/v2/?ak=Kl3rqGn6gECfy7mH5rS3fkGkaWYiyVlr&callback=renderReverse&location=" + y + "," + x + "&output=json&pois=1";
-                //detail = Utility.PostData.GetData(apiurl);
-                //detail = detail.Replace("renderReverse&&renderReverse(", "");
-                //detail = detail.TrimEnd(')');
-                //ERP.MobleControllers.MMainController.GetAddressNew GetAddress = JsonConvert.DeserializeObject<ERP.MobleControllers.MMainController.GetAddressNew>(detail);
-                //Utility.Log.WriteTextLog("返回定位", "花卉养护当前地址", GetAddress.result.formatted_address, "detail", detail);
+                string x = string.Empty, y = string.Empty, strReturn = string.Empty;
+                string apiurl = "http://api.map.baidu.com/geoconv/v1/?coords=" + Request["longitude"] + "," + Request["latitude"] + "&from=1&to=5&ak=Kl3rqGn6gECfy7mH5rS3fkGkaWYiyVlr";
+                string detail = Utility.PostData.GetData(apiurl);
+                ERP.MobleControllers.MMainController.BaiDuCoordinates jd = JsonConvert.DeserializeObject<ERP.MobleControllers.MMainController.BaiDuCoordinates>(detail);
+                List<ERP.MobleControllers.MMainController.bc_result> result = jd.result;
+                foreach (var item in result)
+                {
+                    x = item.x;
+                    y = item.y;
+                }
+                apiurl = "http://api.map.baidu.com/geocoder/v2/?ak=Kl3rqGn6gECfy7mH5rS3fkGkaWYiyVlr&callback=renderReverse&location=" + y + "," + x + "&output=json&pois=1";
+                detail = Utility.PostData.GetData(apiurl);
+                detail = detail.Replace("renderReverse&&renderReverse(", "");
+                detail = detail.TrimEnd(')');
+                ERP.MobleControllers.MMainController.GetAddressNew GetAddress = JsonConvert.DeserializeObject<ERP.MobleControllers.MMainController.GetAddressNew>(detail);
+                Utility.Log.WriteTextLog("返回定位", "花卉养护当前地址", GetAddress.result.formatted_address, "detail", detail);
                 Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
-                //ViewData["deptSelectItems"] = GetdeptSelectItems();
                 Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
                 int userid = Utility.ChangeText.GetUsersId();
                 FlowerTreatment.FlowerTreatmentType = "养护花卉";
                 FlowerTreatment.UsersId = userid;
                 FlowerTreatment.OwnedUsersId = Request["deptSelectItems"];
                 FlowerTreatment.UserRealName = Utility.ChangeText.GetRealName();
-                //FlowerTreatment.FlowerTreatmentAddress = GetAddress.result.formatted_address;
+                FlowerTreatment.FlowerTreatmentAddress = GetAddress.result.formatted_address;
                 Model.UserAdmin UserAdmin = Sys_UserAdmin.GetUserAdminByUserId(Convert.ToInt32(FlowerTreatment.OwnedUsersId));
                 FlowerTreatment.OwnedUsersRealName = UserAdmin.RealName;
                 FlowerTreatment.OwnedCompany = UserAdmin.OwnedCompany;
