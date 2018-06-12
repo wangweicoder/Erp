@@ -23,7 +23,7 @@ namespace ERP
             }
             if (System.Web.HttpContext.Current.Session["UsersId"] == null)
             {
-                Utility.Log.WriteTextLog("way", "", "", "", System.Web.HttpContext.Current.Session["OpenId"].ToString());
+                Utility.Log.WriteTextLog("way", "statebase", Session["OpenId"].ToString(), "current", System.Web.HttpContext.Current.Session["OpenId"].ToString());
                 TimeSpan SessTimeOut = new TimeSpan(0, 0, System.Web.HttpContext.Current.Session.Timeout, 0, 0);
                 Response.Redirect("/MLogin/Index", true);
                 Response.End();

@@ -35,7 +35,7 @@ namespace ERP.MobleControllers
                 {
                     if (Session["RoleCode"].ToString() != "Customer" && Session["RoleCode"].ToString() != "SuperAdministrator")
                     {
-                        if (Session["RoleCode"].ToString() == "	yanghu")
+                        if (Session["RoleCode"].ToString() == "yanghu")
                         {
                             Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
                             List<Model.UserAdmin> UserAdminList = new List<Model.UserAdmin>();
