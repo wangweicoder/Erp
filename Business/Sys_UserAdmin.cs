@@ -131,7 +131,7 @@ namespace Business
         /// <returns></returns>
         public List<Model.UserAdmin> GetUserAdminListByRoleCodeNo(string RoleCode)
         {
-            const string sql = @"SELECT * FROM UserAdmin WHERE  RoleCode!=@RoleCode and RoleCode!=Tourist";
+            const string sql = @"SELECT * FROM UserAdmin WHERE  RoleCode!=@RoleCode and RoleCode!='Tourist'";
             return Factory.DBHelper.Query<Model.UserAdmin>(SQLConString, sql.ToString(), new DynamicParameters(new { RoleCode }));
         }
 
