@@ -286,7 +286,7 @@ namespace ERP.MobleControllers
             {               
                 UserAdminList = Sys_UserAdmin.GetAdminInfoListbyweek("Customer",week);
             }
-            else if (Session["RoleName"].ToString() == "客户")
+            else if (Session["RoleCode"].ToString() == "Customer")
             {
                  UserAdminList = Sys_UserAdmin.GetUserAdminUsByRoleCode("Customer", Utility.ChangeText.GetUsersId());
             }

@@ -106,7 +106,7 @@ namespace Business
             return Factory.DBHelper.Query<Model.UserAdmin>(SQLConString, sql.ToString(), new DynamicParameters(new { RoleCode ,week}));
         }
         /// <summary>
-        /// 查询Customer的用户
+        /// 查询业负责的Customer
         /// </summary>
         /// <param name="RoleCode"></param>
         /// <returns></returns>
@@ -131,7 +131,7 @@ namespace Business
         /// <returns></returns>
         public List<Model.UserAdmin> GetUserAdminListByRoleCodeNo(string RoleCode)
         {
-            const string sql =@"SELECT * FROM UserAdmin WHERE  RoleCode!=@RoleCode";
+            const string sql = @"SELECT * FROM UserAdmin WHERE  RoleCode!=@RoleCode and RoleCode!=Tourist";
             return Factory.DBHelper.Query<Model.UserAdmin>(SQLConString, sql.ToString(), new DynamicParameters(new { RoleCode }));
         }
 
