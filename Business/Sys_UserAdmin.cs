@@ -125,7 +125,7 @@ namespace Business
 
 
         /// <summary>
-        /// 查询排除角色以外的用户
+        /// 查询排除角色以外的并且不是游客的用户
         /// </summary>
         /// <param name="RoleCode"></param>
         /// <returns></returns>
