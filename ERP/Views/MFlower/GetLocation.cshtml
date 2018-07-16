@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"/>
+<title></title>
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&amp;key=e8496e8ac4b0f01100b98da5bde96597"></script>
+<script type="text/javascript" src="~/Content/scripts/location.js"></script>
+</head>
+<body>
+ 
+<a id="distance" onclick="getDistance()">获取距离</a>
+<script>
+//获取当前位置(方法名)
+    mMap.getSessionLocation(locationFunc);
+    var lng, lat;
+function locationFunc(){
+    var data = JSON.parse(sessionStorage.getItem("location"));
+    alert("lng:" + data.position.lng);
+    alert("lat:" + data.position.lat);
+    lng = data.position.lng;
+    lat = data.position.lat;
+}
+ 
+// 获取两点的距离 (m)
+function getDistance(){
+    var local = { lng: lng, lat: lat };
+    var gym = { lng: 116.39, lat: 38.98 };
+    var distance = mMap.distance(local, gym);
+    alert(Math.round(distance, 2) + "m");
+    //mMap.serverDistance(obj1,obj2);
+}
+</script>
+</body>
+</html>

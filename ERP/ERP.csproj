@@ -22,6 +22,8 @@
     <IISExpressUseClassicPipelineMode />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -714,6 +716,7 @@
     <Content Include="points\index.html" />
     <Content Include="points\js\jquery-1.8.3.min.js" />
     <Content Include="points\js\jquery.min.js" />
+    <Content Include="points\js\location.js" />
     <Content Include="points\js\mui.min.js" />
     <Content Include="points\js\others.js" />
     <Content Include="points\js\rem.js" />
@@ -1983,6 +1986,8 @@
     <Content Include="Views\FlowerActive\Edit.cshtml" />
     <Content Include="Views\MMain\GetArrangementInfo.cshtml" />
     <Content Include="Views\Text\yIndex.cshtml" />
+    <Content Include="Views\MFlower\GetLocation.cshtml" />
+    <Content Include="Views\MFlower\MapView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />
