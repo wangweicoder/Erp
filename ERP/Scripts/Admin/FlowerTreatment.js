@@ -105,7 +105,9 @@ var TableInit = function () {
             limit: params.limit,   //页面大小
             offset: (params.offset + 1),  //从第几条开始(1,11,21)偏移量
             FlowerNumber: $("#FlowerNumber").val(),
-            deptSelectItems: $("#deptSelectItems").find("option:selected").val()
+            deptSelectItems: $("#deptSelectItems").find("option:selected").val(),
+            UsersSelectItems: $("#UsersSelectItems").val(),
+            time: $("#time").val()
         };
         return temp;
     };

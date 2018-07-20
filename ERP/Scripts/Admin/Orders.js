@@ -137,6 +137,7 @@ var TableInit = function () {
             limit: params.limit,   //页面大小
             offset: (params.offset + 1),  //页码
             OrdersId: $("#OrdersId").val(),
+            OrdersState: $("#OrdersState").val(),
         };
         return temp;
     };

@@ -10,7 +10,7 @@
     <title>Index</title>
     @*加载表格*@
     @Scripts.Render("~/plugins/jQuery/jquery-2.2.3.min.js")
-
+    <link href="~/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" />
     @Styles.Render("~/Bootstrap/css/bootstrap.css")
     @Scripts.Render("~/Bootstrap/js/bootstrap.js")
 
@@ -18,10 +18,9 @@
     @Scripts.Render("~/Bootstrap/bootstrap-table/bootstrap-table.js")
     @*加载弹出层*@
     @Scripts.Render("~/Thems/js/layer/layer.js")
-    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">*@
-    <script src="~/Scripts/Admin/FlowerTreatment.js"></script>
 
+    <script src="~/Scripts/Admin/FlowerTreatment.js"></script>
+    <script src="~/My97DatePicker/WdatePicker.js"></script>
 </head>
 <body>
     <div class="panel-body" style="padding-bottom:0px;">
@@ -31,10 +30,10 @@
                 <form id="formSearch" class="form-horizontal">
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="txt_search_departmentname">
-                            花卉编号
+                            养护人
                         </label>
                         <div class="col-sm-2">
-                            <input type="text" class="form-control" id="FlowerNumber">
+                            @Html.DropDownList("UsersSelectItems", ViewData["UsersSelectItems"] as List<SelectListItem>, new { @class = "form-control" })
                         </div>
                         <label class="control-label col-sm-2" for="txt_search_departmentname">
                             养护客户所属名称
@@ -42,7 +41,13 @@
                         <div class="col-sm-2">
                             @Html.DropDownList("deptSelectItems", ViewData["SelectItem"] as List<SelectListItem>, new { @class = "form-control" })
                         </div>
-                        <div class="col-sm-4" style="text-align:left;">
+                        <label class="control-label col-sm-2" for="txt_search_departmentname">
+                            养护时间
+                        </label>
+                        <div class="col-sm-2">
+                            <input type="text" id="time" name="time" onfocus="WdatePicker()"/>
+                        </div>
+                        <div class="col-sm-2" style="text-align:left;">
                             <button type="button" class="btn btn-default" onclick="onloadTable();">
                                 查询 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                             </button>

@@ -15,6 +15,7 @@ namespace ERP.Controllers
         public ActionResult Index()
         {
             ViewData["SelectItem"] = GetOwnedCompanyList();
+            ViewData["UsersSelectItems"] = GetUserInfoSelectItems("Customer", "0");//管理员
             return View();
         }
         /// <summary>
@@ -41,6 +42,10 @@ namespace ERP.Controllers
             }
             return hourList;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public List<SelectListItem> GetFlowerTreatmentName()
         {
             Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
@@ -62,18 +67,30 @@ namespace ERP.Controllers
             }
             return deptSelectItems;
         }
-        public ActionResult GetList(int limit, int offset, string FlowerNumber, string deptSelectItems)
+        /// <summary>
+        /// 养护花卉列表
+        /// </summary>
+        /// <param name="limit">条数</param>
+        /// <param name="offset">偏移量</param>
+        /// <param name="UsersSelectItems">养护人</param>
+        /// <param name="deptSelectItems">养护客户的名称</param>
+        /// <returns></returns>
+        public ActionResult GetList(int limit, int offset, string UsersSelectItems, string deptSelectItems,string time)
         {
             Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
             StringBuilder sb = new StringBuilder();
             //sb.Append(" and OwnedUsersId='"+Utility.ChangeText.GetUsersId()+"' ");
-            if (!string.IsNullOrEmpty(FlowerNumber))
+            if (!string.IsNullOrEmpty(UsersSelectItems))
             {
-                sb.Append(" and FlowerNumber='" + FlowerNumber + "'");
+                sb.Append(" and UsersId='" + UsersSelectItems + "'");
             }
             if (!string.IsNullOrEmpty(deptSelectItems))
             {
                 sb.Append(" and OwnedUsersId='" + deptSelectItems + "'");
+            }
+            if(!string.IsNullOrEmpty(time))
+            {
+                sb.Append(" and substring(Convert(varchar,time,120),1,10)='" + time + "'");
             }
             return Json(new { total = Sys_FlowerTreatment.GetFlowerTreatmentListCount(sb.ToString()), rows = Sys_FlowerTreatment.FlowerTreatmentList(limit, offset, sb.ToString()) }, JsonRequestBehavior.AllowGet);
         }
@@ -169,6 +186,10 @@ namespace ERP.Controllers
             SelectListItem item = new SelectListItem();
             if (type == "0")
             {
+                item.Text = "-请选择-";
+                item.Value = "";
+                item.Selected = true;
+                deptSelectItems.Add(item);
                 list = Sys_UserAdmin.GetUserAdminListByRoleCodeNo(rolecode);//不等于
                 foreach (Model.UserAdmin d in list)
                 {

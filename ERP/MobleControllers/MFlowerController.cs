@@ -312,5 +312,14 @@ namespace ERP.MobleControllers
             }
             return deptSelectItems;
         }
-	}
+
+        public ActionResult GetLocation()
+        {           
+            return View();
+        }
+        public ActionResult MapView()
+        {
+            return View();
+        }
+    }
 }

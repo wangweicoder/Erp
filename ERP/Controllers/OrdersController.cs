@@ -24,13 +24,17 @@ namespace ERP.Controllers
         ///<param name="UserName">用户名</param>
         ///<param name="Role">角色ID</param>
         ///<returns></returns>
-        public JsonResult GetOrdersList(int limit, int offset, string OrdersId)
+        public JsonResult GetOrdersList(int limit, int offset, string OrdersId,string OrdersState)
         {
             Business.Sys_OrdersManaage Sys_OrdersManaage = new Business.Sys_OrdersManaage();
             StringBuilder sb = new StringBuilder();
             if (!string.IsNullOrEmpty(OrdersId))
             {
                 sb.Append(" and OrderId='" + OrdersId + "'");
+            }
+            if (!string.IsNullOrEmpty(OrdersState))
+            {
+                sb.Append(" and OrdersState='" + OrdersState + "'");
             }
             return Json(new { total = Sys_OrdersManaage.GetOrdersCount(sb.ToString()), rows = Sys_OrdersManaage.GetOrdersList(limit, offset, sb.ToString()) }, JsonRequestBehavior.AllowGet);
         }

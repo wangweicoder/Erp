@@ -36,6 +36,19 @@
                         <div class="col-sm-2">
                             <input type="text" class="form-control" id="OrdersId">
                         </div>
+                        <label class="control-label col-sm-2" for="txt_search_departmentname">
+                            订单状态
+                        </label>
+                        <div class="col-sm-2">
+                            <select id="OrdersState" name="OrdersState" class="form-control">
+                                <option value="">--请选择--</option>
+                                <option value="1">待支付</option>
+                                <option value="2">待发货</option>
+                                <option value="3">已发货</option>
+                                <option value="4">已签收</option>
+                                <option value="5">取消订单</option>
+                            </select>
+                        </div>
                         <div class="col-sm-4" style="text-align:left;">
                             <button type="button" class="btn btn-default" onclick="onloadTable();">
                                 查询 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
