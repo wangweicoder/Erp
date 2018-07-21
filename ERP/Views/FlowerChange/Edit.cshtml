@@ -1,0 +1,105 @@
+﻿@model Model.FlowerChange
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>   
+    <link href="~/uploadify/webuploader.css" rel="stylesheet" />     
+    <script src="~/uploadify/webuploader.html5only.min.js"></script>
+    <script>
+        $(function () {
+            // 初始化Web Uploader
+            var uploader = WebUploader.create({
+                // 选完文件后，是否自动上传。
+                auto: false,              
+
+                // 文件接收服务端。
+                server: '/FlowerChange/Upload',
+                // 选择文件的按钮。可选。
+                // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                pick: '#filePicker',
+
+                // 只允许选择图片文件。
+                accept: {
+                    title: 'Images',
+                    extensions: 'gif,jpg,jpeg,bmp,png',
+                    mimeTypes: 'image/*'
+                }
+            });
+
+        uploader.on('uploadSuccess', function (file) {
+            $('#' + file.id).find('p.state').text('已上传');
+            $('#' + file.id).addClass('upload-state-done');
+            parent.layer.closeAll();
+        });
+
+        uploader.on('uploadError', function (file) {
+            $('#' + file.id).find('p.state').text('上传出错');
+        });
+
+        uploader.on('uploadComplete', function (file) {
+            $('#' + file.id).find('.progress').fadeOut();
+        });        
+
+        // 当有文件添加进来的时候
+        uploader.on('fileQueued', function (file) {
+                var $li = $(
+                        '<div id="' + file.id + '" class="file-item thumbnail">' +
+                            '<img>' +
+                            '<p class="state"></p>' +
+                        '</div>'
+                        ),
+                    $img = $li.find('img');
+
+                var $list = $("#fileList");
+                // $list为容器jQuery实例
+                $list.html($li);
+                var thumbnailWidth = 200;
+                var thumbnailHeight = 200;
+                // 创建缩略图
+                // 如果为非图片文件，可以不用调用此方法。
+                // thumbnailWidth x thumbnailHeight 为 100 x 100
+                uploader.makeThumb(file, function (error, src) {
+                    if (error) {
+                        $img.replaceWith('<span>不能预览</span>');
+                        return;
+                    }
+
+                    $img.attr('src', src);
+                }, thumbnailWidth, thumbnailHeight);
+        });
+        $btn = $(".put");
+        //点击上传
+        $btn.on('click', function () {
+            console.log("上传...");
+            var obj = new Object();
+            obj.FlowerChangeId = $("#FlowerChangeId").val();
+            uploader.options.formData = obj;
+            uploader.upload();
+            console.log("上传成功");
+        });
+   });      
+       
+    </script>
+</head>
+<body>
+    <div>
+        <div>
+            <img id="imgpath" src="@Model.ChangePhoto" style="height:140px;width:140px" />           
+        </div>
+        <input type="hidden" id="FlowerChangeId" value="@Model.id" />
+        <!--dom结构部分-->
+        <div id="uploader-demo">
+            <!--用来存放item-->
+            <div id="fileList" class="uploader-list"></div>
+            <div id="filePicker">选择图片</div>
+            <input type="button" id="test9" class="put" value="提交" />
+        </div>
+        
+    </div>
+</body>
+</html>

@@ -85,17 +85,7 @@ namespace Business
             List<Model.Flower> FlowerList = Factory.DBHelper.Query<Model.Flower>(SQLConString, sql.ToString(), new DynamicParameters(new { id }));
             return FlowerList.Count() > 0 ? FlowerList[0] : null;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ids"></param>
-        /// <returns></returns>
-        public Model.Flower GetFlowers(string ids)
-        {
-            const string sql =@"SELECT * FROM  Flower WHERE id=@id";
-            List<Model.Flower> FlowerList = Factory.DBHelper.Query<Model.Flower>(SQLConString, sql.ToString(), new DynamicParameters(new { ids }));
-            return FlowerList.Count() > 0 ? FlowerList[0] : null;
-        }
+       
         /// <summary>
         /// 通过花卉(商品)编号获得花卉(商品信息）
         /// </summary>

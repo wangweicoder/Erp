@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,26 @@ namespace Business
     public  class Sys_FlowerChange
     {
         private string SQLConString = System.Configuration.ConfigurationManager.AppSettings["SQLConString"];
-
-
+        
+        /// <summary>
+        /// 更换信息
+        /// </summary>
+        /// <param name="StrWhere"></param>
+        /// <returns></returns>
+        public  List<Model.FlowerChange>  GetFlowerChange(string StrWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("SELECT * FROM FlowerChange");
+            if (!string.IsNullOrEmpty(StrWhere))
+            {
+                strSql.Append(" where  1=1 " + StrWhere);
+            }
+            List<Model.FlowerChange> FlowerChangeList = Factory.DBHelper.Query<Model.FlowerChange>(SQLConString, strSql.ToString(), new DynamicParameters(new { StrWhere }));
+            return FlowerChangeList.Count() > 0 ? FlowerChangeList:new  List<Model.FlowerChange>();
+        }
 
         /// <summary>
-        /// 
+        /// 花卉更换列表
         /// </summary>
         /// <param name="limit"></param>
         /// <param name="offset"></param>
@@ -31,6 +47,20 @@ namespace Business
             strSql.Append(")T inner join [dbo].[UserAdmin] u on u.ID=T.UsersId");
             strSql.Append(" where T.rn between   @offset and (@offset+9)");
             return Factory.DBHelper.Query<Model.FlowerChange>(SQLConString, strSql.ToString(), new DynamicParameters(new { offset }));
+        }
+
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeleteFlowerWatch(string id)
+        {
+            const string sql =@"DELETE from FlowerChange WHERE id=@id";
+            return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
+            {
+                id,
+            }));
         }
 
 

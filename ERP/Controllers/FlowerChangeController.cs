@@ -54,8 +54,72 @@ namespace ERP.Controllers
         
             return View(Sys_FlowerChange.GetList(0,1, sb.ToString()));
         }
-
-
+        public ActionResult Delete()
+        {
+            Business.Sys_FlowerChange Sys_Flower = new Business.Sys_FlowerChange();
+            try
+            {
+                string ids = Request["ids"];
+                string strwhere = " and id in(" + ids + ")";
+                List<Model.FlowerChange> list = Sys_Flower.GetFlowerChange(strwhere);
+                foreach (var item in list)
+                {
+                    if (Sys_Flower.DeleteFlowerWatch(item.id.ToString()))
+                    {
+                        DeleteFlowerPhoto(item.Photo);
+                        DeleteFlowerPhoto(item.ChangePhoto);
+                    }
+                }
+                return Content("True");
+            }
+            catch (Exception ex) {
+                return Content("Fasle");
+            }          
+           
+        }
+        /// <summary>
+        /// 删除图片
+        /// </summary>
+        /// <param name="photourl"></param>
+        private void DeleteFlowerPhoto(string photourl)
+        {
+            string path = Server.MapPath("~") + photourl;
+            //删除图片
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
+        }
+        public ActionResult Edit()
+        {
+            string id = Request["id"];
+            Business.Sys_FlowerChange Sys_Flower = new Business.Sys_FlowerChange();
+            string strwhere = " and id="+id+"";
+            List<Model.FlowerChange> list = Sys_Flower.GetFlowerChange(strwhere);
+            Model.FlowerChange model = list.Count > 0 ? list[0] : new Model.FlowerChange();
+            return View(model);
+        }
+        public ActionResult Upload()
+        {
+            try
+            {
+                string FlowerChangeId = Request["FlowerChangeId"];
+                HttpPostedFileBase files = Request.Files["file"];
+                Business.Sys_FlowerChange Sys_FlowerChange = new Business.Sys_FlowerChange();
+                string strwhere = " and id="+FlowerChangeId+"";
+                List<Model.FlowerChange> list = Sys_FlowerChange.GetFlowerChange(strwhere);
+                Model.FlowerChange FlowerChange=list.Count > 0 ? list[0] : new Model.FlowerChange();
+                if (FlowerChange.ChangePhoto!=null)
+                DeleteFlowerPhoto(FlowerChange.ChangePhoto);
+                FlowerChange.ChangePhoto = Utility.ChangeText.SaveUploadPicture(files, "attach");
+                Sys_FlowerChange.AddFlowerPhotoInfo(FlowerChange.Number, FlowerChange.ChangePhoto);                             
+                return Json(new { result = "OK", msg = "更换花卉成功" }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex) {
+                Utility.Log.WriteTextLog("报错", "FlowerChange", "upload", "后台提交更换后的图片", "");
+                return null;
+            }           
+        }
         public ActionResult GetMobleListMore()
         {
             Business.Sys_FlowerChange Sys_FlowerChange = new Business.Sys_FlowerChange();

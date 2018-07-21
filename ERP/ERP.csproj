@@ -1988,6 +1988,7 @@
     <Content Include="Views\Text\yIndex.cshtml" />
     <Content Include="Views\MFlower\GetLocation.cshtml" />
     <Content Include="Views\MFlower\MapView.cshtml" />
+    <Content Include="Views\FlowerChange\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />

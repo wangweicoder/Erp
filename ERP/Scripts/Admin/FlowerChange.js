@@ -62,7 +62,7 @@ var TableInit = function () {
             showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
             cardView: false,                    //是否显示详细视图
             detailView: false,                   //是否显示父子表
-            singleSelect: true,
+            singleSelect: false,
             columns: [{
                 checkbox: true
             }, {
@@ -71,9 +71,6 @@ var TableInit = function () {
             }, {
                 field: 'Number',
                 title: '更换编号'
-            }, {
-                field: 'FlowerNumber',
-                title: '花卉编号'
             }, {
                 field: 'OwnedCompany',
                 title: '客户所属公司'
@@ -106,7 +103,7 @@ var TableInit = function () {
             }, {
                 field: 'ChangePhoto',
                 title: '更换后图片', formatter: function (value, row, index) {
-                    return '<img style="height:40px;width:40px"  src="' + value + '" />';
+                    return ' <a onclick="ShowPhotoInfo(\'' + value + '\')"  href="javascript:void(0)"><img style="height:40px;width:40px"  src="' + value + '" /></a>';
                 }
             }, {
                 field: 'State',
