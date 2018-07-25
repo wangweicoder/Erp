@@ -73,7 +73,7 @@ namespace ERP.Controllers
                 return Content("True");
             }
             catch (Exception ex) {
-                return Content("Fasle");
+                return Content("False");
             }          
            
         }
