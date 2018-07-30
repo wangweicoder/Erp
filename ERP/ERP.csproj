@@ -195,6 +195,7 @@
     <Compile Include="Controllers\SalesmanController.cs" />
     <Compile Include="Controllers\ServiceIntroductionController.cs" />
     <Compile Include="Controllers\SettlementSituationController.cs" />
+    <Compile Include="Controllers\UsersLoginLogController.cs" />
     <Compile Include="Controllers\UserInfoController.cs" />
     <Compile Include="Filter\SysAuthAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -752,6 +753,7 @@
     <Content Include="Scripts\Admin\RoleInfo.js" />
     <Content Include="Scripts\Admin\Salesman.js" />
     <Content Include="Scripts\Admin\SettlementSituation.js" />
+    <Content Include="Scripts\Admin\UsersLoginLog.js" />
     <Content Include="Scripts\ajaxfileupload.js" />
     <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\jquery.spinner.css" />
@@ -1989,6 +1991,7 @@
     <Content Include="Views\MFlower\GetLocation.cshtml" />
     <Content Include="Views\MFlower\MapView.cshtml" />
     <Content Include="Views\FlowerChange\Edit.cshtml" />
+    <Content Include="Views\UsersLoginLog\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />

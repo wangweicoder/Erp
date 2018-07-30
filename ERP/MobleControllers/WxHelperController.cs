@@ -30,6 +30,18 @@ namespace ERP.MobleControllers
                     Session["UserName"] = UserAdmin.UserName;
                     Session["RealName"] = UserAdmin.RealName;
                     Session["RoleCode"] = UserAdmin.RoleCode;
+                    //记录登录日志 
+                    Business.Sys_UsersLoginLog Sys_Userlog = new Business.Sys_UsersLoginLog();
+                    Model.UsersLoginLog model = new Model.UsersLoginLog();
+                    model.UsersId = UserAdmin.ID.ToString();
+                    model.UserName = UserAdmin.UserName;
+                    model.RealName = UserAdmin.RealName;
+                    model.LoginTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    System.DateTime currentTime = DateTime.Now;
+                    model.Year = currentTime.Year.ToString();
+                    model.Month = currentTime.Month.ToString();
+                    model.Day = currentTime.Day.ToString();
+                    Sys_Userlog.InsertUsersLoginLog(model);
                     if (Request["way"] == "Arrangement")
                     {
                         string gzhurl = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=" + System.Configuration.ConfigurationManager.AppSettings["WxAppId"] + "&scene=110#wechat_redirect";
@@ -65,6 +77,18 @@ namespace ERP.MobleControllers
                         Session["UserName"] = UserAdminTourist.UserName;
                         Session["RealName"] = UserAdminTourist.RealName;
                         Session["RoleCode"] = UserAdminTourist.RoleCode;
+                        //记录登录日志 
+                        Business.Sys_UsersLoginLog Sys_Userlog = new Business.Sys_UsersLoginLog();
+                        Model.UsersLoginLog model = new Model.UsersLoginLog();
+                        model.UsersId = UserAdmin.ID.ToString();
+                        model.UserName = UserAdmin.UserName;
+                        model.RealName = UserAdmin.RealName;
+                        model.LoginTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                        System.DateTime currentTime = DateTime.Now;
+                        model.Year = currentTime.Year.ToString();
+                        model.Month = currentTime.Month.ToString();
+                        model.Day = currentTime.Day.ToString();
+                        Sys_Userlog.InsertUsersLoginLog(model);
                         return RedirectToAction("GetArrangementInfo", "MMain", new { ArrangementId = Request["id"]});
                     }
                     if (UserAdmin.RoleCode=="Tourist")
@@ -73,7 +97,19 @@ namespace ERP.MobleControllers
                         Session["UserName"] = UserAdmin.UserName;
                         Session["RealName"] = UserAdmin.RealName; 
                         Session["RoleCode"] = UserAdmin.RoleCode;
-                       return RedirectToAction("GetArrangementInfo", "MMain", new { ArrangementId = Request["id"] });
+                        //记录登录日志 
+                        Business.Sys_UsersLoginLog Sys_Userlog = new Business.Sys_UsersLoginLog();
+                        Model.UsersLoginLog model = new Model.UsersLoginLog();
+                        model.UsersId = UserAdmin.ID.ToString();
+                        model.UserName = UserAdmin.UserName;
+                        model.RealName = UserAdmin.RealName;
+                        model.LoginTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                        System.DateTime currentTime = DateTime.Now;
+                        model.Year = currentTime.Year.ToString();
+                        model.Month = currentTime.Month.ToString();
+                        model.Day = currentTime.Day.ToString();
+                        Sys_Userlog.InsertUsersLoginLog(model);
+                        return RedirectToAction("GetArrangementInfo", "MMain", new { ArrangementId = Request["id"] });
                     }
                 }
                 return RedirectToAction("Index", "MLogin"); 

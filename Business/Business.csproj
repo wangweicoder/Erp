@@ -72,6 +72,7 @@
     <Compile Include="Sys_Salesman.cs" />
     <Compile Include="Sys_ServiceIntroduction.cs" />
     <Compile Include="Sys_SettlementSituation.cs" />
+    <Compile Include="Sys_UsersLoginLog.cs" />
     <Compile Include="Sys_UserAdmin.cs" />
   </ItemGroup>
   <ItemGroup>
