@@ -24,7 +24,7 @@
 <body>
     <div class="panel-body" style="padding-bottom:0px;">
         <div class="panel panel-default">
-            <div class="panel-heading">用户列表</div>
+            <div class="panel-heading">用户登录列表</div>
             <div class="panel-body">
                 <form id="formSearch" class="form-horizontal">
                     <div class="form-group">
@@ -45,12 +45,12 @@
         </div>
 
         <div id="toolbar" class="btn-group">
-            <button id="btn_add" type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加
-            </button>
-            <button id="btn_edit" type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 修改
-            </button>
+            @*<button id="btn_add" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加
+        </button>
+        <button id="btn_edit" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 修改
+        </button>*@
             <button id="btn_delete" type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 删除
             </button>
@@ -81,7 +81,7 @@
                 }
                 parent.layer.open({
                     type: 2,
-                    title: '修改管理员',
+                    title: '修改登录信息',
                     shadeClose: true,
                     shade: 0.8,
                     area: ['250px;', '400px;'],
@@ -97,7 +97,7 @@
                     parent.layer.msg('请先选中一行');
                     return false;
                 }   
-                parent.layer.confirm('删除当前管理员?', {
+                parent.layer.confirm('删除当前登录信息吗?', {
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     $.ajax({
@@ -114,43 +114,7 @@
                 });
             });
         })
-
-        function EditIsEnable(ID, IsEnable) {
-            layer.confirm('确定修改当前状态?', {
-                btn: ['确定', '取消'] //按钮
-            }, function () {
-                $.ajax({
-                    url: '/UserInfo/UpdateUserAdminIsEnable?Enable=' + IsEnable + '&ID=' + ID,
-                    async: false,
-                    success: function (data) {
-                        if (data == "True") {
-                            layer.msg('修改成功');
-                            onloadTable();
-                        }
-                        else {
-                            layer.msg('修改失败');
-                        }
-                    }
-                })
-
-            }, function () {
-            });
-        }
-
-        function SetRoleInfo(id)
-        {
-            parent.layer.open({
-                type: 2,
-                title: '设置角色',
-                shadeClose: true,
-                shade: 0.8,
-                area: ['250px;', '200px;'],
-                content: '/UserInfo/SetRoleInfo?SetRoleInfoId=' + id,
-                end: function () { //层彻底关闭后执行的回调
-                    onloadTable();
-                }
-            });
-        }
+               
                
     </script>
 </body>

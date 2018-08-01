@@ -72,8 +72,9 @@ namespace Business
         public List<Model.UsersLoginLog> UserAdminList(int limit, int offset, string StrWhere)  
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("SELECT * FROM ( SELECT ROW_NUMBER() over(order by UsersLoginLog.id desc) as rn ,");               
-            strSql.Append(" UserAdmin.UserName,UserAdmin.RealName  FROM UserAdmin");
+            strSql.Append("SELECT * FROM ( SELECT ROW_NUMBER() over(order by UsersLoginLog.id desc) as rn ,");
+            strSql.Append(" UserAdmin.UserName,UserAdmin.RealName,UsersLoginLog.*  FROM UsersLoginLog inner join UserAdmin on");
+            strSql.Append(" UserAdmin.id = UsersLoginLog.UsersId");
             if (!string.IsNullOrEmpty(StrWhere))
             {
                 strSql.Append(" where  1=1 " + StrWhere);
@@ -85,7 +86,7 @@ namespace Business
 
         #region 写
         /// <summary>
-        /// 添加一个后台管理员
+        /// 添加一条登录日志
         /// </summary>
         /// <param name="UserAdmin"></param>
         /// <returns></returns>
@@ -104,9 +105,9 @@ namespace Business
                 UserAdmin.LoginTime,
                 UserAdmin.Content,               
             }));
-        }       
+        }
         /// <summary>
-        /// 修改后台管理员信息
+        /// 修改一条登录日志
         /// </summary>
         /// <param name="UserAdmin"></param>
         /// <returns></returns>

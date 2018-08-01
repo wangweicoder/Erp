@@ -21,39 +21,38 @@ namespace ERP.Controllers
         /// </summary>
         /// <param name="limit">页码大小</param>
         /// <param name="offset">从第几条数据开始</param>
-        /// <param name="UserName">用户名</param>
-        /// <param name="Role">角色ID</param>
+        /// <param name="UserLoginYear">年份</param>
+        /// <param name="UserLoginMonth">月份</param>
         /// <returns></returns>
-        public JsonResult GetUserList(int limit, int offset, string UserLoginMonth, string SelectItem, string UsersSelectItems)
+        public JsonResult GetUserList(int limit, int offset, string UserLoginYear, string UserLoginMonth, string UserLoginDay)
         {
-            Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
+            Business.Sys_UsersLoginLog Sys_UserLog = new Business.Sys_UsersLoginLog();
             StringBuilder sb = new StringBuilder();
+            if (!string.IsNullOrEmpty(UserLoginYear))
+            {
+                sb.Append(" and Year='" + UserLoginYear + "'");
+            }
             if (!string.IsNullOrEmpty(UserLoginMonth))
             {
-                sb.Append(" and UserName='" + UserLoginMonth + "'");
+                 sb.Append(" and Month='" + UserLoginMonth + "'");
             }
-            if (!string.IsNullOrEmpty(SelectItem))
+            if (!string.IsNullOrEmpty(UserLoginDay))
             {
-                 sb.Append(" and RoleCode='" + SelectItem + "'");
-            }
-            if (!string.IsNullOrEmpty(UsersSelectItems))
-            {
-                sb.Append(" and  charindex(',"+UsersSelectItems+",',','+cast(WorkUsersId as varchar)+','  )>0 ");
+                sb.Append(" and  Day='"+UserLoginDay+"'");
             }
         
-            return Json(new { total = Sys_UserAdmin.GetUserAdminListCount(sb.ToString()), rows = Sys_UserAdmin.UserAdminList(limit, offset, sb.ToString()) }, JsonRequestBehavior.AllowGet);
+            return Json(new { total = Sys_UserLog.GetUsersLoginLogCount(sb.ToString()), rows = Sys_UserLog.UserAdminList(limit, offset, sb.ToString()) }, JsonRequestBehavior.AllowGet);
         }   
         
         /// <summary>
-        /// 删除一个会员
+        /// 删除一个登录信息
         /// </summary>
         /// <returns></returns>
         public ActionResult DeleteUserAdminInfo()
-        {
-            ViewData["deptSelectItems"] = GetdeptSelectItems();
+        {           
             int ID = int.Parse(Request["UsersId"]);
-            Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
-            if (Sys_UserAdmin.DeleteUserAdminInfo(ID))
+            Business.Sys_UsersLoginLog Sys_UserLog = new Business.Sys_UsersLoginLog();
+            if (Sys_UserLog.DeleteUsersLoginLogInfo(ID))
             {
                 return Content("True");
             }

@@ -61,6 +61,7 @@
     <Compile Include="FlowerTreatment.cs" />
     <Compile Include="IntermediateClass.cs" />
     <Compile Include="LoginLog.cs" />
+    <Compile Include="Adviertisement.cs" />
     <Compile Include="UsersLoginLog.cs" />
     <Compile Include="ViewOrders.cs" />
     <Compile Include="Orders.cs" />

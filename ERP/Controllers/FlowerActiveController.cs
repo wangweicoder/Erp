@@ -31,7 +31,7 @@ namespace ERP.Controllers
                 sb.Append("FlowerId=" + FlowerId);
             }
             Business.Sys_FlowerActive Sys_FlowerActive = new Business.Sys_FlowerActive();         
-            return Json(new { total = Sys_FlowerActive.GetFlowerActiveListCount(""), rows = Sys_FlowerActive.FlowerActiveList(limit,offset,"") }, JsonRequestBehavior.AllowGet);
+            return Json(new { total = Sys_FlowerActive.GetFlowerActiveListCount(sb.ToString()), rows = Sys_FlowerActive.FlowerActiveList(limit,offset,sb.ToString()) }, JsonRequestBehavior.AllowGet);
         }
      
         [HttpPost]

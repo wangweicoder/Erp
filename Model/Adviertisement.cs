@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace Model
 {
     /// <summary>
-    /// 登录日志
+    /// 广告
     /// </summary>
-    public class UsersLoginLog
+    public class Adviertisement
     {
         /// <summary>
         /// 主键ID
@@ -22,24 +22,24 @@ namespace Model
         public string UsersId { set; get; }
 
         /// <summary>
-        /// 年
+        /// 标题
         /// </summary>
-        public string  Year { set; get; }
+        public string  Title { set; get; }
 
         /// <summary>
-        /// 月
+        /// 图片
         /// </summary>
-        public string Month { set; get; }
-        
+        public string Picture { set; get; }
+
         /// <summary>
-        /// 日
+        /// 图片1
         /// </summary>
-        public string Day { set; get; }
-        
+        public string Picturef { set; get; }
+
         /// <summary>
-        /// 手机号
+        /// 图片2
         /// </summary>
-        public string PhoneNum　 { set; get; }
+        public string Pictures { set; get; }
 
         /// <summary>
         /// 内容
@@ -47,16 +47,13 @@ namespace Model
         public string Content { set; get; }
 
         /// <summary>
-        /// 登录时间
+        /// 创建时间
         /// </summary>
-        public string LoginTime { set; get; }
+        public DateTime? CreateTime { set; get; }
         /// <summary>
-        /// UserName
+        /// 修改时间
         /// </summary>
-        public string UserName { set; get; }
-        /// <summary>
-        ///  RealName
-        /// </summary>
-        public string RealName { set; get; }
+        public DateTime? UpdateTime { set; get; }
+        
     }
 }
