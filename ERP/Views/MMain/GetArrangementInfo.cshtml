@@ -337,32 +337,32 @@
                     console.log("上传成功");
                 }
                 else { layer.msg('选择图片后上传'); }
-            });
-            var scrollImg = $.mggScrollImg('.imgbox ul', {
-                loop: true,//循环切换
-                auto: true,//自动切换
-                auto_wait_time: 3000,//轮播间隔
-                scroll_time: 300,//滚动时长
-                callback: function (ind) {//这里传过来的是索引值                   
-                }
-            });
+            });         
 
         });
     </script>
  <script>            
      function onloadAdvlist() {
-         var html;
+         var html="";
          $.ajax({
              url: "/Adviertisement/GetAdvList",
              type: "get",
              dataType: "json",
-             async:false,
+             async:true,
              success: function (data, state) {
                  var companylist = data;
                  for (var i = 0; i < companylist.length; i++) {                      
                      html += ' <li><a href="' + companylist[i].Pictures + '"><img src="' + companylist[i].Picture + '" /></a></li>';
                  }
                  $(".imgbox ul").html(html);
+                 var scrollImg = $.mggScrollImg('.imgbox ul', {
+                     loop: true,//循环切换
+                     auto: true,//自动切换
+                     auto_wait_time: 3000,//轮播间隔
+                     scroll_time: 300,//滚动时长
+                     callback: function (ind) {//这里传过来的是索引值                   
+                     }
+                 });
              },
              error: function (m) { parent.layer.msg("error"); }
 
