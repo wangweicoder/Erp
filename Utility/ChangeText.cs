@@ -199,7 +199,16 @@ namespace Utility
                         return SaveUploadFile(file, folder, null);
                     }
                 }
-                else if (uploadType == "FlowerPhoto")
+                 else if (uploadType == "LogoPhoto")
+                {
+                    string type = file.ContentType;
+                    if (type.IndexOf("jpeg") > -1 || type.IndexOf("gif") > -1 || type.IndexOf("png") > -1)
+                    {
+                        string folder = "/Upload/" + uploadType;
+                        return SaveUploadFile(file, folder, null);
+                    }
+                }
+                else if (uploadType == "AdvPic")
                 {
                     string type = file.ContentType;
                     if (type.IndexOf("jpeg") > -1 || type.IndexOf("gif") > -1 || type.IndexOf("png") > -1)

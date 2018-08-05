@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Business
 {
-   public class Sys_FlowerActive
+    public class Sys_Adviertisement
    {
        private string SQLConString = System.Configuration.ConfigurationManager.AppSettings["SQLConString"];
 
@@ -16,65 +16,52 @@ namespace Business
        /// </summary>
        /// <param name="StrWhere"></param>
        /// <returns></returns>
-       public int GetFlowerActiveListCount(string StrWhere)
+       public int GetAdviertisementListCount(string StrWhere)
        {
            StringBuilder strSql = new StringBuilder();
-           strSql.Append("SELECT COUNT(ID) as id FROM FlowerActive");
+           strSql.Append("SELECT COUNT(ID) as id FROM Adviertisement");
            if (!string.IsNullOrEmpty(StrWhere))
            {
                strSql.Append(" where  1=1 " + StrWhere);
            }
-           List<Model.FlowerActive> FlowerList = Factory.DBHelper.Query<Model.FlowerActive>(SQLConString, strSql.ToString(), new DynamicParameters(new { StrWhere }));
-           return FlowerList.Count() > 0 ? FlowerList[0].Id : 0;
+           List<Model.Adviertisement> FlowerList = Factory.DBHelper.Query<Model.Adviertisement>(SQLConString, strSql.ToString(), new DynamicParameters(new { StrWhere }));
+           return FlowerList.Count() > 0 ? FlowerList[0].ID : 0;
        }
-              
-       /// <summary>
-       /// 通过UserId和FlowerId查询信息
-       /// </summary>
-       /// <param name="id"></param>
-       /// <returns>同一用户本花卉的记录</returns>
-       public Model.FlowerActive GetFlowerActive(string FlowerId, string userid)
-       {
-           const string sql = @"SELECT * FROM  FlowerActive WHERE FlowerId=@FlowerId and UsersId=@UserID";
-           List<Model.FlowerActive> FlowerList = Factory.DBHelper.Query<Model.FlowerActive>(SQLConString, sql.ToString(),
-               new DynamicParameters(new
-               {
-                   FlowerId,
-                   userid
-               }));
-           return FlowerList.Count() > 0 ? FlowerList[0] : null;
-       }
+
        /// <summary>
        /// 通过Id查询信息
        /// </summary>
        /// <param name="id"></param>
-       /// <returns>花卉的记录</returns>
-       public Model.FlowerActive GetFlowerActiveById(int Id)
+       /// <returns>Adviertisement记录</returns>
+       public Model.Adviertisement GetFlowerActive(string AdvId)
        {
-           const string sql = @"SELECT * FROM  FlowerActive WHERE Id=@Id";
-           List<Model.FlowerActive> FlowerList = Factory.DBHelper.Query<Model.FlowerActive>(SQLConString, sql.ToString(),
+           const string sql = @"SELECT * FROM  Adviertisement WHERE Id=@AdvId";
+           List<Model.Adviertisement> FlowerList = Factory.DBHelper.Query<Model.Adviertisement>(SQLConString, sql.ToString(),
                new DynamicParameters(new
                {
-                   Id
+                   AdvId
                }));
            return FlowerList.Count() > 0 ? FlowerList[0] : null;
        }
+       
        /// <summary>
        /// 写入一条记录
        /// </summary>
-       /// <param name="Flower"></param>
+       /// <param name="Adviertisement"></param>
        /// <returns></returns>
-       public bool InsertFlowerActive(Model.FlowerActive Flower)
+       public bool InsertAdviertisement(Model.Adviertisement adv)
        {
-           const string sql = @"INSERT INTO FlowerActive(FlowerId,UsersId,Content,CreateTime,UpdateTime) 
-            VALUES(@FlowerId,@UsersId,@Content,@CreateTime,@UpdateTime)";
+           const string sql = @"INSERT INTO Adviertisement(Title,UsersId,Content,CreateTime,UpdateTime,Picture,Pictures) 
+            VALUES(@Title,@UsersId,@Content,@CreateTime,@UpdateTime,@Picture,@Pictures)";
            return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
            {
-               Flower.FlowerId,               
-               Flower.UsersId,
-               Flower.Content,
-               Flower.CreateTime,
-               Flower.UpdateTime,
+               adv.Title,
+               adv.UsersId,
+               adv.Content,
+               adv.CreateTime,
+               adv.UpdateTime,
+               adv.Picture,
+               adv.Pictures
            }));
        }
        /// <summary>
@@ -82,28 +69,30 @@ namespace Business
        /// </summary>
        /// <param name="Flower"></param>
        /// <returns></returns>
-       public bool UpdateFlowerActive(Model.FlowerActive Flower)
+       public bool UpdateAdviertisemente(Model.Adviertisement adv)
        {
-           const string sql = @"UPDATE  FlowerActive SET FlowerId=@FlowerId,UsersId=@UsersId,Content=@Content,
-                UpdateTime=@UpdateTime  WHERE Id=@Id";
+           const string sql = @"UPDATE  Adviertisement SET Title=@Title,UsersId=@UsersId,Content=@Content,
+                UpdateTime=@UpdateTime,Picture=@Picture,Pictures=@Pictures  WHERE Id=@Id";
            return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
            {
-               Flower.FlowerId,              
-               Flower.UsersId,
-               Flower.Content,               
-               Flower.UpdateTime,
-               Flower.Id,
+               adv.Title,
+               adv.UsersId,
+               adv.Content,             
+               adv.UpdateTime,
+               adv.Picture,
+               adv.Pictures,
+               adv.ID,
            }));
        }
 
        /// <summary>
-       /// 删除一个花卉
+       /// 删除一个广告
        /// </summary>
        /// <param name="id"></param>
        /// <returns></returns>
-        public bool DeleteFlowerActive(int id)
+       public bool DeleteAdviertisement(int id)
         {
-            const string sql =@"DELETE from FlowerActive WHERE Id=@id";
+            const string sql = @"DELETE from Adviertisement WHERE Id=@id";
             return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
             {
                 id,
@@ -115,31 +104,17 @@ namespace Business
         /// 获得数据信息
         /// </summary>
         /// <param name="limit">(@limit)必须加括号，否则报错</param>        
-        /// <returns></returns>
-        public List<Model.FlowerActive> FlowerActiveList(int limit, int offset, string StrWhere)
-        {
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("SELECT  top (@limit) * FROM (SELECT ROW_NUMBER() over(order by b.UpdateTime desc) as rn, b.Id, x.FlowerWatchName,");
-            strSql.Append("b.FlowerId,b.Content,b.UpdateTime,b.CreateTime,b.UsersId FROM Flower x inner join FlowerActive b on x.id=b.FlowerId");
-	       
-            if (!string.IsNullOrEmpty(StrWhere))
-            {
-                strSql.Append(" where  1=1 " + StrWhere);
-            }
-            strSql.Append(") t where t.rn between   @offset and (@offset+@limit)");
-            return Factory.DBHelper.Query<Model.FlowerActive>(SQLConString, strSql.ToString(), new DynamicParameters(new { limit, offset }));
-        }
-
-        public List<Model.FlowerActive> GetFlowerActiveList(int limit, int offset, string StrWhere)
+        /// <returns></returns>        
+         public List<Model.Adviertisement> GetAdviertisementList(int limit, int offset, string StrWhere)
         {
             StringBuilder sql = new StringBuilder();
-            sql.Append("SELECT * FROM (SELECT ROW_NUMBER() over(order by UpdateTime desc) as rn,* FROM FlowerActive");
+            sql.Append("SELECT * FROM (SELECT ROW_NUMBER() over(order by UpdateTime desc) as rn,* FROM Adviertisement");
             if (!string.IsNullOrEmpty(StrWhere))
             {
                 sql.Append(" where  1=1 " + StrWhere);
             }
             sql.Append(")t where t.rn between   @offset and (@offset+@limit)");
-            return Factory.DBHelper.Query<Model.FlowerActive>(SQLConString, sql.ToString(), new DynamicParameters(new { limit,offset }));
+            return Factory.DBHelper.Query<Model.Adviertisement>(SQLConString, sql.ToString(), new DynamicParameters(new { limit, offset }));
         }
     }
 }

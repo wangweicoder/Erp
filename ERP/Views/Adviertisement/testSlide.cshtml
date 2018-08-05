@@ -1,0 +1,59 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>testSlide</title>
+    @Scripts.Render("~/plugins/jQuery/jquery-2.2.3.min.js")    
+    <script src="~/FileCss/jq/silder-h5.js"></script>
+    <style>
+ul,li{margin:0;padding:0;}
+div.imgbox{width:25rem;height:16.5rem;overflow:hidden;margin:0 auto;}
+div.imgbox ul{clear:both;width:75rem;display: inline-block;}
+div.imgbox ul li{float:left;width:25rem;height:16.5rem;overflow:hidden;text-align:center;}
+div.imgbox ul li img{width:24rem;height:16.5rem;}
+#page{color:red;}
+    </style>
+</head>
+<body>
+    <div class="imgbox">
+        <ul>
+            <li><a href="#"><img src="http://y2.ifengimg.com/df84c07b46e03f8e/2014/0512/rdn_53708f3d8533e.jpg"/>
+                </img></a></li>
+            <li><a href="#"><img src="http://y2.ifengimg.com/df84c07b46e03f8e/2014/0512/rdn_53708f23aad06.jpg">
+                </img></a></li>
+            <li><a href="#"><img src="http://y2.ifengimg.com/df84c07b46e03f8e/2014/0512/rdn_53708f345282b.jpg">
+                </img></a></li>
+        </ul>
+    </div>
+    <div>这里通过回调显示当前滚动到多少页:<span id="page">0</span></div>
+    <script>
+    (function () {
+        /*
+            注意：$.mggScrollImg返回的scrollImg对象上有
+                    next，prev，go三个方法，可以实现外部对滚动索引的控制。
+            如：scrollImg.next();//会切换到下一张图片
+                scrollImg.go(0);//会切换到第一张图片
+        */
+        var scrollImg = $.mggScrollImg('.imgbox ul', {
+            loop: true,//循环切换
+            auto: true,//自动切换
+            auto_wait_time: 3000,//轮播间隔
+            scroll_time: 300,//滚动时长
+            callback: function (ind) {//这里传过来的是索引值
+                $('#page').text(ind + 1);
+            }
+        });
+    })()
+    </script>
+</body>
+</html>
+
+
+
+

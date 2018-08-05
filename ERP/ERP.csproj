@@ -174,6 +174,7 @@
     <Compile Include="App_Start\MLoginFilterController.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\AdviertisementController.cs" />
     <Compile Include="Controllers\ChangingFlowerExpensesController.cs" />
     <Compile Include="Controllers\ClockAttendanceController.cs" />
     <Compile Include="Controllers\ContractCustomerController.cs" />
@@ -463,6 +464,7 @@
     <Content Include="FileCss\images\vip_bg.jpg" />
     <Content Include="FileCss\images\wx.png" />
     <Content Include="FileCss\jq\jquery.fly.min.js" />
+    <Content Include="FileCss\jq\silder-h5.js" />
     <Content Include="FileCss\js\20141221142550290.jpg" />
     <Content Include="FileCss\js\20150820152738485.jpg" />
     <Content Include="FileCss\js\20150910052509882.jpg" />
@@ -753,6 +755,7 @@
     <Content Include="Scripts\Admin\RoleInfo.js" />
     <Content Include="Scripts\Admin\Salesman.js" />
     <Content Include="Scripts\Admin\SettlementSituation.js" />
+    <Content Include="Scripts\Admin\Adviertisement.js" />
     <Content Include="Scripts\Admin\UsersLoginLog.js" />
     <Content Include="Scripts\ajaxfileupload.js" />
     <Content Include="Scripts\jquery-ui.js" />
@@ -1992,6 +1995,9 @@
     <Content Include="Views\MFlower\MapView.cshtml" />
     <Content Include="Views\FlowerChange\Edit.cshtml" />
     <Content Include="Views\UsersLoginLog\Index.cshtml" />
+    <Content Include="Views\Adviertisement\Index.cshtml" />
+    <Content Include="Views\Adviertisement\testSlide.cshtml" />
+    <Content Include="Views\Adviertisement\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />

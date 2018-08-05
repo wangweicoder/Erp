@@ -79,6 +79,7 @@
         }
         function ShowPhotoInfo(values)
         {
+            parent.layer.closeAll();
             $("#ShowPhotoImg").attr("src", values);
                 parent.layer.open({
                 type: 1,

@@ -10,181 +10,92 @@
     <title>商品详情</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />  
     <link href="~/layui/css/layui.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?version=847" />  
-    @*<script src="~/layui/layui.js"></script>
-    
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    *@    
-    <link href="~/uploadify/webuploader.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/uploadify/webuploader.html5only.min.js"></script>
-    @Scripts.Render("~/Thems/js/layer/layer.js")
-    <script>
-        //
-        $(function () {
-            //图片正方形
-            var width = $(".pro_img_box li img").width();
-            $(".pro_img_box li img").height(width);
-            //数字变颜色
-            var fangfa = $("#fangfa").html();
-            var reg = /\d+/g;
-            var ms = fangfa.match(reg);
-            for (var i = 0; i < ms.length; i++) {
-                fangfa = fangfa.replace(ms[i], "<span class='changec'>" + ms[i] + "</span>");
-            }
-            $("#fangfa").html(fangfa);
-            //数字转换星期
-            var oldv = $("#kly").text().trim();
-            var show_day = new Array('一', '二', '三', '四', '五', '六', '日');
-            $("#kly").text(show_day[oldv - 1]);
-            //
-            
-        });
-        $(function () {
-            // 初始化Web Uploader
-            var uploader = WebUploader.create({
-
-                // 选完文件后，是否自动上传。
-                auto: false,
-
-                // swf文件路径
-                //swf: BASE_URL + '/js/Uploader.swf',
-
-                // 文件接收服务端。
-                server: '/FlowerArrangement/Upload', //上传接口
-                //server: '/Text/TextImg',
-                // 选择文件的按钮。可选。
-                // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-                pick: '#filePicker',
-
-                // 只允许选择图片文件。
-                accept: {
-                    title: 'Images',
-                    extensions: 'gif,jpg,jpeg,bmp,png',
-                    mimeTypes: 'image/*'
-                }
-            });
-
-            uploader.on('uploadSuccess', function (file) {
-                //$('#' + file.id).find('p.state').text('已上传');
-                //$('#' + file.id).addClass('upload-state-done');
-                layer.msg('提交成功');               
-            });
-
-            uploader.on('uploadError', function (file) {
-                $('#' + file.id).find('p.state').text('上传出错');
-            });
-
-            uploader.on('uploadComplete', function (file) {
-                $('#' + file.id).find('.progress').fadeOut();
-            });
-            var $list = $("#fileList");
-            // 当有文件添加进来的时候
-            uploader.on('fileQueued', function (file) {
-                var $li = $(
-                        '<div id="' + file.id + '" class="file-item thumbnail">' +
-                            '<img>' +
-                            '<p class="state"></p>' +
-                        '</div>'
-                        ),
-                 $img = $li.find('img');
-
-              
-                // $list为容器jQuery实例
-                $list.html($li);
-                var thumbnailWidth = 100;
-                var thumbnailHeight = 100;
-                // 创建缩略图
-                // 如果为非图片文件，可以不用调用此方法。
-                // thumbnailWidth x thumbnailHeight 为 100 x 100
-                uploader.makeThumb(file, function (error, src) {
-                    if (error) {
-                        $img.replaceWith('<span>不能预览</span>');
-                        return;
-                    }
-
-                    $img.attr('src', src);
-                }, thumbnailWidth, thumbnailHeight);
-            });
-            $btn = $(".put");
-            //点击上传
-            $btn.on('click', function () {
-                if ($list.children('div').length > 0) {
-                    $this = $(this);
-                    // 保存原按钮的text值
-                    var oldText = $this.val();
-                    // 设置计时的开始值,5s要从6开始减
-                    var i = 6;
-                    //禁用按钮
-                    $this.attr('disabled', true);
-                    //设置定时器
-                    var btnTimer = null;
-                    btnTimer = setInterval(function () {
-                        // 开始计数
-                        i--;
-                        // 注意clearInterval一定要最后，不然attr和text函数不会执行
-                        if (i <= 0) {
-                            $this.removeAttr('disabled');
-                            $this.val(oldText);
-                            clearInterval(btnTimer);
-                        }
-                        else { $this.val(i); }
-                    }, 1000);
-                    var obj = new Object();
-                    obj.FlowerArrangementId = $("#FlowerArrangementId").val();
-                    uploader.options.formData = obj;
-                    uploader.upload();
-                    console.log("上传成功");
-                }
-                else { layer.msg('选择图片后上传'); }
-            });
-        });
-       
-
-    </script>
-    <style>       
-        <!---->
+    <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?version=847" />    
+    <link href="~/uploadify/webuploader.css" rel="stylesheet" />   
+    <style>
+        <!-- -->
         .spanstyle {
             font-weight: 600;
             float: left;
         }
+
         .week {
-        display: inline-block;
-        width: 27%;
-        height: 26px;
-        text-align: center;
-        line-height: 24px;
-        color: #fff;
-        background: #a0c716;
-        margin: 7px 10px;
-        border-radius: 16px;
+            display: inline-block;
+            width: 27%;
+            height: 26px;
+            text-align: center;
+            line-height: 24px;
+            color: #fff;
+            background: #a0c716;
+            margin: 7px 10px;
+            border-radius: 16px;
         }
-        .put{
-        float:right; background-color:#a0c716;
-        width:32%;
-        border-radius:20px;
-        text-align: center;
-        height: 35px;line-height: 33px;
-        border:none;margin-right:3px;
-        color:#fff;
+
+        .put {
+            float: right;
+            background-color: #a0c716;
+            width: 32%;
+            border-radius: 20px;
+            text-align: center;
+            height: 35px;
+            line-height: 33px;
+            border: none;
+            margin-right: 3px;
+            color: #fff;
         }
-        .upload{
-        float:left;
-        background-color:#ff6a00;
-        width:32%;
-        border-radius:20px;
-        height: 33px;line-height: 33px;
-        border:none;
-        color:#fff;
+
+        .upload {
+            float: left;
+            background-color: #ff6a00;
+            width: 32%;
+            border-radius: 20px;
+            height: 33px;
+            line-height: 33px;
+            border: none;
+            color: #fff;
         }
-        .leftpadding {            
+
+        .leftpadding {
             margin-top: 20px;
         }
-        .changec{
-           color:#f44623;
+
+        .changec {
+            color: #f44623;
         }
     </style>
 
+    <style>
+        ul, li {
+            margin: 0;
+            padding: 0;
+        }
+
+        div.imgbox {
+            width: 100%;
+            height: 36px;
+            overflow: hidden;
+            margin: 0 auto;
+        }        
+            div.imgbox ul {
+                clear: both;
+                width: 75rem;
+                display: inline-block;
+            }
+
+                div.imgbox ul li {
+                    float: left;
+                    width: 25rem;
+                    height: 16.5rem;
+                    overflow: hidden;
+                    text-align: center;
+                }
+
+                    div.imgbox ul li img {
+                         width: 100%;
+                        height: 36px; 
+                    }
+      
+    </style>
 </head>
 <body>    
     <header id="header" style="background:#ffffff">
@@ -298,37 +209,166 @@
         </div>
        
     </div>
-        @*<script>            
-            layui.use('upload', function () {
-                var upload = layui.upload;
+    <div class="imgbox">
+        <ul>           
+        </ul>
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/uploadify/webuploader.html5only.min.js"></script>
+    <script src="~/FileCss/jq/silder-h5.js"></script>
+    @Scripts.Render("~/Thems/js/layer/layer.js")
+    <script>
+        //
+        $(function () {
+            //图片正方形
+            var width = $(".pro_img_box li img").width();
+            $(".pro_img_box li img").height(width);
+            //数字变颜色
+            var fangfa = $("#fangfa").html();
+            var reg = /\d+/g;
+            var ms = fangfa.match(reg);
+            for (var i = 0; i < ms.length; i++) {
+                fangfa = fangfa.replace(ms[i], "<span class='changec'>" + ms[i] + "</span>");
+            }
+            $("#fangfa").html(fangfa);
+            //数字转换星期
+            var oldv = $("#kly").text().trim();
+            var show_day = new Array('一', '二', '三', '四', '五', '六', '日');
+            $("#kly").text(show_day[oldv - 1]);
+            //
+            onloadAdvlist()
+            //
+                        
+        });
+        $(function () {
+            // 初始化Web Uploader
+            var uploader = WebUploader.create({
 
-                //执行实例
-                var uploadInst = upload.render({
-                    elem: '#test8' //绑定元素
-                  , url: '/FlowerArrangement/Upload' //上传接口
-                  , bindAction: '#test9'
-                  , auto: false
-                  , data: { "FlowerArrangementId": $("#FlowerArrangementId").val() }
-                  , done: function (res) {
-                      //layer.alert('提交成功');
-                      layer.msg('提交成功');
-                      $(this).show();
-                      //location.reload();
-                  },
-                  before: function (res) {
-                      console.log(res);
-                      console.log( $(".layui-inline layui-upload-choose").text());
-                  }
-                  , error: function () {
-                      //请求异常回调
-                  }
-                });
+                // 选完文件后，是否自动上传。
+                auto: false,
+
+                // swf文件路径
+                //swf: BASE_URL + '/js/Uploader.swf',
+
+                // 文件接收服务端。
+                server: '/FlowerArrangement/Upload', //上传接口
+                //server: '/Text/TextImg',
+                // 选择文件的按钮。可选。
+                // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                pick: '#filePicker',
+
+                // 只允许选择图片文件。
+                accept: {
+                    title: 'Images',
+                    extensions: 'gif,jpg,jpeg,bmp,png',
+                    mimeTypes: 'image/*'
+                }
             });
-           
-            
-        </script>*@
- 
+
+            uploader.on('uploadSuccess', function (file) {
+                //$('#' + file.id).find('p.state').text('已上传');
+                //$('#' + file.id).addClass('upload-state-done');
+                layer.msg('提交成功');
+            });
+
+            uploader.on('uploadError', function (file) {
+                $('#' + file.id).find('p.state').text('上传出错');
+            });
+
+            uploader.on('uploadComplete', function (file) {
+                $('#' + file.id).find('.progress').fadeOut();
+            });
+            var $list = $("#fileList");
+            // 当有文件添加进来的时候
+            uploader.on('fileQueued', function (file) {
+                var $li = $(
+                        '<div id="' + file.id + '" class="file-item thumbnail">' +
+                            '<img>' +
+                            '<p class="state"></p>' +
+                        '</div>'
+                        ),
+                 $img = $li.find('img');
 
 
+                // $list为容器jQuery实例
+                $list.html($li);
+                var thumbnailWidth = 100;
+                var thumbnailHeight = 100;
+                // 创建缩略图
+                // 如果为非图片文件，可以不用调用此方法。
+                // thumbnailWidth x thumbnailHeight 为 100 x 100
+                uploader.makeThumb(file, function (error, src) {
+                    if (error) {
+                        $img.replaceWith('<span>不能预览</span>');
+                        return;
+                    }
+
+                    $img.attr('src', src);
+                }, thumbnailWidth, thumbnailHeight);
+            });
+            $btn = $(".put");
+            //点击上传
+            $btn.on('click', function () {
+                if ($list.children('div').length > 0) {
+                    $this = $(this);
+                    // 保存原按钮的text值
+                    var oldText = $this.val();
+                    // 设置计时的开始值,5s要从6开始减
+                    var i = 6;
+                    //禁用按钮
+                    $this.attr('disabled', true);
+                    //设置定时器
+                    var btnTimer = null;
+                    btnTimer = setInterval(function () {
+                        // 开始计数
+                        i--;
+                        // 注意clearInterval一定要最后，不然attr和text函数不会执行
+                        if (i <= 0) {
+                            $this.removeAttr('disabled');
+                            $this.val(oldText);
+                            clearInterval(btnTimer);
+                        }
+                        else { $this.val(i); }
+                    }, 1000);
+                    var obj = new Object();
+                    obj.FlowerArrangementId = $("#FlowerArrangementId").val();
+                    uploader.options.formData = obj;
+                    uploader.upload();
+                    console.log("上传成功");
+                }
+                else { layer.msg('选择图片后上传'); }
+            });
+            var scrollImg = $.mggScrollImg('.imgbox ul', {
+                loop: true,//循环切换
+                auto: true,//自动切换
+                auto_wait_time: 3000,//轮播间隔
+                scroll_time: 300,//滚动时长
+                callback: function (ind) {//这里传过来的是索引值                   
+                }
+            });
+
+        });
+    </script>
+ <script>            
+     function onloadAdvlist() {
+         var html;
+         $.ajax({
+             url: "/Adviertisement/GetAdvList",
+             type: "get",
+             dataType: "json",
+             async:false,
+             success: function (data, state) {
+                 var companylist = data;
+                 for (var i = 0; i < companylist.length; i++) {                      
+                     html += ' <li><a href="' + companylist[i].Pictures + '"><img src="' + companylist[i].Picture + '" /></a></li>';
+                 }
+                 $(".imgbox ul").html(html);
+             },
+             error: function (m) { parent.layer.msg("error"); }
+
+         });
+
+     }
+ </script>
 </body>
 </html>

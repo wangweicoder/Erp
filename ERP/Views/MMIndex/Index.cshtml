@@ -41,6 +41,39 @@
       color:#ffffff;
        }
     </style >
+    <style>
+        ul, li {
+            margin: 0;
+            padding: 0;
+        }
+
+        div.imgbox {
+            width: 100%;
+            height: 36px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+            div.imgbox ul {
+                clear: both;
+                width: 75rem;
+                display: inline-block;
+            }
+
+                div.imgbox ul li {
+                    float: left;
+                    width: 25rem;
+                    height: 16.5rem;
+                    overflow: hidden;
+                    text-align: center;
+                }
+
+                    div.imgbox ul li img {
+                        width: 100%;
+                        height: 36px;
+                    }
+    </style>
+
 </head>
 <html>
 <body>   @*style="background-color: #f0f0f0;height:100%;border:1px solid red"</span><span>
@@ -185,6 +218,9 @@
                 }
              }
         </div>
+        <div class="imgbox">
+            <ul></ul>
+        </div>
     </footer>  
     <!--将以下代码放在Footer文件中-->
     <div  style ="position: fixed; bottom: 0; width: 100%;">
@@ -195,9 +231,46 @@
             <a href="/MLogin/Index?LoginOut=1"><i class="iconfont">Œ</i><span>退出</span></a>
         </div>
     </div>
-
+    
     @*<script src="~/FileCss/js/zepto.min.js?debug=847" type="text/javascript"></script>
     <script src="~/FileCss/js/main.js?debug=847" type="text/javascript"></script>*@
-    
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/FileCss/jq/silder-h5.js"></script>
+    <script>
+        //
+        $(function () {    
+            //
+            onloadAdvlist();
+            
+        });
+    function onloadAdvlist() {
+        var html = "";;
+        $.ajax({
+            url: "/Adviertisement/GetAdvList",
+            type: "get",
+            dataType: "json",
+            async: true,
+            success: function (data, state) {
+                var companylist = data;
+                for (var i = 0; i < companylist.length; i++) {
+                    html += '<li><a href="' + companylist[i].Pictures + '"><img src="' + companylist[i].Picture + '" /></a></li>';
+                }               
+                $(".imgbox ul").html(html);
+                var scrollImg = $.mggScrollImg('.imgbox ul', {
+                    loop: true,//循环切换
+                    auto: true,//自动切换
+                    auto_wait_time: 3000,//轮播间隔
+                    scroll_time: 300,//滚动时长
+                    callback: function (ind) {//这里传过来的是索引值                   
+                    }
+                });
+            },
+            error: function (m) { parent.layer.msg("error"); }
+
+        });
+
+    }
+    </script>
+
 </body>
 </html>

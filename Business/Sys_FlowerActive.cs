@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Business
 {
-   public class Sys_Adviertisement
+    public class Sys_FlowerActive
     {
        private string SQLConString = System.Configuration.ConfigurationManager.AppSettings["SQLConString"];
 
@@ -16,10 +16,10 @@ namespace Business
        /// </summary>
        /// <param name="StrWhere"></param>
        /// <returns></returns>
-       public int GetAdviertisementListCount(string StrWhere)
+       public int GetFlowerActiveListCount(string StrWhere)
        {
            StringBuilder strSql = new StringBuilder();
-           strSql.Append("SELECT COUNT(ID) as id FROM Adviertisement");
+           strSql.Append("SELECT COUNT(ID) as id FROM FlowerActive");
            if (!string.IsNullOrEmpty(StrWhere))
            {
                strSql.Append(" where  1=1 " + StrWhere);
@@ -27,15 +27,14 @@ namespace Business
            List<Model.FlowerActive> FlowerList = Factory.DBHelper.Query<Model.FlowerActive>(SQLConString, strSql.ToString(), new DynamicParameters(new { StrWhere }));
            return FlowerList.Count() > 0 ? FlowerList[0].Id : 0;
        }
-
-        /// <summary>
-        /// 通过UserId和FlowerId查询信息
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>同一用户Adviertisement的记录</returns>
+       /// <summary>
+       /// 通过UserId和FlowerId查询信息
+       /// </summary>
+       /// <param name="id"></param>
+       /// <returns>同一用户本花卉的记录</returns>        
         public Model.FlowerActive GetFlowerActive(string Id, string userid)
        {
-           const string sql = @"SELECT * FROM  Adviertisement WHERE Id=@Id and UsersId=@UserID";
+           const string sql = @"SELECT * FROM FlowerActive WHERE Id=@Id and UsersId=@UserID";
            List<Model.FlowerActive> FlowerList = Factory.DBHelper.Query<Model.FlowerActive>(SQLConString, sql.ToString(),
                new DynamicParameters(new
                {
@@ -64,16 +63,17 @@ namespace Business
        /// </summary>
        /// <param name="Flower"></param>
        /// <returns></returns>
-       public bool InsertAdviertisement(Model.Adviertisement adv)
+       public bool InsertFlowerActive(Model.FlowerActive Flower)
        {
-           const string sql = @"INSERT INTO Adviertisement(FlowerId,UsersId,Content,CreateTime,UpdateTime) 
+           const string sql = @"INSERT INTO FlowerActive(FlowerId,UsersId,Content,CreateTime,UpdateTime) 
             VALUES(@FlowerId,@UsersId,@Content,@CreateTime,@UpdateTime)";
            return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
-           {              
-               adv.UsersId,
-               adv.Content,
-               adv.CreateTime,
-               adv.UpdateTime,
+           {
+               Flower.FlowerId,
+               Flower.UsersId,
+               Flower.Content,
+               Flower.CreateTime,
+               Flower.UpdateTime,
            }));
        }
        /// <summary>

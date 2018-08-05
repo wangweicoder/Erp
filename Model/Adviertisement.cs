@@ -37,7 +37,7 @@ namespace Model
         public string Picturef { set; get; }
 
         /// <summary>
-        /// 图片2
+        /// url
         /// </summary>
         public string Pictures { set; get; }
 
