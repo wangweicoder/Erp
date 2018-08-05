@@ -33,7 +33,7 @@ namespace Business
        /// </summary>
        /// <param name="id"></param>
        /// <returns>Adviertisement记录</returns>
-       public Model.Adviertisement GetFlowerActive(string AdvId)
+       public Model.Adviertisement GetModel(string AdvId)
        {
            const string sql = @"SELECT * FROM  Adviertisement WHERE Id=@AdvId";
            List<Model.Adviertisement> FlowerList = Factory.DBHelper.Query<Model.Adviertisement>(SQLConString, sql.ToString(),

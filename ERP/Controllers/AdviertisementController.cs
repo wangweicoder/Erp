@@ -64,6 +64,13 @@ namespace ERP.Controllers
         {
             int ID = int.Parse(Request["AdvId"]);
             Business.Sys_Adviertisement Sys_Adviertisement = new Business.Sys_Adviertisement();
+            Model.Adviertisement Adviertisement = Sys_Adviertisement.GetModel(ID.ToString());
+            string path = Server.MapPath("~") + Adviertisement.Picture;
+            //删除二维码图片
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
             if (Sys_Adviertisement.DeleteAdviertisement(ID))
             {
                 return Content("True");
