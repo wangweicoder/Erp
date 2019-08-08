@@ -4,13 +4,15 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Text;
+using ERP.Filter;
 
 namespace ERP.Controllers
 {
-    public class MainController : LoginFilter
+    [SysAuth]
+    public class MainController : Controller
     {
         //
-        // GET: /Main/
+        // GET: /Main/       
         public ActionResult Index()
         {
             //读取菜单权限
