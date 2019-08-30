@@ -32,7 +32,7 @@ namespace Business
         /// <summary>
         /// 花卉更换列表
         /// </summary>
-        /// <param name="limit"></param>
+        /// <param name="limit">页面大小</param>
         /// <param name="offset"></param>
         /// <param name="StrWhere"></param>
         /// <returns></returns>
