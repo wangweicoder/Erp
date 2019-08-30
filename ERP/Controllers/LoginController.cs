@@ -12,7 +12,7 @@ namespace ERP.Controllers
         // GET: /Login/
         public ActionResult Index()
         {
-            HttpContext.Session.RemoveAll(); 
+            Session.Abandon();
             return View();
            
         }
