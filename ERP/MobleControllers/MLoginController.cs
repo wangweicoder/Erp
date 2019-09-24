@@ -15,11 +15,7 @@ namespace ERP.MobleControllers
             string LoginOut = Request["LoginOut"];
             if (!string.IsNullOrEmpty(LoginOut))
             {
-                Session["UsersId"] = null;
-                Session["UserName"] = null;
-                Session["RealName"] = null;
-                Session["RoleCode"] = null;
-                Session["OpenId"] = null;               
+                Session.Clear();        
             }
             return View();
         }

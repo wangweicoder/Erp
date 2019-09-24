@@ -43,7 +43,7 @@ namespace ERP.MobleControllers
             }
             catch (Exception ex)
             {
-                Utility.Log.WriteTextLog("log", "ConservationFlowers",ex.Message, "养护花卉", "需要把ip加入微信公众开发平台的白名单");
+                Utility.Log.WriteTextLog("养护花卉", "ConservationFlowers",ex.Message, "养护花卉", "需要把ip加入微信公众开发平台的白名单");
               
             }
             return null;
