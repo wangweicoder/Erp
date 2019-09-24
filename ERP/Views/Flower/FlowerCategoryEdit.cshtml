@@ -44,8 +44,7 @@
             <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>花卉类别&nbsp;&nbsp;&nbsp;&nbsp;</span>
             <div class="col-sm-4">
                 @Html.TextBoxFor(m => m.FlowerCategoryType, new { @class = "form-control" })
-
-                @Html.HiddenFor(m => m.id);
+                @Html.HiddenFor(m => m.id)
             </div>
             <input type="hidden" value="@ViewData["success"]" id="success" />
         </div>
