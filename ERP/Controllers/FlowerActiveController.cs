@@ -21,7 +21,7 @@ namespace ERP.Controllers
             return View();
         }
 
-        public ActionResult GetList(int FlowerId)
+        public ActionResult GetList(int? FlowerId)
         {
             int offset = Convert.ToInt32(Request["offset"]);
             int limit = int.Parse(Request["limit"]);
@@ -41,12 +41,7 @@ namespace ERP.Controllers
             Flower.UpdateTime = DateTime.Now;
             Flower.UsersId = Utility.ChangeText.GetUsersId().ToString();
             Business.Sys_FlowerActive Sys_FlowerActive = new Business.Sys_FlowerActive();
-            //ViewData["success"] = "添加失败";
-            if (Sys_FlowerActive.InsertFlowerActive(Flower))
-            {
-               // ViewData["success"] = "添加成功";
-            }
-            Response.Write("<script>parent.layer.closeAll();</script>");
+            Sys_FlowerActive.InsertFlowerActive(Flower);           
             return View();
         }
 

@@ -18,7 +18,7 @@ namespace ERP.Controllers
         }
         public ActionResult LoginOut()
         {
-            HttpContext.Session.RemoveAll();
+            HttpContext.Session.RemoveAll();          
             return Redirect("/Login/Index");
         }
         [HttpPost]
@@ -40,6 +40,8 @@ namespace ERP.Controllers
                 Session["RealName"] = UserAdmin.RealName;
                 Session["OwnedCompany"] = UserAdmin.OwnedCompany;
                 //记录日志  跳转界面
+                Utility.Log.WriteTextLog("后台登录", "UsersId", UserAdmin.ID.ToString(), "UserName",  UserAdmin.UserName);
+                //return Json(new { msg = "ok" });
                 return RedirectToAction("Index", "Main");//跳转到首页。
             }
             ViewBag.LoginError = "账号或密码错误";
