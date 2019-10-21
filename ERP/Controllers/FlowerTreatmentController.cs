@@ -135,7 +135,7 @@ namespace ERP.Controllers
             {
                 sb.Append(" and OwnedUsersId='" + Utility.ChangeText.GetUsersId() + "'");
             }
-            Utility.Log.WriteTextLog("testsql", "", "", Request["page"], sb.ToString());
+            Utility.Log.WriteTextLog("testsql", "养护", "GetMobleListMore", Request["page"], sb.ToString());
             int page = int.Parse(Request["page"]);
             //(@pagesize*(@pagenumber-1)+1) and (@pagesize*@pagenumber)按第几页
             if (page > 1)

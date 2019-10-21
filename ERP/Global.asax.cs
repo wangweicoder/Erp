@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -13,9 +14,11 @@ namespace ERP
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+            GlobalConfiguration.Configure(WebApiConfig.Register);//一定要写到第二行，放到最后注册会报404，坑
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+           
             Application["online"] = 0;
         }
         /// <summary>
@@ -23,7 +26,7 @@ namespace ERP
         /// </summary>
         protected void Application_End()
         {
-            Application.Lock();
+            Application.Lock();           
             int online = (int)Application["online"];
             Application["online"] = online - 1;
             Application.UnLock();

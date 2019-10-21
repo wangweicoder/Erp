@@ -66,7 +66,7 @@ namespace ERP.Controllers
             Business.Sys_Adviertisement Sys_Adviertisement = new Business.Sys_Adviertisement();
             Model.Adviertisement Adviertisement = Sys_Adviertisement.GetModel(ID.ToString());
             string path = Server.MapPath("~") + Adviertisement.Picture;
-            //删除二维码图片
+            //删除广告图片
             if (System.IO.File.Exists(path))
             {
                 System.IO.File.Delete(path);
