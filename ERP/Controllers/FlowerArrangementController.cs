@@ -83,7 +83,8 @@ namespace ERP.Controllers
         {
             Business.Sys_FlowerArrangement Sys_FlowerArrangement = new Business.Sys_FlowerArrangement();
             Model.FlowerArrangement FlowerArrangement = Sys_FlowerArrangement.GetModel(Request["id"]);
-            ViewData["GetOwnedCompanyList"] = GetOwnedCompanyList(FlowerArrangement.belongUsersId); ViewData["GetShopList"] = GetShopList(FlowerArrangement.id);
+            ViewData["GetOwnedCompanyList"] = GetOwnedCompanyList(FlowerArrangement.belongUsersId);
+            ViewData["GetShopList"] = GetShopList(FlowerArrangement.id);
             return View(FlowerArrangement);
         }
 
@@ -98,10 +99,15 @@ namespace ERP.Controllers
                 FlowerArrangement.Photo = Utility.ChangeText.SaveUploadPicture(file, "attach");
             }
             Sys_FlowerArrangement.Edit(FlowerArrangement);
-            if (string.IsNullOrEmpty(FlowerArrangement.ImgORCodePath))
+            //if (string.IsNullOrEmpty(FlowerArrangement.ImgORCodePath))
+            //    Sys_FlowerArrangement.UpdateImgORCodePath(CreateORCode(FlowerArrangement.id), FlowerArrangement.id);
+            string path = Server.MapPath("~") + FlowerArrangement.ImgORCodePath;
+            //删除二维码图片
+            if (!System.IO.File.Exists(path) || string.IsNullOrEmpty(FlowerArrangement.ImgORCodePath))
+            {
                 Sys_FlowerArrangement.UpdateImgORCodePath(CreateORCode(FlowerArrangement.id), FlowerArrangement.id);
-            //Response.Write("<script>parent.layer.closeAll();</script>");
-            return Content("");
+            }
+                return Content("");
         }
 
         public ActionResult Delete(string id)
@@ -185,9 +191,11 @@ namespace ERP.Controllers
 
                 string FlowerArrangementId = Request["FlowerArrangementId"];
                 HttpPostedFileBase files = Request.Files["file"];
-                Utility.Log.WriteTextLog("报错", "", "", "", files == null ? "true" : "fasle");
-                if (files == null) return Json("Faild", JsonRequestBehavior.AllowGet);
-
+                if (files == null)
+                {
+                    Utility.Log.WriteTextLog("扫码页面上传图片", "FlowerArrangementId", FlowerArrangementId, "files", files == null ? "true" : "fasle");
+                    return Json("Faild", JsonRequestBehavior.AllowGet);
+                }
 
                 Business.Sys_FlowerArrangement Sys_FlowerArrangement = new Business.Sys_FlowerArrangement();
                 Model.FlowerArrangement FlowerArrangement = Sys_FlowerArrangement.GetModel(FlowerArrangementId);
@@ -235,7 +243,7 @@ namespace ERP.Controllers
             }
             catch (Exception ex)
             {
-                Utility.Log.WriteTextLog("报错", "", "", "", ex.ToString());
+                Utility.Log.WriteTextLog("扫码页面上传图片报错", "FlowerArrangementId", "", "", ex.ToString());
                 return null;
             }
 
