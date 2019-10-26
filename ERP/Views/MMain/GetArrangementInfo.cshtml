@@ -124,14 +124,14 @@
                         </ul>
                     </div>
                     <div class="pro_img_nav">
-                  @*<i class="iconfont pro_img_item cur">Ƴ</i>
+                 @*<i class="iconfont pro_img_item cur">Ƴ</i>
                   <i class="iconfont pro_img_item">Ƴ</i>
                 System.Web.HttpUtility.UrlEncode(Model.OwnedCompany, System.Text.Encoding.UTF8)*@
                     </div>
                 </div>
             </div>
         </div>
-        <div class="pro_tit border_bottom">
+        <div class="pro_tit border_bottom" style="min-height: 60px;">
             <h2 class="spanstyle">名称: @Model.FlowerWatchName </h2>
             @if (ViewData["IsAllower"].ToString() != "1")
             {   
@@ -142,8 +142,10 @@
                 <a href="/MFlower/ConservationFlowers?ownedcompany=@Model.OwnedCompany"><div class="week left">养护</div></a>
             }
             <div style="padding-top:12px;padding-left: 72%;">
-            <img width="20" height="20" src="~/static/image/1160675719.jpg" />
-            规格: <span style="color:#f44623">@Model.Specifications </span>cm </div>         
+            @*<img width="20" height="20" src="~/static/image/1160675719.jpg" />
+            规格: <span style="color:#f44623">@Model.Specifications </span>cm*@
+            
+            </div>         
             <p>               
             </p>
         </div>
@@ -235,8 +237,8 @@
             var oldv = $("#kly").text().trim();
             var show_day = new Array('一', '二', '三', '四', '五', '六', '日');
             $("#kly").text(show_day[oldv - 1]);
-            //
-            onloadAdvlist()
+            //加载广告
+            //onloadAdvlist();
             //
                         
         });
