@@ -16,7 +16,11 @@ namespace ERP.MobleControllers
         {
             return View();
         }
-
+        #region 养护花卉
+        /// <summary>
+        /// 养护花卉
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ConservationFlowers()
         {
             try
@@ -48,7 +52,10 @@ namespace ERP.MobleControllers
             }
             return null;
         }
-
+        /// <summary>
+        /// 养护花卉
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult ConservationFlowers(Model.FlowerTreatment FlowerTreatment)
         {
@@ -112,7 +119,85 @@ namespace ERP.MobleControllers
                 return View();
             }
         }
+        /// <summary>
+        /// 开始养护花卉
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult StartCurFlowers(string shopid,string ownedUsersId)
+        {
+            try
+            {
+                Model.FlowerTreatment FlowerTreatment = new Model.FlowerTreatment();
+                Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
+                Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
+                int userid = Utility.ChangeText.GetUsersId();
+                FlowerTreatment.FlowerTreatmentType = "开始养护";
+                FlowerTreatment.UsersId = userid;
+                FlowerTreatment.FlowerNumber = shopid;
+                FlowerTreatment.OwnedUsersId = ownedUsersId;
+                FlowerTreatment.UserRealName = Utility.ChangeText.GetRealName();
+                FlowerTreatment.FlowerTreatmentAddress = "";
+                Model.UserAdmin UserAdmin = Sys_UserAdmin.GetUserAdminByUserId(Convert.ToInt32(FlowerTreatment.OwnedUsersId));
+                FlowerTreatment.OwnedUsersRealName = UserAdmin.RealName;
+                FlowerTreatment.OwnedCompany = UserAdmin.OwnedCompany;
+                FlowerTreatment.LogoPhoto = UserAdmin.LogoPhoto;
+                //同一登录人，同一公司，一天只能提交一次
+                StringBuilder stb = new StringBuilder();
+                if (userid != 0)
+                {
+                    stb.Append(" t.UsersId=" + userid + "");
+                }
+                if (!string.IsNullOrEmpty(FlowerTreatment.OwnedUsersId))
+                {
+                    stb.Append(" and t.OwnedUsersId='" + FlowerTreatment.OwnedUsersId + "'");
+                }
+                string dt = DateTime.Now.ToShortDateString();
+                {
+                    stb.Append(" and time>'" + dt + "'");
+                }
+                if (Sys_FlowerTreatment.FlowerTreatmentList(stb.ToString()).Count == 0)
+                {
+                    Sys_FlowerTreatment.InsertFlowerTreatment(FlowerTreatment);
+                    return Content("1");
+                }
+                else
+                {
+                    return Content("0");
+                }
+            }
+            catch {
+            }
+            return Json(new { resule='1'}, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// 结束养护
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        public ActionResult EndCurFlowers(string shopid, string ownedUsersId)
+        {
+            Model.FlowerTreatment FlowerTreatment = new Model.FlowerTreatment();
+            Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
+            Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
+            int userid = Utility.ChangeText.GetUsersId();
+            FlowerTreatment=Sys_FlowerTreatment.GetModelbyShopid(shopid, ownedUsersId, userid.ToString());
+            if (FlowerTreatment.id > 0)
+            {
+                FlowerTreatment.endtime = DateTime.Now;
+                if(Sys_FlowerTreatment.UpdateEndtime(FlowerTreatment))
+                {
+                    return Content("1");
+                }
+            }
+            return Content("0");
+        }
+        #endregion
 
+        #region 更换花卉
+        /// <summary>
+        /// 更换花卉
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ChangeFlowers() 
         {
             //如果当前是客户提交申请,则直接记录工作服务对象OwnedCompany，
@@ -133,7 +218,10 @@ namespace ERP.MobleControllers
             }
             return View();
         }
-
+        /// <summary>
+        /// 更换花卉
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult ChangeFlowers(Model.FlowerChange FlowerChange)
         {
@@ -203,13 +291,19 @@ namespace ERP.MobleControllers
           
             return View();
         }
-
+        /// <summary>
+        /// 保存更换后图片
+        /// </summary>
         public ActionResult AddFlowersPhotoInfo() 
         {
             Model.FlowerChange FlowerChange = new Model.FlowerChange() { Number = Request["Number"] };
             return View(FlowerChange);
         }
-
+        /// <summary>
+        /// 保存更换后图片
+        /// </summary>
+        /// <param name="FlowerChange"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult AddFlowersPhotoInfo(Model.FlowerChange FlowerChange)
         {
@@ -232,6 +326,9 @@ namespace ERP.MobleControllers
         
             return View();
         }
+       
+        #endregion
+
         public List<SelectListItem> GetdeptSelectItemsByWorkUsersId() 
         {
             Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();

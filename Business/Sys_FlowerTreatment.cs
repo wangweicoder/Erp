@@ -145,5 +145,29 @@ ContentMsg=@ContentMsg,OwnedUsersRealName=@OwnedUsersRealName,OwnedUsersId=@Owne
             List<Model.FlowerTreatment> FlowerTreatmentList = Factory.DBHelper.Query<Model.FlowerTreatment>(SQLConString, sql.ToString(), new DynamicParameters(new { ID }));
             return FlowerTreatmentList.Count() > 0 ? FlowerTreatmentList[0] : null;
         }
+        /// <summary>
+        /// 通过花卉id查询养护记录
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        public Model.FlowerTreatment GetModelbyShopid(string FlowerNumber,string ownedUsersId , string usersid)
+        {
+            const string sql = @"SELECT top 1 * FROM  FlowerTreatment WHERE FlowerNumber=@FlowerNumber and OwnedUsersId=@ownedUsersId order by time desc ";
+            List<Model.FlowerTreatment> FlowerTreatmentList = Factory.DBHelper.Query<Model.FlowerTreatment>(SQLConString, sql.ToString(), new DynamicParameters(new
+            {
+                FlowerNumber,
+                ownedUsersId,
+            }));
+            return FlowerTreatmentList.Count() > 0 ? FlowerTreatmentList[0] : null;
+        }
+        public bool UpdateEndtime(Model.FlowerTreatment FlowerTreatment)
+        {
+            const string sql =@"UPDATE  FlowerTreatment  SET endtime=@endtime  WHERE id=@id";
+            return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
+            {
+                FlowerTreatment.endtime,
+                FlowerTreatment.id,
+            }));
+        }
     }
 }

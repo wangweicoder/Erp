@@ -1,0 +1,29 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<!--
+2013-9-30: Created.
+-->
+<svg>
+<metadata>
+Created by iconfont
+</metadata>
+<defs>
+
+<font id="iconfont" horiz-adv-x="1024" >
+  <font-face
+    font-family="iconfont"
+    font-weight="500"
+    font-stretch="normal"
+    units-per-em="1024"
+    ascent="896"
+    descent="-128"
+  />
+    <missing-glyph />
+    
+    <glyph glyph-name="icon-zhaopian-shangchuan" unicode="&#60554;" d="M949.888 442.666667H541.333333V821.888C541.333333 839.317333 528.234667 853.333333 512 853.333333c-16.213333 0-29.333333-14.016-29.333333-31.445333V442.666667H74.112c-17.429333 0-31.445333-13.098667-31.445333-29.333334C42.666667 397.12 56.682667 384 74.112 384h408.554667v-437.888c0-17.429333 13.098667-31.445333 29.333333-31.445333 16.213333 0 29.333333 14.016 29.333333 31.445333V384h408.554667c17.429333 0 31.445333 13.098667 31.445333 29.333333 0 16.213333-14.016 29.333333-31.445333 29.333334z"  horiz-adv-x="1024" />
+
+    
+
+
+  </font>
+</defs></svg>

@@ -25,7 +25,12 @@ namespace Model
         /// 操作时间
         /// </summary>
         public DateTime time { set; get; }
-
+       
+        /// <summary>
+        /// 结束养护时间
+        /// </summary>
+        public DateTime endtime { set; get; }
+       
         /// <summary>
         /// 会员编号
         /// </summary>

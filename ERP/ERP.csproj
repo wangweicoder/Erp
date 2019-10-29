@@ -405,6 +405,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
+    <Content Include="FileCss\css\Arrangement.css" />
     <Content Include="FileCss\css\Buttons.css" />
     <Content Include="FileCss\css\header.css" />
     <Content Include="FileCss\css\job.css" />
@@ -416,6 +417,8 @@
     <Content Include="FileCss\css\style.css" />
     <Content Include="FileCss\css\swiper.min.css" />
     <Content Include="FileCss\fonts\iconfont.svg" />
+    <Content Include="FileCss\fonts\zhaopian\iconfont.css" />
+    <Content Include="FileCss\fonts\zhaopian\iconfont.svg" />
     <Content Include="FileCss\images\arrow.png" />
     <Content Include="FileCss\images\back.png" />
     <Content Include="FileCss\images\border.gif" />
@@ -1793,6 +1796,9 @@
     <Content Include="App_Data\ShoppingCartInMVC-master.zip" />
     <Content Include="Excel\demo.xls" />
     <Content Include="Excel\Flowerdemo.xls" />
+    <Content Include="FileCss\fonts\zhaopian\iconfont.eot" />
+    <Content Include="FileCss\fonts\zhaopian\iconfont.ttf" />
+    <Content Include="FileCss\fonts\zhaopian\iconfont.woff" />
     <None Include="Properties\PublishProfiles\1.pubxml" />
     <None Include="Properties\PublishProfiles\11.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />

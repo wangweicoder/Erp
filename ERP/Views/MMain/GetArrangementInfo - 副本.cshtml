@@ -8,11 +8,10 @@
 <head>
     <meta charset="UTF-8" />
     <title>商品详情</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />  
     <link href="~/layui/css/layui.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?version=847" />
-    <link href="~/uploadify/webuploader.css" rel="stylesheet" />
-    <link href="~/FileCss/css/Arrangement.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?version=847" />    
+    <link href="~/uploadify/webuploader.css" rel="stylesheet" />   
     <style>
         <!-- -->
         .spanstyle {
@@ -76,8 +75,7 @@
             height: 36px;
             overflow: hidden;
             margin: 0 auto;
-        }
-
+        }        
             div.imgbox ul {
                 clear: both;
                 width: 75rem;
@@ -93,9 +91,10 @@
                 }
 
                     div.imgbox ul li img {
-                        width: 100%;
-                        height: 36px;
+                         width: 100%;
+                        height: 36px; 
                     }
+      
     </style>
 </head>
 <body>    
@@ -135,22 +134,19 @@
         <div class="pro_tit border_bottom" style="min-height: 60px;">
             <h2 class="spanstyle">名称: @Model.FlowerWatchName </h2>
             @if (ViewData["IsAllower"].ToString() != "1")
-    {
-        @*<div class="week left">每周<span id="kly">@Model.Weekly</span>养护 </div>*@
-        <a href="/MFlower/ConservationFlowers?ownedcompany=@Model.OwnedCompany"><div class="week left">需要呵护</div></a>
-        }
-        else
-    {
-        @*<a href="/MFlower/ConservationFlowers?ownedcompany=@Model.OwnedCompany"><div class="week left">养护</div></a>*@
-        <a class="ksyh"><div class="week left">开始养护</div></a>
-        <a class="endyh" style="display:none;"><div class="week left">结束养护</div></a>
-}
+            {   
+            <div class="week left">每周<span id="kly">@Model.Weekly</span>养护 </div>
+            }
+            else
+            {
+                <a href="/MFlower/ConservationFlowers?ownedcompany=@Model.OwnedCompany"><div class="week left">养护</div></a>
+            }
             <div style="padding-top:12px;padding-left: 72%;">
-                @*<img width="20" height="20" src="~/static/image/1160675719.jpg" />
+            @*<img width="20" height="20" src="~/static/image/1160675719.jpg" />
             规格: <span style="color:#f44623">@Model.Specifications </span>cm*@
-
-            </div>
-            <p>
+            
+            </div>         
+            <p>               
             </p>
         </div>
         
@@ -181,46 +177,40 @@
             </ul>            
         </div>     
     
-        <div class="jb_canshu">
-     @if (ViewData["IsTourist"] == null)
-    {
-        if (ViewData["IsAllower"].ToString() == "1")
+    <div class="jb_canshu">
+        @if (ViewData["IsTourist"] == null)
         {
-            <div>
+            if (ViewData["IsAllower"].ToString() == "1")
+            {   <div>
                 <span style="font-size:15px;font-weight:600">更换花卉:</span>
             </div>
             @*<div class="layui-upload" style="text-align:center;">
-            <button type="button" class="layui-btn upload" id="test8">+上传图片</button>
-            <input type="button" id="test9" class="put"  value="提交花卉" />
-        </div>*@ <!--dom结构部分-->
-            <div style="padding-top:10px">
-                <textarea style="margin: 0px auto;text-align:left; height: 105px; width: 98%;
- border:1px solid #e6dddd; border-collapse:collapse; background-color: #eff2f5" placeholder="备注:"></textarea>
-                <div id="uploader-demo" style="">
-                    <!--用来存放item-->
-                    <div id="fileList" class="uploader-list"></div>
-                    <div id="filePicker" style="width:28.4%; float: left;">
-                        <span class="icon iconfont icon-icon-zhaopian-shangchuan"></span>
-                    </div>
+                <button type="button" class="layui-btn upload" id="test8">+上传图片</button>              
+                <input type="button" id="test9" class="put"  value="提交花卉" />
+            </div>*@  <!--dom结构部分-->
+                <div id="uploader-demo">
+                    <!--用来存放item-->                    
+                    <div id="filePicker" style="width: 32.4%; float: left;">+上传图片</div>
                     <input type="button" id="test9" class="put" value="提交花卉" />
-
-                </div>
-            </div>
-           
+                    <div id="fileList" class="uploader-list"></div>
+                </div>         
+            }
         }
-    }
-            <div class="leftpadding">
-
-            </div>
-
-            <div style="text-align:center; padding-top:10px">
-                <input type="hidden" id="FlowerArrangementId" value="@Model.id" />
-                @*<input type="button" onclick="location='/Shop/Details?id=@Model.ShopId'"
-            style="height: 40px; background-color: #a0c716; color:#fff;
-               border: none; width: 98%;border-radius:5px; " value="立即购买" />*@
-            </div>
-
+        <div class="leftpadding">
+                       
         </div>
+        <div style="text-align: center;padding-top:10px">
+            <textarea style="margin: 0px auto;text-align:left; height: 50px; width: 98%;
+ border:1px solid #e6dddd; border-collapse:collapse; background-color: #eff2f5" placeholder="备注:"></textarea>
+        </div>
+        <div style="text-align:center; padding-top:10px">
+            <input type="hidden" id="FlowerArrangementId" value="@Model.id" />
+            <input type="button" onclick="location='/Shop/Details?id=@Model.ShopId'"
+                   style="height: 40px; background-color: #a0c716; color:#fff;
+                      border: none; width: 98%;border-radius:5px; " value="立即购买" />
+        </div>
+       
+    </div>
     <div class="imgbox">
         <ul>           
         </ul>
@@ -249,43 +239,8 @@
             $("#kly").text(show_day[oldv - 1]);
             //加载广告
             //onloadAdvlist();
-
-            //开始养护
-            $(".ksyh").click(function () {
-                $.ajax({
-                    url: "/MFlower/StartCurFlowers?ownedUsersId=@Model.belongUsersId&shopid=@Model.ShopId",
-                    type: "get",
-                    dataType: "json",
-                    success: function (data, state) {
-                        if (data == "1") {
-                            $(".ksyh").hide();
-                            $(".endyh").show();
-                        }
-                        else if (data == "0") {
-                            layer.open({
-                                content: "今日已提交" , btn: '我知道了'
-                            });
-                        }
-                    },
-                    error: function (m) { parent.layer.msg("error"); }
-                });
-            });
-            //结束养护
-            $(".endyh").click(function () {
-                $.ajax({
-                    url: "/MFlower/EndCurFlowers?ownedUsersId=@Model.belongUsersId&shopid=@Model.ShopId",
-                    type: "get",
-                    dataType: "json",
-                    success: function (data, state) {
-                        if (data == "1") {
-                            $(".ksyh").show();
-                            $(".endyh").hide();
-                        }
-                    },
-                    error: function (m) { parent.layer.msg("error"); }
-                });
-            });
-
+            //
+                        
         });
         $(function () {
             // 初始化Web Uploader
@@ -384,7 +339,7 @@
                     console.log("上传成功");
                 }
                 else { layer.msg('选择图片后上传'); }
-            });
+            });         
 
         });
     </script>

@@ -43,7 +43,7 @@ namespace ERP.Controllers
             return hourList;
         }
         /// <summary>
-        /// 
+        /// 养护人名称列表
         /// </summary>
         /// <returns></returns>
         public List<SelectListItem> GetFlowerTreatmentName()
@@ -103,7 +103,10 @@ namespace ERP.Controllers
             ViewData["GetCustomerInfoSelectItems"] = GetUserInfoSelectItems("Customer", "1");//客户
             return View(Sys_FlowerTreatment.GetModel(id));
         }
-
+        /// <summary>
+        /// 手机端养护记录
+        /// </summary>
+        /// <returns></returns>
         public ActionResult MIndex()
         {
             Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
