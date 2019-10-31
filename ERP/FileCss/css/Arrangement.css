@@ -2,7 +2,8 @@
     font-family: "iconfontzp";
     src: url('../fonts/zhaopian/iconfont.eot?t=1572309750244'); /* IE9 */
     src: url('../fonts/zhaopian/iconfont.eot?t=1572309750244#iefix') format('embedded-opentype'), /* IE6-IE8 */
-    url('../fonts/zhaopian/iconfont.woff?t=1572309750244') format('woff'), url('iconfont.ttf?t=1572309750244') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+    url('../fonts/zhaopian/iconfont.woff?t=1572309750244') format('woff'),
+    url('../fonts/zhaopian/iconfont.ttf?t=1572309750244') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
     url('../fonts/zhaopian/iconfont.svg?t=1572309750244#iconfont') format('svg'); /* iOS 4.1- */
 }
 

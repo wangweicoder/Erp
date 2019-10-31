@@ -50,7 +50,10 @@ namespace Model
         /// 图片
         /// </summary>
         public string Photo { set; get; }
-
+        /// <summary>
+        /// 更换后图片
+        /// </summary>
+        public string ChangePhoto { set; get; }
         /// <summary>
         /// 所属客户ID
         /// </summary>

@@ -171,8 +171,7 @@ namespace ERP.MobleControllers
         }
         /// <summary>
         /// 结束养护
-        /// </summary>
-        /// <param name=""></param>
+        /// </summary>       
         /// <returns></returns>
         public ActionResult EndCurFlowers(string shopid, string ownedUsersId)
         {
@@ -190,6 +189,131 @@ namespace ERP.MobleControllers
                 }
             }
             return Content("0");
+        }
+        /// <summary>
+        /// 服务前图片
+        /// </summary>       
+        /// <returns></returns>
+        public ActionResult ServerBefor(string shopid, string ownedUsersId)
+        {
+            Model.FlowerTreatment FlowerTreatment = new Model.FlowerTreatment();
+            Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
+            Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
+            int userid = Utility.ChangeText.GetUsersId();
+            FlowerTreatment = Sys_FlowerTreatment.GetModelbyShopid(shopid, ownedUsersId, userid.ToString());
+            if (FlowerTreatment!=null && FlowerTreatment.id > 0)
+            {                
+                return Json(new { result = "OK", data = FlowerTreatment.Photo }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+            else {
+                return Json(new { result = "OK", data = "" }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+        }
+        // <summary>
+        /// 扫码页面中的上传图片养护
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Upload()
+        {
+            try
+            {
+                string FlowerArrangementId = Request["FlowerArrangementId"];
+                string remarks = Request["remarks"];
+                HttpPostedFileBase files = Request.Files["file"];
+                if (files == null)
+                {
+                    Utility.Log.WriteTextLog("扫码页面上传图片养护", "FlowerArrangementId", FlowerArrangementId, "files", files == null ? "true" : "fasle");
+                    return Json("Faild", JsonRequestBehavior.AllowGet);
+                }
+                string FilePath = Utility.ChangeText.SaveUploadPicture(files, "img");
+
+                Business.Sys_FlowerArrangement Sys_FlowerArrangement = new Business.Sys_FlowerArrangement();
+                Model.FlowerArrangement FlowerArrangement = Sys_FlowerArrangement.GetModel(FlowerArrangementId);
+              
+                Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
+
+                Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();              
+                int userid = Utility.ChangeText.GetUsersId();
+                Model.FlowerTreatment FTreatment = Sys_FlowerTreatment.GetModelbyUsersid(FlowerArrangement.ShopId.ToString(), FlowerArrangement.belongUsersId.ToString(), userid.ToString());
+                if (FTreatment != null && FTreatment.endtime==null)//服务后
+                {
+                    if(FTreatment.ChangePhoto==null || FTreatment.ChangePhoto=="")
+                    {
+                        FTreatment.FlowerTreatmentType = "服务后";
+                        FTreatment.ChangePhoto = FilePath;
+                        FTreatment.endtime = DateTime.Now;//结束养护时间
+                        if (Sys_FlowerTreatment.UpdateServer(FTreatment))
+                        {
+                            return Content("1");
+                        }                     
+                    }
+                }
+                else
+                {
+                    Model.FlowerTreatment FlowerTreatment = new Model.FlowerTreatment();
+                    FlowerTreatment.FlowerTreatmentType = "服务前";
+                    FlowerTreatment.UsersId = userid;
+                    FlowerTreatment.FlowerNumber = FlowerArrangement.ShopId.ToString();
+                    FlowerTreatment.OwnedUsersId = FlowerArrangement.belongUsersId.ToString();
+                    FlowerTreatment.UserRealName = Utility.ChangeText.GetRealName();
+                    FlowerTreatment.FlowerTreatmentAddress = FlowerArrangement.OwnedCompany;
+                    Model.UserAdmin UserAdmin = Sys_UserAdmin.GetUserAdminByUserId(Convert.ToInt32(FlowerTreatment.OwnedUsersId));
+                    FlowerTreatment.OwnedUsersRealName = UserAdmin.RealName;
+                    FlowerTreatment.OwnedCompany = UserAdmin.OwnedCompany;
+                    FlowerTreatment.LogoPhoto = UserAdmin.LogoPhoto;
+                    FlowerTreatment.Photo = FilePath;//提交图片
+                    FlowerTreatment.ContentMsg = remarks;//提交内容
+                    //同一登录人，同一公司，一天只能提交一次
+                    StringBuilder stb = new StringBuilder();
+                    if (userid != 0)
+                    {
+                        stb.Append(" t.UsersId=" + userid + "");
+                    }
+                    if (!string.IsNullOrEmpty(FlowerTreatment.OwnedUsersId))
+                    {
+                        stb.Append(" and t.OwnedUsersId='" + FlowerTreatment.OwnedUsersId + "'");
+                    }
+                    string dt = DateTime.Now.ToShortDateString();
+                    {
+                        stb.Append(" and time>'" + dt + "'");
+                    }
+                    if (Sys_FlowerTreatment.FlowerTreatmentList(stb.ToString()).Count == 0)
+                    {
+                        Sys_FlowerTreatment.InsertFlowerTreatment(FlowerTreatment);                        
+                    }
+                    else
+                    {
+                        return Content("0");//今天已经上传
+                    }
+                    if(Session["RoleCode"].ToString() == "Customer" || Session["RoleCode"].ToString()=="Tourist")
+                    {
+                        Model.Wx_SendMsg Wx_SendMsg = new Model.Wx_SendMsg()
+                        {
+                            template_id = "MU4CvSNXPYTMjhGJdWuWNvpc5Ls2VPAmcaST4lWrTaM",
+                            touser = Utility.ChangeText.GetOpenId(),
+                            url = "http://www.thuay.com/MMain/GetArrangementInfo?way=Arrangement&ArrangementId=" + FlowerArrangementId,
+                             data = new
+                            {
+                                first = new { value = "您好!已经有客户(" + FlowerTreatment.OwnedCompany + ")需要服务,请尽快前往。", color = "#173177" },
+                                keyword1 = new { value = FlowerTreatment.FlowerNumber, color = "#173177" },
+                                keyword2 = new { value = "养护花卉", color = "#173177" },
+                                keyword3 = new { value = "养护", color = "#173177" },
+                                keyword4 = new { value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), color = "#173177" },
+                                remark = new { value = "更换内容:" + FlowerTreatment.ContentMsg + ".点击此消息,进行补录更换后图片。", color = "#173177" },
+                            }
+                        };
+                        WxHelper.WxMain.SendMsg(JsonConvert.SerializeObject(Wx_SendMsg));
+                    }
+                    return Content("1");
+                }
+                return Json(new { result = "OK", msg = "提交成功" }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Utility.Log.WriteTextLog("扫码页面上传图片养护报错", "FlowerArrangementId", "MFlower", "Upload", ex.ToString());
+                return null;
+            }
+
         }
         #endregion
 

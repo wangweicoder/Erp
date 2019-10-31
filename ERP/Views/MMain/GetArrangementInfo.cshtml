@@ -19,7 +19,6 @@
             font-weight: 600;
             float: left;
         }
-
         .week {
             display: inline-block;
             width: 27%;
@@ -31,7 +30,6 @@
             margin: 7px 10px;
             border-radius: 16px;
         }
-
         .put {
             float: right;
             background-color: #a0c716;
@@ -44,7 +42,6 @@
             margin-right: 3px;
             color: #fff;
         }
-
         .upload {
             float: left;
             background-color: #ff6a00;
@@ -55,13 +52,20 @@
             border: none;
             color: #fff;
         }
-
         .leftpadding {
             margin-top: 20px;
         }
-
         .changec {
             color: #f44623;
+        }
+        .btn-delete {
+            position: absolute;
+            color: red;
+            margin-top:-2px;
+            cursor:pointer;
+        }
+        .upload-item img{
+            border-radius: 10px;
         }
     </style>
 
@@ -137,21 +141,20 @@
             @if (ViewData["IsAllower"].ToString() != "1")
     {
         @*<div class="week left">每周<span id="kly">@Model.Weekly</span>养护 </div>*@
-        <a href="/MFlower/ConservationFlowers?ownedcompany=@Model.OwnedCompany"><div class="week left">需要呵护</div></a>
-        }
-        else
-    {
-        @*<a href="/MFlower/ConservationFlowers?ownedcompany=@Model.OwnedCompany"><div class="week left">养护</div></a>*@
-        <a class="ksyh"><div class="week left">开始养护</div></a>
-        <a class="endyh" style="display:none;"><div class="week left">结束养护</div></a>
+        <a  class="hehu"><div class="week left">需要呵护</div></a>
 }
-            <div style="padding-top:12px;padding-left: 72%;">
-                @*<img width="20" height="20" src="~/static/image/1160675719.jpg" />
-            规格: <span style="color:#f44623">@Model.Specifications </span>cm*@
-
-            </div>
+else
+{
+        @*<a href="/MFlower/ConservationFlowers?ownedcompany=@Model.OwnedCompany"><div class="week left">养护</div></a>*@
+        <a href="javascript:void(0)" class="ksyh"><div class="week left">开始养护</div></a>
+        <a href="javascript:void(0)" class="endyh" style="display:none;"><div class="week left">结束养护</div></a>
+}
+            @* <div style="padding-top:12px;padding-left: 72%;">
+           <img width="20" height="20" src="~/static/image/1160675719.jpg" />
+        规格: <span style="color:#f44623">@Model.Specifications </span>cm
+          </div>
             <p>
-            </p>
+            </p>*@
         </div>
         
         <div class="jb_canshu">            
@@ -182,33 +185,78 @@
         </div>     
     
         <div class="jb_canshu">
-     @if (ViewData["IsTourist"] == null)
+            @if (ViewData["IsTourist"] == null)
     {
         if (ViewData["IsAllower"].ToString() == "1")
         {
             <div>
-                <span style="font-size:15px;font-weight:600">更换花卉:</span>
+                <span style="font-size:15px;font-weight:600">养护花卉:</span>
             </div>
             @*<div class="layui-upload" style="text-align:center;">
             <button type="button" class="layui-btn upload" id="test8">+上传图片</button>
             <input type="button" id="test9" class="put"  value="提交花卉" />
         </div>*@ <!--dom结构部分-->
-            <div style="padding-top:10px">
-                <textarea style="margin: 0px auto;text-align:left; height: 105px; width: 98%;
- border:1px solid #e6dddd; border-collapse:collapse; background-color: #eff2f5" placeholder="备注:"></textarea>
-                <div id="uploader-demo" style="">
-                    <!--用来存放item-->
-                    <div id="fileList" class="uploader-list"></div>
-                    <div id="filePicker" style="width:28.4%; float: left;">
-                        <span class="icon iconfont icon-icon-zhaopian-shangchuan"></span>
-                    </div>
-                    <input type="button" id="test9" class="put" value="提交花卉" />
+            <div id="serverbefor" style="padding-top:10px">
 
+                <table style="width:100%">
+                    <thead>
+                        <tr><th>更换前</th><th>更换后</th><th>详情</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span class="list_img">
+                                    <img src="" class="imgphoto" id="bphoto" width="100" height="100" />
+                                </span>
+                            </td>
+                            <td>
+                                <span class="list_img">
+                                    <img src="" class="imgphoto" id="cphoto" width="100" height="100" />
+                                </span>
+                            </td>
+                            <td>
+                                <span class="gh">
+                                    <em>
+                                    </em>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
                 </div>
+                <div id="serveraf">
+                    <textarea id="remarks" style="margin: 0px auto;text-align:left; height: 105px; width: 98%;
+ border:1px solid #e6dddd; border-collapse:collapse; background-color: #eff2f5" placeholder="这一刻的想法..."></textarea>
+                    <div id="uploader-demo" style="">
+                        <!--用来存放item-->
+                        <div><img src="" /></div>
+                        <div id="fileList" class="uploader-list"></div>
+                        <div id="filePicker" style="width:28.4%; float: left;">
+                            <span class="icon iconfont icon-icon-zhaopian-shangchuan"></span>
+                        </div>
+                        @*<input type="button" id="test9" class="put" value="提交" />*@
+
+                    </div>
+                </div>           
+
+}
+else
+{
+        <div id="xyhh" style="padding-top:10px">
+            <textarea id="remarks" style="margin: 0px auto;text-align:left; height: 105px; width: 98%;
+                border:1px solid #e6dddd; border-collapse:collapse; background-color: #eff2f5" placeholder="这一刻的想法..."></textarea>
+            <div id="uploader-demo" style="">
+                <!--用来存放item-->
+                <div id="fileList" class="uploader-list"></div>
+                <div id="filePicker" style="width:28.4%; float: left;">
+                    <span class="icon iconfont icon-icon-zhaopian-shangchuan"></span>
+                </div>
+                <input type="button" id="test9" class="put" value="提交" />
+
             </div>
-           
-        }
-    }
+        </div>
+}
+}
             <div class="leftpadding">
 
             </div>
@@ -285,7 +333,11 @@
                     error: function (m) { parent.layer.msg("error"); }
                 });
             });
-
+            //$("#remarks").blur(function () {
+            //  console.info($("#remarks").val());
+            //});
+            //加载服务前的图
+            onloadServbefor();
         });
         $(function () {
             // 初始化Web Uploader
@@ -293,12 +345,12 @@
 
                 // 选完文件后，是否自动上传。
                 auto: false,
-
+                duplicate :true,//重复上传同一文件
                 // swf文件路径
                 //swf: BASE_URL + '/js/Uploader.swf',
 
                 // 文件接收服务端。
-                server: '/FlowerArrangement/Upload', //上传接口
+                server: '/MFlower/Upload', //上传接口
                 //server: '/Text/TextImg',
                 // 选择文件的按钮。可选。
                 // 内部根据当前运行是创建，可能是input元素，也可能是flash.
@@ -312,10 +364,19 @@
                 }
             });
 
-            uploader.on('uploadSuccess', function (file) {
+            uploader.on('uploadSuccess', function (file, response) {
                 //$('#' + file.id).find('p.state').text('已上传');
                 //$('#' + file.id).addClass('upload-state-done');
-                layer.msg('提交成功');
+                if (response == "1") {
+                    layer.msg('提交成功');
+                    //客户
+                    $('.hehu div').text('正在维护中……');
+                }
+                else {
+                    layer.msg('今日已提交');
+                }
+                uploader.reset();
+                $('.upload-item').html('');
             });
 
             uploader.on('uploadError', function (file) {
@@ -325,13 +386,26 @@
             uploader.on('uploadComplete', function (file) {
                 $('#' + file.id).find('.progress').fadeOut();
             });
+            //
             var $list = $("#fileList");
+            $list.on('click', '.upload-item .btn-delete', function () {
+                // 从文件队列中删除某个文件id
+                file_id = $(this).data('file_id');
+                console.log('file_id', file_id);
+                uploader.removeFile(file_id, true); // 从queue中删除
+                var fileItem = $(this).parent();
+                $(fileItem).fadeOut(function () {
+                    $(fileItem).remove();
+                });
+                console.log(uploader.getFiles('cancelled'));//获得打上文件被移除标记的
+            });
+           
             // 当有文件添加进来的时候
             uploader.on('fileQueued', function (file) {
                 var $li = $(
-                        '<div id="' + file.id + '" class="file-item thumbnail">' +
+                        '<div id="' + file.id + '" class="upload-item">' +
                             '<img>' +
-                            '<p class="state"></p>' +
+                            '<span data-file_id="' + file.id + '" class="btn-delete">x</span>' +
                         '</div>'
                         ),
                  $img = $li.find('img');
@@ -339,8 +413,8 @@
 
                 // $list为容器jQuery实例
                 $list.html($li);
-                var thumbnailWidth = 100;
-                var thumbnailHeight = 100;
+                var thumbnailWidth = 80;
+                var thumbnailHeight = 80;
                 // 创建缩略图
                 // 如果为非图片文件，可以不用调用此方法。
                 // thumbnailWidth x thumbnailHeight 为 100 x 100
@@ -356,6 +430,11 @@
             $btn = $(".put");
             //点击上传
             $btn.on('click', function () {
+                var rem = $("#remarks").val();
+                if (rem.length == 0) {
+                    layer.msg('请填写这一刻的想法');
+                    return;
+                }
                 if ($list.children('div').length > 0) {
                     $this = $(this);
                     // 保存原按钮的text值
@@ -379,6 +458,7 @@
                     }, 1000);
                     var obj = new Object();
                     obj.FlowerArrangementId = $("#FlowerArrangementId").val();
+                    obj.remarks = $("#remarks").val();
                     uploader.options.formData = obj;
                     uploader.upload();
                     console.log("上传成功");
@@ -411,10 +491,34 @@
                      }
                  });
              },
-             error: function (m) { parent.layer.msg("error"); }
-
+             rror: function (m) { parent.layer.msg("error"); }
          });
-
+     }
+     //服务前图片
+     function onloadServbefor()
+     {
+         $.ajax({
+             url: "/MFlower/ServerBefor?ownedUsersId=@Model.belongUsersId&shopid=@Model.ShopId",
+             type: "get",
+             dataType: "json",
+             success: function (data, state) {
+                 if (data.data != "") {
+                     $("#serverbefor").show();
+                     $("#bphoto").attr('src',data.data);
+                     $("#serveraf").hide();
+                     //客户
+                     $('.hehu div').text('正在维护中……');
+                     $("#xyhh").html("植物问题已提交，请您耐心等待……");
+                 }
+                 else 
+                 {
+                     $("#serverbefor").hide();
+                     $("#serveraf").show();
+                     //客户                    
+                 }
+             },
+             error: function (m) { parent.layer.msg("error"); }
+         });    
      }
  </script>
 </body>

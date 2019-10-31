@@ -22,5 +22,13 @@ namespace ERP.MobleControllers
             Business.Sys_FlowerActive Sys_FlowerActive = new Business.Sys_FlowerActive();
             return Sys_FlowerActive.FlowerActiveList(1, 1, "");
         }
+        public ActionResult IndexTest()
+        {
+            return View();
+        }
+        public ActionResult webup()
+        {
+            return View();
+        }
 	}
 }
