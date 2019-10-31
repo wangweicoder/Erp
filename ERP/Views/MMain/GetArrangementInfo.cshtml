@@ -200,24 +200,24 @@ else
 
                 <table style="width:100%">
                     <thead>
-                        <tr><th>更换前</th><th>更换后</th><th>详情</th></tr>
+                        <tr><th>服务前</th><th>服务后</th><th></th></tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>
-                                <span class="list_img">
-                                    <img src="" class="imgphoto" id="bphoto" width="100" height="100" />
+                                <span class="list">
+                                    <img src="" class="imgphoto" id="bphoto" width="80" height="80" />
                                 </span>
                             </td>
                             <td>
-                                <span class="list_img">
-                                    <img src="" class="imgphoto" id="cphoto" width="100" height="100" />
+                                <span class="list">
+                                  <img  id="cphoto" src="~/FileCss/images/nopic.png" width="80" height="80" />
                                 </span>
                             </td>
                             <td>
-                                <span class="gh">
-                                    <em>
-                                    </em>
+                                <span class="gh" >
+                                   <em id="contentmsg">
+                                   </em>
                                 </span>
                             </td>
                         </tr>
@@ -234,7 +234,7 @@ else
                         <div id="filePicker" style="width:28.4%; float: left;">
                             <span class="icon iconfont icon-icon-zhaopian-shangchuan"></span>
                         </div>
-                        @*<input type="button" id="test9" class="put" value="提交" />*@
+                        <input type="button" id="test9" class="put" value="提交" />
 
                     </div>
                 </div>           
@@ -342,13 +342,11 @@ else
         $(function () {
             // 初始化Web Uploader
             var uploader = WebUploader.create({
-
                 // 选完文件后，是否自动上传。
                 auto: false,
                 duplicate :true,//重复上传同一文件
                 // swf文件路径
                 //swf: BASE_URL + '/js/Uploader.swf',
-
                 // 文件接收服务端。
                 server: '/MFlower/Upload', //上传接口
                 //server: '/Text/TextImg',
@@ -501,14 +499,22 @@ else
              url: "/MFlower/ServerBefor?ownedUsersId=@Model.belongUsersId&shopid=@Model.ShopId",
              type: "get",
              dataType: "json",
-             success: function (data, state) {
-                 if (data.data != "") {
+             success: function (res, state) {
+                 if (res.data != "") {
                      $("#serverbefor").show();
-                     $("#bphoto").attr('src',data.data);
+                     $("#bphoto").attr('src', res.data.Photo);
+                     $("#cphoto").attr('src', res.data.ChangePhoto);
+                     $("#contentmsg").text(res.data.ContentMsg);
                      $("#serveraf").hide();
                      //客户
                      $('.hehu div').text('正在维护中……');
                      $("#xyhh").html("植物问题已提交，请您耐心等待……");
+                     //
+                     $("#cphoto").click(function () {
+                         var arrangementid=$("#FlowerArrangementId").val();
+                         window.location.href = '/MFlower/AddServerPhoto?id='+res.data.id+'&ArrangementId='+arrangementid;
+
+                     });
                  }
                  else 
                  {
@@ -519,7 +525,7 @@ else
              },
              error: function (m) { parent.layer.msg("error"); }
          });    
-     }
+     }    
  </script>
 </body>
 </html>

@@ -1,0 +1,78 @@
+﻿@model Model.FlowerTreatment
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-dpi, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title></title>
+    @Styles.Render("~/static/css/bootstrap.css")
+    <script src="~/static/js/jquery.js"></script>
+    <script src="~/static/js/util.js"></script>
+    <script src="~/Thems/js/layer/mobile/layer.js"></script>
+    <style>
+        table tr {
+            height: 20px;
+        }
+    </style>
+    <script>
+        $(function () {
+            if ($("#infoshow").val() != "") {
+                //信息框
+                layer.open({
+                    content: $("#infoshow").val()
+                  , btn: '我知道了'
+                });
+            }
+        })
+        function CheckFrom() {
+            if (!AttachValid('attach_paths')) {
+                //信息框
+                layer.open({
+                    content: '请上传服务后花卉图片'
+                  , btn: '我知道了'
+                });
+                return false;
+            }
+
+            return true;
+        }
+        function AttachValid(id) {
+            var result = true;
+            var oFile = document.getElementById(id);
+            if (oFile.value == null || oFile.value == "") {
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+    @using (Html.BeginForm("AddServerPhoto", "MFlower", FormMethod.Post, new { onsubmit = "return  CheckFrom()", style = "width: 80%; margin: 70px auto;", enctype = "multipart/form-data" }))
+    {
+        <div class="navbar navbar-fixed-top" data-id="top">
+            <div class="navbar-inner" style="text-align:center; background-color: #79ca06; height: 50px; color: #FFFFFF; line-height: 50px; font-size: 20px;">
+                <div style="float: left;margin-left: 10px; " onmousedown="black(this)">
+                    <i class="glyphicon glyphicon-arrow-left"></i>
+                </div>
+                更换花卉
+            </div>
+            @Html.HiddenFor(x => x.id)
+            @Html.HiddenFor(x => x.CompanyName)
+        </div>
+        <input type="hidden" value="@ViewData["success"]" id="infoshow" />
+        <div class="form-group">
+            <label for="exampleInputEmail1">更换服务后图片</label>
+            <input type="file" class="form-control" id="attach_paths" name="attach_paths" />
+        </div>
+
+        <div style="float: right; margin-bottom: 10px;">
+            <button type="submit" class="btn btn-primary glyphicon glyphicon-ok">提交</button>
+        </div>
+    }
+</body>
+</html>

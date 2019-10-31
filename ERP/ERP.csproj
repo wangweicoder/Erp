@@ -489,6 +489,7 @@
     <Content Include="FileCss\images\nav_shop.png" />
     <Content Include="FileCss\images\nav_shouhou.png" />
     <Content Include="FileCss\images\nav_zixun.png" />
+    <Content Include="FileCss\images\nopic.png" />
     <Content Include="FileCss\images\notice.png" />
     <Content Include="FileCss\images\notselect.png" />
     <Content Include="FileCss\images\server-sui.png" />
@@ -2042,6 +2043,7 @@
     <Content Include="Views\Adviertisement\Add.cshtml" />
     <Content Include="Views\MMain\GetArrangementInfo - 副本.cshtml" />
     <Content Include="Views\MMIndex\webup.cshtml" />
+    <Content Include="Views\MFlower\AddServerPhoto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />

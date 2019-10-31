@@ -11,7 +11,7 @@ namespace ERP.MobleControllers
     public class MMainController : MLoginFilterController
     {
 
-        public ActionResult GetArrangementInfo()
+        public ActionResult GetArrangementInfo(string ArrangementId)
         {
             try
             {

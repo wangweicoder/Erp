@@ -199,7 +199,7 @@ namespace Utility
                         return SaveUploadFile(file, folder, null);
                     }
                 }
-                 else if (uploadType == "LogoPhoto")
+                 else if (uploadType == "change")
                 {
                     string type = file.ContentType;
                     if (type.IndexOf("jpeg") > -1 || type.IndexOf("gif") > -1 || type.IndexOf("png") > -1)
@@ -240,7 +240,7 @@ namespace Utility
                     string type = file.ContentType;
                     if (type != null && type != "")
                     {
-                        string folder = "/Upload/Attach";
+                        string folder = "/Upload/"+uploadType;
                         return SaveUploadFile(file, folder, null);
                     }
                 }

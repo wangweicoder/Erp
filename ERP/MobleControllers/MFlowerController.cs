@@ -191,7 +191,7 @@ namespace ERP.MobleControllers
             return Content("0");
         }
         /// <summary>
-        /// 服务前图片
+        /// 查询服务前图片
         /// </summary>       
         /// <returns></returns>
         public ActionResult ServerBefor(string shopid, string ownedUsersId)
@@ -201,13 +201,48 @@ namespace ERP.MobleControllers
             Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
             int userid = Utility.ChangeText.GetUsersId();
             FlowerTreatment = Sys_FlowerTreatment.GetModelbyShopid(shopid, ownedUsersId, userid.ToString());
-            if (FlowerTreatment!=null && FlowerTreatment.id > 0)
-            {                
-                return Json(new { result = "OK", data = FlowerTreatment.Photo }, "text/html", JsonRequestBehavior.AllowGet);
+            if (FlowerTreatment!=null && FlowerTreatment.endtime==null)//
+            {  
+                return Json(new { result = "OK", data = FlowerTreatment }, "text/html", JsonRequestBehavior.AllowGet);
             }
             else {
                 return Json(new { result = "OK", data = "" }, "text/html", JsonRequestBehavior.AllowGet);
             }
+        }
+        /// <summary>
+        /// 服务后
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AddServerPhoto()
+        {
+            Model.FlowerTreatment FlowerTreatment = new Model.FlowerTreatment()
+            { id = int.Parse(Request["id"]),CompanyName= Request["ArrangementId"] };
+            return View(FlowerTreatment);
+        }
+        /// <summary>
+        /// 服务后提交
+        /// </summary>
+        [HttpPost]
+        public ActionResult AddServerPhoto(Model.FlowerTreatment FlowerTreatment)
+        {
+            try
+            {
+                HttpPostedFileBase file = Request.Files["attach_paths"];
+                FlowerTreatment.ChangePhoto = Utility.ChangeText.SaveUploadPicture(file, "Serveraf");
+                Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();                
+                Utility.Log.WriteTextLog(" 服务后提交图", "ID", Request["id"], "路径", FlowerTreatment.ChangePhoto);
+                if (Sys_FlowerTreatment.AddServerPhoto(FlowerTreatment))
+                {                   
+                    Response.Redirect("/MMain/GetArrangementInfo?ArrangementId="+ FlowerTreatment.CompanyName, true);                   
+                    //return RedirectToAction("GetArrangementInfo", "MMain", new { ArrangementId = id });
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.Log.WriteTextLog(" 服务后提交图", "", "", "", ex.ToString());
+            }
+
+            return View();
         }
         // <summary>
         /// 扫码页面中的上传图片养护
@@ -380,7 +415,7 @@ namespace ERP.MobleControllers
                 FlowerChange.FlowerTreatmentType = "更换花卉"; 
                 FlowerChange.UsersId = Utility.ChangeText.GetUsersId();
                 HttpPostedFileBase file = Request.Files["attach_path"];
-                FlowerChange.Photo = Utility.ChangeText.SaveUploadPicture(file, "attach");
+                FlowerChange.Photo = Utility.ChangeText.SaveUploadPicture(file, "change");
 
                 Business.Sys_FlowerChange Sys_FlowerChange = new Business.Sys_FlowerChange();
                 FlowerChange.Number = Utility.ChangeText.OrderIdCreate();
@@ -435,7 +470,7 @@ namespace ERP.MobleControllers
             {
              
                 HttpPostedFileBase file = Request.Files["attach_paths"];
-                FlowerChange.ChangePhoto = Utility.ChangeText.SaveUploadPicture(file, "attach");
+                FlowerChange.ChangePhoto = Utility.ChangeText.SaveUploadPicture(file, "changeaf");
                 Business.Sys_FlowerChange Sys_FlowerChange = new Business.Sys_FlowerChange();
                 Utility.Log.WriteTextLog("补图", "ID", Request["Number"], "路径", FlowerChange.ChangePhoto);
                 if (Sys_FlowerChange.AddFlowerPhotoInfo(Request["Number"], FlowerChange.ChangePhoto))

@@ -188,7 +188,7 @@ ContentMsg=@ContentMsg,OwnedUsersRealName=@OwnedUsersRealName,OwnedUsersId=@Owne
             }));
         }
         /// <summary>
-        /// 养护花卉服务后
+        /// 养护花卉服务后(备用)
         /// </summary>     
         public bool UpdateServer(Model.FlowerTreatment FlowerTreatment)
         {
@@ -196,6 +196,19 @@ ContentMsg=@ContentMsg,OwnedUsersRealName=@OwnedUsersRealName,OwnedUsersId=@Owne
             return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
             {
                 FlowerTreatment.endtime,
+                FlowerTreatment.FlowerTreatmentType,
+                FlowerTreatment.ChangePhoto,
+                FlowerTreatment.id,
+            }));
+        }
+        /// <summary>
+        /// 养护花卉服务后
+        /// </summary>     
+        public bool AddServerPhoto(Model.FlowerTreatment FlowerTreatment)
+        {
+            const string sql = @"UPDATE  FlowerTreatment  SET FlowerTreatmentType=@FlowerTreatmentType,ChangePhoto=@ChangePhoto  WHERE id=@id";
+            return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
+            {                
                 FlowerTreatment.FlowerTreatmentType,
                 FlowerTreatment.ChangePhoto,
                 FlowerTreatment.id,
