@@ -29,7 +29,7 @@ namespace Model
         /// <summary>
         /// 结束养护时间
         /// </summary>
-        public DateTime endtime { set; get; }
+        public DateTime? endtime { set; get; }
        
         /// <summary>
         /// 会员编号

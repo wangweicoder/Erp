@@ -30,6 +30,13 @@ namespace Business
             
             return Factory.DBHelper.Query<Model.FlowerTreatment>(SQLConString, strSql.ToString(), new DynamicParameters(new { offset,limit }));
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pagesize"></param>
+        /// <param name="pagenumber"></param>
+        /// <param name="StrWhere"></param>
+        /// <returns></returns>
         public List<Model.FlowerTreatment> MFlowerTreatmentList(int pagesize, int pagenumber, string StrWhere)
         {
             StringBuilder strSql = new StringBuilder();
@@ -39,6 +46,25 @@ namespace Business
                 strSql.Append(" where  1=1 " + StrWhere);
             }
             strSql.Append(")T inner join [dbo].[UserAdmin] u on u.ID=T.OwnedUsersId  where t.rn between  (@pagesize*(@pagenumber-1)+1) and (@pagesize*@pagenumber)");
+
+            return Factory.DBHelper.Query<Model.FlowerTreatment>(SQLConString, strSql.ToString(), new DynamicParameters(new { pagenumber, pagesize }));
+        }
+        /// <summary>
+        /// 养护列表
+        /// </summary>
+        /// <param name="pagesize"></param>
+        /// <param name="pagenumber"></param>
+        /// <param name="StrWhere"></param>
+        /// <returns></returns>
+        public List<Model.FlowerTreatment> MTreatmentList(int pagesize, int pagenumber, string StrWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("SELECT T.* FROM ( SELECT ROW_NUMBER() over(order by id desc) as rn ,* FROM FlowerTreatment");
+            if (!string.IsNullOrEmpty(StrWhere))
+            {
+                strSql.Append(" where  1=1 " + StrWhere);
+            }
+            strSql.Append(")T  where   t.rn between  (@pagesize*(@pagenumber-1)+1) and (@pagesize*@pagenumber)");
 
             return Factory.DBHelper.Query<Model.FlowerTreatment>(SQLConString, strSql.ToString(), new DynamicParameters(new { pagenumber, pagesize }));
         }

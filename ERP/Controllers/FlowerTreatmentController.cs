@@ -123,6 +123,26 @@ namespace ERP.Controllers
             }
             return View(Sys_FlowerTreatment.FlowerTreatmentList(10, 1, sb.ToString()));
         }
+        /// <summary>
+        /// 手机端养护记录
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult TreatRecord(string flowernumber)
+        {
+            Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
+            StringBuilder sb = new StringBuilder();
+            Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
+            Model.UserAdmin UserAdmin = Sys_UserAdmin.GetUserAdminByUserId(Utility.ChangeText.GetUsersId());
+            if (UserAdmin.RoleCode != "Customer")
+            {
+                sb.Append(" and FlowerNumber="+flowernumber);
+            }
+            else if (Utility.ChangeText.GetUserName() != "admin")
+            {
+                sb.Append(" and OwnedUsersId='" + Utility.ChangeText.GetUsersId() + "'");
+            }
+            return View(Sys_FlowerTreatment.MTreatmentList(10, 1, sb.ToString()));
+        }
 
         public ActionResult GetMobleListMore()
         {
