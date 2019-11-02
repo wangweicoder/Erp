@@ -238,12 +238,34 @@ namespace ERP.MobleControllers
             if (flowerAppraise.Content != null)
             {
                 Business.Sys_FlowerAppraise sys_FlowerAppraise = new Business.Sys_FlowerAppraise();
-                flowerAppraise.IsGood = "0";              
+                flowerAppraise.IsGood = "0";
                 flowerAppraise.UsersId = Utility.ChangeText.GetUsersId().ToString();
                 flowerAppraise.CreateTime = DateTime.Now;
-                sys_FlowerAppraise.InsertFlowerAppraise(flowerAppraise);
-            }
-            Response.Write("<script>parent.layer.closeAll();</script>");
+                //同一登录人，对一个植物，一天只能提交一次
+                StringBuilder stb = new StringBuilder();
+                int userid = Utility.ChangeText.GetUsersId();
+                if (userid != 0)
+                {
+                    stb.Append(" and UsersId=" + userid + "");
+                }
+                if (!string.IsNullOrEmpty(flowerAppraise.ArrangementId))
+                {
+                    stb.Append(" and ArrangementId='" + flowerAppraise.ArrangementId + "'");
+                }
+                string dt = DateTime.Now.ToShortDateString();
+                {
+                    stb.Append(" and CreateTime>'" + dt + "'");
+                }
+                if (sys_FlowerAppraise.GetFlowerAppraiseCount(stb.ToString()).Count == 0)
+                {
+                    sys_FlowerAppraise.InsertFlowerAppraise(flowerAppraise);
+                    Response.Write("<script>parent.layer.closeAll();</script>");
+                }
+                else
+                {
+                    ViewData["success"] = "今日已评价";
+                }            
+            } 
             return View();
         }
         /// <summary>
@@ -259,11 +281,30 @@ namespace ERP.MobleControllers
                 flowerAppraise.ArrangementId = ArrangementId;
                 flowerAppraise.CreateTime = DateTime.Now;
                 flowerAppraise.UsersId= Utility.ChangeText.GetUsersId().ToString();
-                sys_FlowerAppraise.InsertFlowerAppraise(flowerAppraise);
-            }
-
-            Response.Write("<script>parent.layer.alert('提交成功!');parent.layer.closeAll();</script>");
-            return View();
+                //同一登录人，对一个植物，一天只能提交一次
+                StringBuilder stb = new StringBuilder();
+                int userid = Utility.ChangeText.GetUsersId();
+                if (userid != 0)
+                {
+                    stb.Append(" and UsersId=" + userid + "");
+                }
+                if (!string.IsNullOrEmpty(ArrangementId))
+                {
+                    stb.Append(" and ArrangementId='" + ArrangementId + "'");
+                }
+                string dt = DateTime.Now.ToShortDateString();
+                {
+                    stb.Append(" and CreateTime>'" + dt + "'");
+                }
+                if (sys_FlowerAppraise.GetFlowerAppraiseCount(stb.ToString()).Count == 0)
+                {
+                    sys_FlowerAppraise.InsertFlowerAppraise(flowerAppraise);
+                }
+                else {
+                    return Json(new { result = "OK" , data="0"}, "text/html", JsonRequestBehavior.AllowGet);
+                }
+            }           
+            return Json(new { result = "OK", data = "1" }, "text/html", JsonRequestBehavior.AllowGet);
         }
         /// <summary>
         /// 获得评价json数据
