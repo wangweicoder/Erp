@@ -126,7 +126,14 @@
                     <tr>
                         <td>                          
                             <span class="list_img">
-                                <img src="@item.Photo" class="imgphoto" width="100" height="100" />
+                                @if (string.IsNullOrEmpty(item.Photo))
+                                {
+                                   <img src="~/FileCss/images/nopic.png" width="100" height="100" />
+                                }
+                                else
+                                {
+                                    <img src="@item.Photo" class="imgphoto" width="100" height="100" />
+                                }
                             </span>
                         </td>
                         <td>
