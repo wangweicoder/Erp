@@ -31,7 +31,7 @@ namespace Business
             return Factory.DBHelper.Query<Model.FlowerTreatment>(SQLConString, strSql.ToString(), new DynamicParameters(new { offset,limit }));
         }
         /// <summary>
-        /// 
+        /// 养护记录
         /// </summary>
         /// <param name="pagesize"></param>
         /// <param name="pagenumber"></param>
@@ -50,7 +50,7 @@ namespace Business
             return Factory.DBHelper.Query<Model.FlowerTreatment>(SQLConString, strSql.ToString(), new DynamicParameters(new { pagenumber, pagesize }));
         }
         /// <summary>
-        /// 养护列表
+        /// 管理员养护列表
         /// </summary>
         /// <param name="pagesize"></param>
         /// <param name="pagenumber"></param>
@@ -64,10 +64,10 @@ namespace Business
             {
                 strSql.Append(" where  1=1 " + StrWhere);
             }
-            strSql.Append(")T  where   t.rn between  (@pagesize*(@pagenumber-1)+1) and (@pagesize*@pagenumber)");
+            strSql.Append(")T  where  t.rn between  (@pagesize*(@pagenumber-1)+1) and (@pagesize*@pagenumber)");
 
             return Factory.DBHelper.Query<Model.FlowerTreatment>(SQLConString, strSql.ToString(), new DynamicParameters(new { pagenumber, pagesize }));
-        }
+        }       
         /// <summary>
         /// 获得总记录数
         /// </summary>

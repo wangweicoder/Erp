@@ -416,6 +416,8 @@
     <Content Include="FileCss\css\shopitem.css" />
     <Content Include="FileCss\css\style.css" />
     <Content Include="FileCss\css\swiper.min.css" />
+    <Content Include="FileCss\fonts\dianz\iconfont.css" />
+    <Content Include="FileCss\fonts\dianz\iconfont.svg" />
     <Content Include="FileCss\fonts\iconfont.svg" />
     <Content Include="FileCss\fonts\zhaopian\iconfont.css" />
     <Content Include="FileCss\fonts\zhaopian\iconfont.svg" />
@@ -1800,6 +1802,9 @@
     <Content Include="FileCss\fonts\zhaopian\iconfont.eot" />
     <Content Include="FileCss\fonts\zhaopian\iconfont.ttf" />
     <Content Include="FileCss\fonts\zhaopian\iconfont.woff" />
+    <Content Include="FileCss\fonts\dianz\iconfont.eot" />
+    <Content Include="FileCss\fonts\dianz\iconfont.ttf" />
+    <Content Include="FileCss\fonts\dianz\iconfont.woff" />
     <None Include="Properties\PublishProfiles\1.pubxml" />
     <None Include="Properties\PublishProfiles\11.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -2045,6 +2050,8 @@
     <Content Include="Views\MMIndex\webup.cshtml" />
     <Content Include="Views\MFlower\AddServerPhoto.cshtml" />
     <Content Include="Views\FlowerTreatment\TreatRecord.cshtml" />
+    <Content Include="Views\FlowerTreatment\CusTreatRecord.cshtml" />
+    <Content Include="Views\MFlower\SetFlowerBad.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />

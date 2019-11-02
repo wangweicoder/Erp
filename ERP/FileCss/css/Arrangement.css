@@ -1,10 +1,15 @@
 ﻿@font-face {
     font-family: "iconfontzp";
-    src: url('../fonts/zhaopian/iconfont.eot?t=1572309750244'); /* IE9 */
-    src: url('../fonts/zhaopian/iconfont.eot?t=1572309750244#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    /*src: url('../fonts/zhaopian/iconfont.eot?t=1572309750244'); 
+    src: url('../fonts/zhaopian/iconfont.eot?t=1572309750244#iefix') format('embedded-opentype'), 
     url('../fonts/zhaopian/iconfont.woff?t=1572309750244') format('woff'),
-    url('../fonts/zhaopian/iconfont.ttf?t=1572309750244') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
-    url('../fonts/zhaopian/iconfont.svg?t=1572309750244#iconfont') format('svg'); /* iOS 4.1- */
+    url('../fonts/zhaopian/iconfont.ttf?t=1572309750244') format('truetype'),
+    url('../fonts/zhaopian/iconfont.svg?t=1572309750244#iconfont') format('svg'); */
+    src: url('../fonts/dianz/iconfont.eot?t=1572605051442'); /* IE9 */
+    src: url('../fonts/dianz/iconfont.eot?t=1572605051442#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('../fonts/dianz/iconfont.woff?t=1572605051442') format('woff'),
+    url('../fonts/dianz/iconfont.ttf?t=1572605051442') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+    url('../fonts/dianz/iconfont.svg?t=1572605051442#iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .iconfont {
@@ -14,10 +19,33 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+.iconfontdi {
+    font-family: "iconfontzp" !important;
+    font-size: 26px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.iconfontca {
+    font-family: "iconfontzp" !important;
+    font-size: 22px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 
 .icon-icon-zhaopian-shangchuan:before {
     content: "\ec8a";
 }
+
+.icon-dianzan:before {
+    content: "\e503";
+}
+
+.icon-dianzan_active:before {
+    content: "\e501";
+}
+
 .webuploader-pick {   
     background:#bbb8b8;  
     color: #928e8e;   

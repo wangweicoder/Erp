@@ -141,7 +141,7 @@
             @if (ViewData["IsAllower"].ToString() != "1")
     {
         @*<div class="week left">每周<span id="kly">@Model.Weekly</span>养护 </div>*@
-        <a  class="hehu"><div class="week left">需要呵护</div></a>
+        <a class="hehu"><div class="week left">需要呵护</div></a>
 }
 else
 {
@@ -155,7 +155,12 @@ else
           </div>
             <p>
             </p>*@
-        </div>
+             <div class="appraise" style="float:right;">
+            <span class="iconfontdi icon-dianzan">5</span>
+            <span></span>
+            <span class="iconfontca icon-dianzan_active">1</span>
+             </div>
+       </div>
         
         <div class="jb_canshu">            
             <ul>
@@ -225,7 +230,7 @@ else
                 </table>
                 </div>
                 <div id="serveraf">
-                    <textarea id="remarks" style="margin: 0px auto;text-align:left; height: 105px; width: 98%;
+                    <textarea id="remarks" maxlength="100" style="margin: 0px auto;text-align:left; height: 105px; width: 98%;
  border:1px solid #e6dddd; border-collapse:collapse; background-color: #eff2f5" placeholder="这一刻的想法..."></textarea>
                     <div id="uploader-demo" style="">
                         <!--用来存放item-->
@@ -243,7 +248,7 @@ else
 else
 {
         <div id="xyhh" style="padding-top:10px">
-            <textarea id="remarks" style="margin: 0px auto;text-align:left; height: 105px; width: 98%;
+            <textarea id="remarks" maxlength="100" style="margin: 0px auto;text-align:left; height: 105px; width: 98%;
                 border:1px solid #e6dddd; border-collapse:collapse; background-color: #eff2f5" placeholder="这一刻的想法..."></textarea>
             <div id="uploader-demo" style="">
                 <!--用来存放item-->
@@ -258,9 +263,7 @@ else
 }
 }
             <div class="leftpadding">
-
             </div>
-
             <div style="text-align:center; padding-top:10px">
                 <input type="hidden" id="FlowerArrangementId" value="@Model.id" />
                 @*<input type="button" onclick="location='/Shop/Details?id=@Model.ShopId'"
@@ -333,8 +336,45 @@ else
                     error: function (m) { parent.layer.msg("error"); }
                 });
             });
+            //养护记录
             $(".top_home").click(function () {
-                window.location.href ='/FlowerTreatment/TreatRecord'
+                var isallower='@ViewData["IsAllower"].ToString()';
+                if(isallower!= "1")
+                {
+                    window.location.href = '/FlowerTreatment/CusTreatRecord?flowernumber=@Model.ShopId'
+                }
+                else{
+                    window.location.href = '/FlowerTreatment/TreatRecord?flowernumber=@Model.ShopId'
+                }
+            });
+            //显示评价数量
+            Appraisecount();
+            //好评
+            $(".iconfontdi").click(function () {
+                $.ajax({
+                    url: "/MFlower/SetFlowerGood?ArrangementId=@Model.id",
+                    type: "get",
+                    dataType: "json",
+                    success: function (res, state) {
+                        layer.msg('提交成功');
+                    },
+                    error: function (m) { parent.layer.msg(m); }
+                });
+                
+            });
+            //差评
+            $(".iconfontca").click(function () {
+                parent.layer.open({
+                    type: 2,
+                    title: '提交意见',
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['300px;', '200px;'],
+                    content: '/MFlower/SetFlowerBad?ArrangementId=@Model.id',
+                    end: function () { //层彻底关闭后执行的回调
+                        Appraisecount();
+                    }
+                });
             });
             //加载服务前的图
             onloadServbefor();
@@ -492,7 +532,25 @@ else
              rror: function (m) { parent.layer.msg("error"); }
          });
      }
-     //服务前图片
+     //统计评价数量
+     function Appraisecount()
+     {
+         $.ajax({
+             url: "/MFlower/GetAppraiseCount?ArrangementId=@Model.id",
+             type: "get",
+             dataType: "json",
+             success: function (res, state) {
+                 if (res.gcount != "0") {
+                     $('.iconfontdi').text(res.gcount);
+                 }
+                 else if(reg.bcount!=0){
+                     $(".iconfontca").text(res.bcount);
+                 }
+             },
+             error: function (m) { parent.layer.msg(m); }
+         });
+     }
+      //服务前图片
      function onloadServbefor()
      {
          $.ajax({
@@ -503,13 +561,13 @@ else
                  if (res.data != "") {
                      $("#serverbefor").show();
                      $("#bphoto").attr('src', res.data.Photo);
-                     $("#cphoto").attr('src', res.data.ChangePhoto);
+                     //$("#cphoto").attr('src', res.data.ChangePhoto);
                      $("#contentmsg").text(res.data.ContentMsg);
                      $("#serveraf").hide();
                      //客户
                      $('.hehu div').text('正在维护中……');
                      $("#xyhh").html("植物问题已提交，请您耐心等待……");
-                     //
+                     //管理员增加服务后图片
                      $("#cphoto").click(function () {
                          var arrangementid=$("#FlowerArrangementId").val();
                          window.location.href = '/MFlower/AddServerPhoto?id='+res.data.id+'&ArrangementId='+arrangementid;
@@ -520,7 +578,9 @@ else
                  {
                      $("#serverbefor").hide();
                      $("#serveraf").show();
-                     //客户                    
+                     //管理员
+                     $(".ksyh").hide();
+                     $(".endyh").show();
                  }
              },
              error: function (m) { parent.layer.msg("error"); }

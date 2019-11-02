@@ -183,6 +183,7 @@ namespace ERP.MobleControllers
             if (FlowerTreatment.id > 0)
             {
                 FlowerTreatment.endtime = DateTime.Now;
+                FlowerTreatment.FlowerTreatmentType = "结束养护";
                 if(Sys_FlowerTreatment.UpdateEndtime(FlowerTreatment))
                 {
                     return Content("1");
@@ -201,7 +202,8 @@ namespace ERP.MobleControllers
             Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
             int userid = Utility.ChangeText.GetUsersId();
             FlowerTreatment = Sys_FlowerTreatment.GetModelbyShopid(shopid, ownedUsersId, userid.ToString());
-            if (FlowerTreatment!=null && FlowerTreatment.endtime==null)//
+            //只有服务前图片
+            if (FlowerTreatment!=null && FlowerTreatment.Photo!=null && FlowerTreatment.ChangePhoto == null)
             {  
                 return Json(new { result = "OK", data = FlowerTreatment }, "text/html", JsonRequestBehavior.AllowGet);
             }
@@ -220,6 +222,69 @@ namespace ERP.MobleControllers
             return View(FlowerTreatment);
         }
         /// <summary>
+        /// 差评
+        /// </summary>        
+        public ActionResult SetFlowerBad()
+        {
+            ViewData["ArrangementId"] = Request["ArrangementId"];
+            return View();
+        }
+        /// <summary>
+        /// 差评提交
+        /// </summary>
+        [HttpPost]
+        public ActionResult SetFlowerBad(Model.FlowerAppraise flowerAppraise)
+        {
+            if (flowerAppraise.Content != null)
+            {
+                Business.Sys_FlowerAppraise sys_FlowerAppraise = new Business.Sys_FlowerAppraise();
+                flowerAppraise.IsGood = "0";              
+                flowerAppraise.UsersId = Utility.ChangeText.GetUsersId().ToString();
+                flowerAppraise.CreateTime = DateTime.Now;
+                sys_FlowerAppraise.InsertFlowerAppraise(flowerAppraise);
+            }
+            Response.Write("<script>parent.layer.closeAll();</script>");
+            return View();
+        }
+        /// <summary>
+        /// 好评提交
+        /// </summary>       
+        public ActionResult SetFlowerGood(string ArrangementId)
+        {
+            if (!string.IsNullOrEmpty(ArrangementId))
+            {
+                Business.Sys_FlowerAppraise sys_FlowerAppraise = new Business.Sys_FlowerAppraise();
+                Model.FlowerAppraise flowerAppraise = new Model.FlowerAppraise();
+                flowerAppraise.IsGood = "1";
+                flowerAppraise.ArrangementId = ArrangementId;
+                flowerAppraise.CreateTime = DateTime.Now;
+                flowerAppraise.UsersId= Utility.ChangeText.GetUsersId().ToString();
+                sys_FlowerAppraise.InsertFlowerAppraise(flowerAppraise);
+            }
+
+            Response.Write("<script>parent.layer.alert('提交成功!');parent.layer.closeAll();</script>");
+            return View();
+        }
+        /// <summary>
+        /// 获得评价json数据
+        /// </summary>
+        /// <author>wangwei</author>
+        /// <returns></returns>
+        public JsonResult GetAppraiseCount(string ArrangementId)
+        {
+            Business.Sys_FlowerAppraise sys_FlowerAppraise = new Business.Sys_FlowerAppraise();
+            StringBuilder sb = new StringBuilder();
+            var gcount = 0; var bcount = 0;
+            if (ArrangementId != "")
+            {
+               sb.Append(" and ArrangementId=" + ArrangementId);
+               List<Model.FlowerAppraise> list= sys_FlowerAppraise.GetFlowerAppraiseCount(sb.ToString());
+               gcount = list.Where(x => x.IsGood == "1").Count();
+               bcount = list.Where(x => x.IsGood == "0").Count();
+            }
+            return Json(new { gcount=gcount,bcount=bcount }, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
         /// 服务后提交
         /// </summary>
         [HttpPost]
@@ -229,6 +294,7 @@ namespace ERP.MobleControllers
             {
                 HttpPostedFileBase file = Request.Files["attach_paths"];
                 FlowerTreatment.ChangePhoto = Utility.ChangeText.SaveUploadPicture(file, "Serveraf");
+                FlowerTreatment.FlowerTreatmentType = "服务后";
                 Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();                
                 Utility.Log.WriteTextLog(" 服务后提交图", "ID", Request["id"], "路径", FlowerTreatment.ChangePhoto);
                 if (Sys_FlowerTreatment.AddServerPhoto(FlowerTreatment))
@@ -270,21 +336,9 @@ namespace ERP.MobleControllers
                 Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();              
                 int userid = Utility.ChangeText.GetUsersId();
                 Model.FlowerTreatment FTreatment = Sys_FlowerTreatment.GetModelbyUsersid(FlowerArrangement.ShopId.ToString(), FlowerArrangement.belongUsersId.ToString(), userid.ToString());
-                if (FTreatment != null && FTreatment.endtime==null)//服务后
-                {
-                    if(FTreatment.ChangePhoto==null || FTreatment.ChangePhoto=="")
-                    {
-                        FTreatment.FlowerTreatmentType = "服务后";
-                        FTreatment.ChangePhoto = FilePath;
-                        FTreatment.endtime = DateTime.Now;//结束养护时间
-                        if (Sys_FlowerTreatment.UpdateServer(FTreatment))
-                        {
-                            return Content("1");
-                        }                     
-                    }
-                }
-                else
-                {
+                if (FTreatment == null ||  FTreatment.time < DateTime.Now)//今天还没有提交
+                {                 
+               
                     Model.FlowerTreatment FlowerTreatment = new Model.FlowerTreatment();
                     FlowerTreatment.FlowerTreatmentType = "服务前";
                     FlowerTreatment.UsersId = userid;
@@ -341,7 +395,10 @@ namespace ERP.MobleControllers
                     }
                     return Content("1");
                 }
-                return Json(new { result = "OK", msg = "提交成功" }, "text/html", JsonRequestBehavior.AllowGet);
+                else
+                {
+                    return Content("0");//今天已经上传
+                }                
             }
             catch (Exception ex)
             {
