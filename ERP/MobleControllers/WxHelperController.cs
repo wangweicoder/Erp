@@ -42,20 +42,20 @@ namespace ERP.MobleControllers
                     model.Month = currentTime.Month.ToString();
                     model.Day = currentTime.Day.ToString();
                     Sys_Userlog.InsertUsersLoginLog(model);
-                    if (Request["way"] == "Arrangement")
-                    {
-                        string gzhurl = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=" + System.Configuration.ConfigurationManager.AppSettings["WxAppId"] + "&scene=110#wechat_redirect";
-                        string result=Utility.PostData.GetData(gzhurl);
-                        Utility.Log.WriteTextLog("微信自动关注公众号", "result", result , "gzhurl", gzhurl);
+                    //if (Request["way"] == "Arrangement")
+                    //{
+                      //  string gzhurl = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=" + System.Configuration.ConfigurationManager.AppSettings["WxAppId"] + "&scene=110#wechat_redirect";
+                       // string result=Utility.PostData.GetData(gzhurl);
+                       // Utility.Log.WriteTextLog("微信自动关注公众号", "result", result , "gzhurl", gzhurl);
                         return RedirectToAction("GetArrangementInfo", "MMain", new { ArrangementId =Request["id"]});
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "MMIndex");
-                    }
+                    //}
+                   // else
+                    //{
+                      //  return RedirectToAction("Index", "MMIndex");
+                    //}
 
                 }
-                else if (Request["way"] == "Arrangement" )
+                else // if (Request["way"] == "Arrangement" )
                 {
                     //string gzhurl = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=" + System.Configuration.ConfigurationManager.AppSettings["WxAppId"] + "&scene=110#wechat_redirect";
                     //string result = Utility.PostData.GetData(gzhurl);
@@ -92,7 +92,7 @@ namespace ERP.MobleControllers
                         //model.Day = currentTime.Day.ToString();
                         //Sys_Userlog.InsertUsersLoginLog(model);
                         //return RedirectToAction("GetArrangementInfo", "MMain", new { ArrangementId = Request["id"]});
-                        return RedirectToAction("Index", "MLogin");
+                        return RedirectToAction("Index", "MLogin", new { ArrangementId = Request["id"] });
                     }
                     //if (UserAdmin.RoleCode=="Tourist")
                     //{

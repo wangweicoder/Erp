@@ -89,6 +89,7 @@
                     @Html.PasswordFor(x => x.PassWord, new { @class = "form-control", @placeholder = "请输入密码" })
                 </div>
                 <input type="hidden" id="msg" value="@ViewBag.LoginError " />
+                <input type="hidden" name="ArrangementId" value="@Request["ArrangementId"]"/>
                 <div style="text-align:center;">
                     <button id="btnLogin" type="submit" style="display:inline-block;width:48%">登录</button>
                 </div>

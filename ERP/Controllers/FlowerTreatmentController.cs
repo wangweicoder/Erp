@@ -123,75 +123,7 @@ namespace ERP.Controllers
             }
             return View(Sys_FlowerTreatment.FlowerTreatmentList(10, 1, sb.ToString()));
         }
-        /// <summary>
-        /// 扫码页管理员养护记录
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult TreatRecord(string flowernumber)
-        {
-            Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
-            StringBuilder sb = new StringBuilder();
-            Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
-            Model.UserAdmin UserAdmin = Sys_UserAdmin.GetUserAdminByUserId(Utility.ChangeText.GetUsersId());
-            sb.Append(" and FlowerNumber=" + flowernumber);
-            if (UserAdmin.RoleCode != "Customer" && UserAdmin.RoleCode != "Tourist")
-            {
-                sb.Append(" and UsersId='" + Utility.ChangeText.GetUsersId() + "'");
-            }
-            Utility.Log.WriteTextLog("testsql", "扫码页管理员养护记录", "TreatRecord", "sql:", sb.ToString());
-            return View(Sys_FlowerTreatment.MTreatmentList(10, 1, sb.ToString()));
-        }
-        /// <summary>
-        /// 扫码页客户养护记录
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult CusTreatRecord(string flowernumber)
-        {
-            Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
-            StringBuilder sb = new StringBuilder();
-            Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
-            Model.UserAdmin UserAdmin = Sys_UserAdmin.GetUserAdminByUserId(Utility.ChangeText.GetUsersId());
-            sb.Append(" and FlowerNumber=" + flowernumber);
-            if (UserAdmin.RoleCode == "Customer")
-            {           
-                sb.Append(" and OwnedUsersId='" + Utility.ChangeText.GetUsersId() + "'");
-            }
-            Utility.Log.WriteTextLog("testsql", "扫码页客户养护记录", "TreatRecord", "sql:", sb.ToString());
-            return View(Sys_FlowerTreatment.MFlowerTreatmentList(10, 1, sb.ToString()));
-        }
-        /// <summary>
-        /// 养护记录共用的更多
-        /// </summary>
-        /// <param name="isScan">是否扫码页的</param>
-        /// <returns></returns>
-        public ActionResult GetMobleScanMore(string isScan,string flowernumber)
-        {
-            Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
-            StringBuilder sb = new StringBuilder();
-            Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
-            Model.UserAdmin UserAdmin = Sys_UserAdmin.GetUserAdminByUserId(Utility.ChangeText.GetUsersId());
-            if (!string.IsNullOrEmpty(isScan))//扫码页的
-            {
-                sb.Append(" and FlowerNumber=" + flowernumber);
-            }
-            if (UserAdmin.RoleCode != "Customer")
-            {
-                sb.Append(" and UsersId='" + Utility.ChangeText.GetUsersId() + "'");
-            }
-            else if (Utility.ChangeText.GetUserName() != "admin")
-            {
-                sb.Append(" and OwnedUsersId='" + Utility.ChangeText.GetUsersId() + "'");
-            }
-            Utility.Log.WriteTextLog("testsql", "养护", "GetMobleListMore", Request["page"], sb.ToString());
-            int page = int.Parse(Request["page"]);
-            //(@pagesize*(@pagenumber-1)+1) and (@pagesize*@pagenumber)按第几页
-            if (page > 1)
-            {
-                page = (page - 1) * 10 + 1;//按偏移量
-            }
-            List<Model.FlowerTreatment> List = Sys_FlowerTreatment.FlowerTreatmentList(10, Convert.ToInt32(page), sb.ToString());
-            return Json(List,JsonRequestBehavior.AllowGet);
-        }
+       
         /// <summary>
         /// 养护记录更多
         /// </summary>       

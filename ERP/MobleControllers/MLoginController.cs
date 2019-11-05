@@ -52,7 +52,15 @@ namespace ERP.MobleControllers
                 model.Month = currentTime.Month.ToString();
                 model.Day = currentTime.Day.ToString();
                 Sys_Userlog.InsertUsersLoginLog(model);
-                return RedirectToAction("Index", "MMIndex");//跳转到首页。
+                //return RedirectToAction("Index", "MMIndex");//跳转到首页。
+                if (!string.IsNullOrEmpty(Request["ArrangementId"]))
+                {
+                    return RedirectToAction("GetArrangementInfo", "MMain", new { ArrangementId = Request["ArrangementId"] });
+                }
+                else {
+                    return RedirectToAction("Index", "MMIndex");//跳转到首页。
+                }
+               
             }
             ViewBag.LoginError = "账号或密码错误";
             return View();

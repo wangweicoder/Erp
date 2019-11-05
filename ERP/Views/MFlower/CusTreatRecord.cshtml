@@ -115,7 +115,10 @@
         {
             <li>
                 <span class="list_img">
-                    <img src="@item.LogoPhoto" onclick="ShowPhotoInfo('@item.LogoPhoto')" width="100" height="100" />
+                    <img src="@item.Photo" onclick="ShowPhotoInfo('@item.Photo')" width="100" height="100" />
+                </span>
+                <span class="list_img">
+                    <img src="@item.ChangePhoto" onclick="ShowPhotoInfo('@item.ChangePhoto')" width="100" height="100" />
                 </span>
                 <span class="list_info">
                     <strong>所属公司: @item.OwnedCompany</strong>
@@ -126,15 +129,16 @@
                             @item.time
                         </s>
                     </small>
-                    @if(item.endtime!=null){
-                    <small>
-                        结束时间:
-                        <s>
-                            @item.endtime
-                        </s>
+                    @if (item.endtime != null)
+        {
+            <small>
+                结束时间:
+                <s>
+                    @item.endtime
+                </s>
 
-                    </small>
-                    }
+            </small>
+}
                 </span>
             </li>
          }
@@ -230,7 +234,7 @@
 
                     $.ajax({
                         type: 'GET',
-                        url: '/FlowerChange/GetMobleListMore?page=' + page,
+                        url: '/MFlower/GetMobleScanMore?page=' + page,
                         dataType: 'json',
                         success: function (data) {
                             //console.log(data);

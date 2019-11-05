@@ -120,7 +120,7 @@
             <thead>
                 <tr><th>服务前</th><th>服务后</th><th>详情</th></tr>
             </thead>
-            <tbody>
+            <tbody id="prolist">
                 @foreach (Model.FlowerTreatment item in Model)
                 {
                     <tr>
@@ -251,7 +251,7 @@
 
                     $.ajax({
                         type: 'GET',
-                        url: '/FlowerChange/GetMobleListMore?page=' + page,
+                        url: '/MFlower/GetMobleScanMore?page=' + page+'&flowernumber='+@Model[0].FlowerNumber ,
                         dataType: 'json',
                         success: function (data) {
                             //console.log(data);
@@ -265,13 +265,34 @@
                                 }
                             }
                             else {
-                                var result = ''
-                                for (var i = 0; i < data.length; i++) {
-                                    result += ' <li><span class="list_img"><img src="' + data[i].Photo + '" class="imgphoto" width="100" height="100" /></span><span class="list_img"> <img src="' + data[i].ChangePhoto + '"  class="imgphoto" width="100" height="100" /> </span><span class="list_info"> <strong>更换人:' + data[i].WorkUsersRealName + '</strong> <em>更换内容: ' + data[i].ContentMsg + '</em><b>' + data[i].Number + '</b><small>操作时间:<s>  ' + data[i].time + '</s></small></span></li>';
-
-
+                            var result = ''
+                            for (var i = 0; i < data.length; i++) {
+                                result += '<tr><td><span class="list_img">';
+                                if(data[i].Photo!=undefined)
+                                { 
+                                 result+='<img src="' + data[i].Photo + '" class="imgphoto" width="100" height="100" /></span></td>';
                                 }
-
+                                else{
+                                  result+='<img src="/FileCss/images/nopic.png" width="100" height="100" /></span></td>'
+                                }
+                                result+='<td><span class="list_img">';
+                                if(data[i].ChangePhoto!=undefined)
+                                {  
+                                  result+='<img src="' + data[i].ChangePhoto + '" class="imgphoto" width="100" height="100" /></span></td>';
+                                }
+                                else{
+                                    result+='<img src="/FileCss/images/nopic.png" width="100" height="100" /></span></td>'
+                                }
+                                result+=' <td><span class="gh">';                            
+                                if(data[i].ContentMsg!=undefined)
+                                {   
+                                    result+='<em>'+data[i].ContentMsg+'</em><br></span></td>'; 
+                                }
+                                else{
+                                    result+='<em></em><br></span></td>'; 
+                                }   
+                                result+='</tr>';
+                              }//end for
                                 //为了测试，延迟1秒加载
                                 setTimeout(function () {
                                     $(".loadmore").remove();

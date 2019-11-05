@@ -180,7 +180,7 @@ namespace ERP.MobleControllers
             Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
             int userid = Utility.ChangeText.GetUsersId();
             FlowerTreatment=Sys_FlowerTreatment.GetModelbyShopid(shopid, ownedUsersId, userid.ToString());
-            if (FlowerTreatment.id > 0)
+            if (FlowerTreatment!=null && FlowerTreatment.id > 0)
             {
                 FlowerTreatment.endtime = DateTime.Now;
                 FlowerTreatment.FlowerTreatmentType = "结束养护";
@@ -340,8 +340,8 @@ namespace ERP.MobleControllers
                 Utility.Log.WriteTextLog(" 服务后提交图", "ID", Request["id"], "路径", FlowerTreatment.ChangePhoto);
                 if (Sys_FlowerTreatment.AddServerPhoto(FlowerTreatment))
                 {                   
-                    Response.Redirect("/MMain/GetArrangementInfo?ArrangementId="+ FlowerTreatment.CompanyName, true);                   
-                    //return RedirectToAction("GetArrangementInfo", "MMain", new { ArrangementId = id });
+                    //Response.Redirect("/MMain/GetArrangementInfo?ArrangementId="+ FlowerTreatment.CompanyName, true);                    
+                    return RedirectToAction("GetArrangementInfo", "MMain", new { ArrangementId = FlowerTreatment.CompanyName });
                 }
             }
             catch (Exception ex)
@@ -350,6 +350,69 @@ namespace ERP.MobleControllers
             }
 
             return View();
+        }
+        /// <summary>
+        /// 扫码页管理员养护记录
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult TreatRecord(string flowernumber)
+        {
+            Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
+            StringBuilder sb = new StringBuilder();
+            Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
+            Model.UserAdmin UserAdmin = Sys_UserAdmin.GetUserAdminByUserId(Utility.ChangeText.GetUsersId());
+            sb.Append(" and FlowerNumber=" + flowernumber);
+            //if (UserAdmin.RoleCode != "Customer" && UserAdmin.RoleCode != "Tourist")
+            //{
+            //    sb.Append(" and UsersId='" + Utility.ChangeText.GetUsersId() + "'");
+            //}
+            Utility.Log.WriteTextLog("testsql", "扫码页管理员养护记录", "TreatRecord", "sql:", sb.ToString());
+            return View(Sys_FlowerTreatment.MTreatmentList(10, 1, sb.ToString()));
+        }
+        /// <summary>
+        /// 扫码页客户养护记录
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult CusTreatRecord(string flowernumber)
+        {
+            Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
+            StringBuilder sb = new StringBuilder();
+            Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
+            Model.UserAdmin UserAdmin = Sys_UserAdmin.GetUserAdminByUserId(Utility.ChangeText.GetUsersId());
+            sb.Append(" and FlowerNumber=" + flowernumber);
+            if (UserAdmin.RoleCode == "Customer")
+            {
+                sb.Append(" and OwnedUsersId='" + Utility.ChangeText.GetUsersId() + "'");
+            }
+            Utility.Log.WriteTextLog("testsql", "扫码页客户养护记录", "TreatRecord", "sql:", sb.ToString());
+            return View(Sys_FlowerTreatment.MFlowerTreatmentList(10, 1, sb.ToString()));
+        }
+        /// <summary>
+        /// 养护记录共用的更多
+        /// </summary>
+        /// <param name="flowernumber">是否扫码页的</param>
+        /// <returns></returns>
+        public ActionResult GetMobleScanMore(string flowernumber)
+        {
+            Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
+            StringBuilder sb = new StringBuilder();           
+            if (!string.IsNullOrEmpty(flowernumber))//扫码页的
+            {
+                sb.Append(" and FlowerNumber=" + flowernumber);
+            }           
+            if (Utility.ChangeText.GetRoleCode() == "Customer")//客户查看自己公司的
+            {
+                sb.Append(" and OwnedUsersId='" + Utility.ChangeText.GetUsersId() + "'");
+            }
+            Utility.Log.WriteTextLog("testsql", "养护", "GetMobleListMore", Request["page"], sb.ToString());
+            int page = int.Parse(Request["page"]);
+            //(@pagesize*(@pagenumber-1)+1) and (@pagesize*@pagenumber)按第几页
+            if (page > 1)
+            {
+                page = (page - 1) * 1 + 1;//按偏移量
+            }
+            List<Model.FlowerTreatment> List = Sys_FlowerTreatment.FlowerTreatmentList(10, Convert.ToInt32(page), sb.ToString());
+            return Json(List, JsonRequestBehavior.AllowGet);
         }
         // <summary>
         /// 扫码页面中的上传图片养护
@@ -422,14 +485,14 @@ namespace ERP.MobleControllers
                             template_id = "MU4CvSNXPYTMjhGJdWuWNvpc5Ls2VPAmcaST4lWrTaM",
                             touser = Utility.ChangeText.GetOpenId(),
                             url = "http://www.thuay.com/MMain/GetArrangementInfo?way=Arrangement&ArrangementId=" + FlowerArrangementId,
-                             data = new
+                            data = new
                             {
                                 first = new { value = "您好!已经有客户(" + FlowerTreatment.OwnedCompany + ")需要服务,请尽快前往。", color = "#173177" },
                                 keyword1 = new { value = FlowerTreatment.FlowerNumber, color = "#173177" },
                                 keyword2 = new { value = "养护花卉", color = "#173177" },
                                 keyword3 = new { value = "养护", color = "#173177" },
                                 keyword4 = new { value = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), color = "#173177" },
-                                remark = new { value = "更换内容:" + FlowerTreatment.ContentMsg + ".点击此消息,进行补录更换后图片。", color = "#173177" },
+                                remark = new { value = "详细内容:" + FlowerTreatment.ContentMsg + ".点击此消息,查看详情。", color = "#173177" },
                             }
                         };
                         WxHelper.WxMain.SendMsg(JsonConvert.SerializeObject(Wx_SendMsg));

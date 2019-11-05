@@ -117,14 +117,14 @@
         <a href="/MFlower/ConservationFlowers"><i class="iconfont">Ɔ</i><span>养护花卉</span></a>
         <a href="/MFlower/ChangeFlowers"><i class="iconfont">ŭ</i><span>更换花卉</span></a>
         <a href="/MMIndex/Index"><i class="iconfont">Œ</i><span>会员中心</span></a>*@
-            <a href="/MLogin/Index?LoginOut=1"><i class="iconfont">Œ</i><span>切换帐号</span></a>
+            <a href="/MLogin/Index?LoginOut=1&ArrangementId=@Model.id"><i class="iconfont">Œ</i><span>切换帐号</span></a>
             @if (ViewData["IsAllower"].ToString() != "1")
             {
-            <a href="/FlowerTreatment/CusTreatRecord?flowernumber = @Model.ShopId"><i class="iconfont">ŭ</i><span>养护记录</span></a>
+            <a href="/MFlower/CusTreatRecord?flowernumber=@Model.ShopId"><i class="iconfont">ŭ</i><span>养护记录</span></a>
             }
             else
             {
-             <a href="/FlowerTreatment/TreatRecord?flowernumber = @Model.ShopId"><i class="iconfont">ŭ</i><span>养护记录</span></a>
+             <a href="/MFlower/TreatRecord?flowernumber=@Model.ShopId"><i class="iconfont">ŭ</i><span>养护记录</span></a>
             }
         </div>
     </header>     
@@ -153,13 +153,13 @@
          @if (ViewData["IsAllower"].ToString() != "1")
          {
         @*<div class="week left">每周<span id="kly">@Model.Weekly</span>养护 </div>*@
-        <a class="hehu"><div class="week left">需要呵护</div></a>
+         <a class="hehu"><div class="week left">需要呵护</div></a>
          }
         else
         {
         @*<a href="/MFlower/ConservationFlowers?ownedcompany=@Model.OwnedCompany"><div class="week left">养护</div></a>*@
         <a href="javascript:void(0)" class="ksyh"><div class="week left">开始养护</div></a>
-        <a href="javascript:void(0)" class="endyh" style="display:none;"><div class="week left">结束养护</div></a>
+        <a href="javascript:void(0)" class="endyh" style="display:none;background-color:#ff6a00"><div class="week left">结束养护</div></a>
         }
             @* <div style="padding-top:12px;padding-left: 72%;">
            <img width="20" height="20" src="~/static/image/1160675719.jpg" />
@@ -213,7 +213,7 @@
             <button type="button" class="layui-btn upload" id="test8">+上传图片</button>
             <input type="button" id="test9" class="put"  value="提交花卉" />
         </div>*@ <!--dom结构部分-->
-            <div id="serverbefor" style="padding-top:10px">
+            <div id="serveraf" style="padding-top:10px">
                 <table style="width:100%">
                     <thead>
                         <tr><th>服务前</th><th>服务后</th><th></th></tr>
@@ -240,7 +240,7 @@
                     </tbody>
                 </table>
             </div>
-            <div id="serveraf" style="padding-top:10px;height:200px;">
+            <div id="serverbefor" style="padding-top:10px;height:200px;">
                 <textarea id="remarks" maxlength="100" style="margin: 0px auto;text-align:left; height: 105px; width: 98%;
  border:1px solid #e6dddd; border-collapse:collapse; background-color: #eff2f5" placeholder="这一刻的想法..."></textarea>
                 <div id="uploader-demo" style="">
@@ -290,6 +290,7 @@ else
             //图片正方形
             var width = $(".pro_img_box li img").width();
             $(".pro_img_box li img").height(width);
+            $(".product").height(width);//2019-1105第一栏白色区域高度
             //数字变颜色
             var fangfa = $("#fangfa").html();
             var reg = /\d+/g;
@@ -419,7 +420,7 @@ else
                 if (response == "1") {
                     layer.msg('提交成功');
                     //客户
-                    $('.hehu div').text('正在维护中……');
+                    //$('.hehu div').text('正在维护中……');
                     $("#xyhh").html("植物问题已提交，请您耐心等待……");
                 }
                 else {
@@ -570,11 +571,11 @@ else
              dataType: "json",
              success: function (res, state) {
                  if (res.data != "") {
-                     $("#serverbefor").show();
+                     $("#serveraf").show();
                      $("#bphoto").attr('src', res.data.Photo);
                      //$("#cphoto").attr('src', res.data.ChangePhoto);
                      $("#contentmsg").text(res.data.ContentMsg);
-                     $("#serveraf").hide();
+                     $("#serverbefor").hide();
                      //客户
                      $('.hehu div').text('正在维护中……');
                      $("#xyhh").html("植物问题已提交，请您耐心等待……");
@@ -582,13 +583,12 @@ else
                      $("#cphoto").click(function () {
                          var arrangementid=$("#FlowerArrangementId").val();
                          window.location.href = '/MFlower/AddServerPhoto?id='+res.data.id+'&ArrangementId='+arrangementid;
-
                      });
                  }
                  else 
                  {
-                     $("#serverbefor").hide();
-                     $("#serveraf").show();
+                     $("#serverbefor").show();
+                     $("#serveraf").hide();
                      //管理员
                      //$(".ksyh").hide();
                      //$(".endyh").show();
