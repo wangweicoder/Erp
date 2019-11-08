@@ -47,7 +47,7 @@
                     <span></span>
                     <samp>花卉列表</samp>
                 </div>
-                <div class="content clearfloat">
+                <div class="content clearfloat" id="prolist">
                     @foreach (var item in Model)
                     {
                         <div class="list clearfloat fl">
@@ -180,6 +180,128 @@
         //        $("#count").html(1);
         //    }
         //}
+        var page = 2;
+        var finished = 0;
+        var sover = 0;
+
+        //如果屏幕未到整屏自动加载下一页补满
+        var setdefult = setInterval(function () {           
+            if (sover == 1)
+                clearInterval(setdefult);
+            else if ($(".theme").height() < $(window).height()) {
+                console.log($(".theme").height());
+                console.log($(window).height());
+                loadmore($(window));
+            }
+            else
+                clearInterval(setdefult);
+        }, 500);
+
+        //加载完
+        function loadover() {
+            if (sover == 1) {
+                var overtext = "Duang～到底了";
+                $(".loadmore").remove();
+                if ($(".loadover").length > 0) {
+                    $(".loadover span").eq(0).html(overtext);
+                }
+                else {
+                    var txt = '<div class="loadover"><span>' + overtext + '</span></div>'
+                    $("body").append(txt);
+                }
+            }
+        }
+
+        //加载更多
+        var vid = 0;
+        function loadmore(obj) {
+            if (finished == 0 && sover == 0) {
+                var scrollTop = $(obj).scrollTop();
+                var scrollHeight = $(document).height();
+                var windowHeight = $(obj).height();
+
+                if ($(".loadmore").length == 0) {
+                    var txt = '<div class="loadmore"><span class="loading"></span>加载中..</div>'
+                    $("body").append(txt);
+                }
+
+                if (scrollTop + windowHeight - scrollHeight <= 50) {
+                    //此处是滚动条到底部时候触发的事件，在这里写要加载的数据，或者是拉动滚动条的操作
+                    var ht = '<a href="#" class="backtop_btn" style="position:fixed;bottom:0;left:85%;">↑回顶部</a>';
+                    $("body").append(ht);
+                    //防止未加载完再次执行
+                    finished = 1;
+
+                    $.ajax({
+                        type: 'GET',
+                        url: '/Shop/GetMobleFlowerMore?page=' + page ,
+                        dataType: 'json',
+                        success: function (data) {
+                            //console.log(data);
+                            if (data == "" || data == null) {
+                                //console.log('数据加载完了');
+                                sover = 1;
+                                loadover();
+                                if (page == 1) {
+                                    $("#no_msg").removeClass("hidden");
+                                    $(".loadover").remove();
+                                }
+                            }
+                            else {
+                                var result = ''
+                                for (var i = 0; i < data.length; i++) {
+                                    result += '<div class="list clearfloat fl">';
+                                    if(data[i].Photo!=undefined)
+                                    { 
+                                        result+='<img src="' + data[i].Photo + '" class="imgphoto" width="100" height="100" /></span></td>';
+                                    }
+                                    else{
+                                        result+='<img src="/FileCss/images/nopic.png" width="100" height="100" /></span></td>'
+                                    }
+                                    result+='<td><span class="list_img">';
+                                    if(data[i].ChangePhoto!=undefined)
+                                    {  
+                                        result+='<img src="' + data[i].ChangePhoto + '" class="imgphoto" width="100" height="100" /></span></td>';
+                                    }
+                                    else{
+                                        result+='<img src="/FileCss/images/nopic.png" width="100" height="100" /></span></td>'
+                                    }
+                                    result+=' <td><span class="gh">';                            
+                                    if(data[i].ContentMsg!=undefined)
+                                    {   
+                                        result+='<em>'+data[i].ContentMsg+'</em><br></span></td>'; 
+                                    }
+                                    else{
+                                        result+='<em></em><br></span></td>'; 
+                                    }   
+                                    result+='</tr>';
+                                }//end for
+                                //为了测试，延迟1秒加载
+                                setTimeout(function () {
+                                    $(".loadmore").remove();
+                                    //console.log(result);
+                                    $('#prolist').append(result);
+                                    page += 1;
+                                    finished = 0;
+                                    //最后一页
+                                    if (page == 10) {
+                                        sover = 1;
+                                        loadover();
+                                    }
+                                }, 1000);
+                            }
+                        },
+                        error: function (xhr, type) {
+                            alert('Ajax error!');
+                        }
+                    });
+                }
+            }
+        }
+        //页面滚动执行事件
+        $(window).scroll(function () {
+           //loadmore($(this));
+        });
     </script>
 </body>
 </html>

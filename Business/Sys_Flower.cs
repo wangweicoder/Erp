@@ -39,7 +39,7 @@ namespace Business
         /// <param name="UserName">用户名</param>
         /// <param name="Role">角色ID</param>
         /// <returns></returns>
-        public List<Model.Flower> FlowerList( int offset, string StrWhere)  
+        public List<Model.Flower> GetFlowerList ( int offset, string StrWhere)  
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("SELECT * FROM ( SELECT ROW_NUMBER() over(order by Flower.id desc) as rn ,* FROM Flower");

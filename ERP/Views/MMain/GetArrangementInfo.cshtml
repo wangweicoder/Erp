@@ -30,6 +30,17 @@
             margin: 7px 10px;
             border-radius: 16px;
         }
+        .left {
+            display: inline-block;
+            width: 27%;
+            height: 26px;
+            text-align: center;
+            line-height: 24px;
+            color: #fff;
+            background: #a0c716;
+            margin: 7px 10px;
+            border-radius: 5px;
+        }
         .put {
             float: right;
             background-color: #a0c716;
@@ -117,14 +128,14 @@
         <a href="/MFlower/ConservationFlowers"><i class="iconfont">Ɔ</i><span>养护花卉</span></a>
         <a href="/MFlower/ChangeFlowers"><i class="iconfont">ŭ</i><span>更换花卉</span></a>
         <a href="/MMIndex/Index"><i class="iconfont">Œ</i><span>会员中心</span></a>*@
-            <a href="/MLogin/Index?LoginOut=1&ArrangementId=@Model.id"><i class="iconfont">Œ</i><span>切换帐号</span></a>
+            <a href="/MLogin/Index?ArrangementId=@Model.id"><i class="iconfont">Œ</i><span>切换帐号</span></a>
             @if (ViewData["IsAllower"].ToString() != "1")
             {
-            <a href="/MFlower/CusTreatRecord?flowernumber=@Model.ShopId"><i class="iconfont">ŭ</i><span>养护记录</span></a>
+            <a href="/MFlower/CusTreatRecord?flowernumber=@Model.id"><i class="iconfont">ŭ</i><span>反馈记录</span></a>
             }
             else
             {
-             <a href="/MFlower/TreatRecord?flowernumber=@Model.ShopId"><i class="iconfont">ŭ</i><span>养护记录</span></a>
+             <a href="/MFlower/TreatRecord?flowernumber=@Model.id"><i class="iconfont">ŭ</i><span>养护记录</span></a>
             }
         </div>
     </header>     
@@ -150,29 +161,33 @@
         </div>
         <div class="pro_tit border_bottom" style="min-height: 60px;">
             <h2 class="spanstyle">名称: @Model.FlowerWatchName </h2>
-         @if (ViewData["IsAllower"].ToString() != "1")
-         {
-        @*<div class="week left">每周<span id="kly">@Model.Weekly</span>养护 </div>*@
-         <a class="hehu"><div class="week left">需要呵护</div></a>
-         }
-        else
-        {
-        @*<a href="/MFlower/ConservationFlowers?ownedcompany=@Model.OwnedCompany"><div class="week left">养护</div></a>*@
-        <a href="javascript:void(0)" class="ksyh"><div class="week left">开始养护</div></a>
-        <a href="javascript:void(0)" class="endyh" style="display:none;background-color:#ff6a00"><div class="week left">结束养护</div></a>
-        }
+            @if (ViewData["IsAllower"].ToString() != "1")
+            {
+                @*<div class="week left">每周<span id="kly">@Model.Weekly</span>养护 </div>
+                <a class="hehu"><div class="week left">需要呵护</div></a>*@
+                 if(ViewBag.Treattime!=null)
+                 {
+                    <div class="left">正在养护中……</div>
+                 }
+            }
+            else
+            {
+            @*<a href="/MFlower/ConservationFlowers?ownedcompany=@Model.OwnedCompany"><div class="week left">养护</div></a>*@  
+              <a href="javascript:void(0)"><div class="endyh week" style="background-color:#ff6a00;display:none;">结束养护</div></a>            
+              <a href="javascript:void(0)"><div class="ksyh week">开始养护</div></a>
+            }
             @* <div style="padding-top:12px;padding-left: 72%;">
            <img width="20" height="20" src="~/static/image/1160675719.jpg" />
         规格: <span style="color:#f44623">@Model.Specifications </span>cm
           </div>
             <p>
             </p>*@
-             <div class="appraise" style="float:right;">
-               <a href="javascript:void(0)"><span class="iconfontdi icon-dianzan">5</span></a>
-             
-              <a href="javascript:void(0)"> <span class="iconfontca icon-dianzan_active">1</span></a>
+            <div class="appraise" style="float:right;">
+                <a href="javascript:void(0)"><span class="iconfontdi icon-dianzan">5</span></a>
+
+                <a href="javascript:void(0)"> <span class="iconfontca icon-dianzan_active">1</span></a>
             </div>
-       </div>
+        </div>
         
         <div class="jb_canshu">            
             <ul>
@@ -191,28 +206,34 @@
                 @if (!string.IsNullOrEmpty(Model.YangHuFangFa))
                 {
                     <li><span class="spanstyle">&nbsp;养护方法：</span><span id="fangfa">@Model.YangHuFangFa</span></li>
-                }                
-                <li>
+                }  
+                @if(ViewBag.Treattime!=null)
+                {
+                   <li>
                      <span class="spanstyle">&nbsp;养护时间：</span>@ViewBag.Treattime.ToString("yyyy-MM-dd HH:mm:ss")
-                </li>
+                  </li>
+                }
+                 @if(ViewBag.Treattime!=null)
+                {
                 <li>
                     <span class="spanstyle">&nbsp;预计下次养护时间：</span>@ViewBag.PlanTreatTime.ToString("yyyy-MM-dd HH:mm:ss")
-                </li>   
+                </li>  
+                }
             </ul>            
         </div>     
     
         <div class="jb_canshu">
-            @if (ViewData["IsTourist"] == null)
-    {
-        if (ViewData["IsAllower"].ToString() == "1")
+        @if (ViewData["IsTourist"] == null)
         {
+            if (ViewData["IsAllower"].ToString() == "1")
+            {
             <div>
                 <span style="font-size:15px;font-weight:600">养护花卉:</span>
             </div>
             @*<div class="layui-upload" style="text-align:center;">
             <button type="button" class="layui-btn upload" id="test8">+上传图片</button>
             <input type="button" id="test9" class="put"  value="提交花卉" />
-        </div>*@ <!--dom结构部分-->
+        ```</div>*@ <!--dom结构部分-->
             <div id="serveraf" style="padding-top:10px">
                 <table style="width:100%">
                     <thead>
@@ -242,7 +263,7 @@
             </div>
             <div id="serverbefor" style="padding-top:10px;height:200px;">
                 <textarea id="remarks" maxlength="100" style="margin: 0px auto;text-align:left; height: 105px; width: 98%;
- border:1px solid #e6dddd; border-collapse:collapse; background-color: #eff2f5" placeholder="这一刻的想法..."></textarea>
+            border:1px solid #e6dddd; border-collapse:collapse; background-color: #eff2f5" placeholder="这一刻的想法..."></textarea>
                 <div id="uploader-demo" style="">
                     <!--用来存放item-->
                     <div style="height:2px;"><img src="" /></div>
@@ -255,9 +276,9 @@
                 </div>
             </div>
 
-}
-else
-{
+            }
+            else
+            {
         <div id="xyhh" style="padding-top:10px;height:200px;">
             <textarea id="remarks" maxlength="100" style="margin: 0px auto;text-align:left; height: 105px; width: 98%;
                 border:1px solid #e6dddd; border-collapse:collapse; background-color: #eff2f5" placeholder="这一刻的想法..."></textarea>
@@ -271,8 +292,8 @@ else
 
             </div>
         </div>
-}
-}
+            }
+         }
        <input type="hidden" id="FlowerArrangementId" value="@Model.id" />
         </div>    
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
@@ -307,40 +328,78 @@ else
             //onloadAdvlist();
 
             //开始养护
-            $(".ksyh").click(function () {
-                $.ajax({
-                    url: "/MFlower/StartCurFlowers?ownedUsersId=@Model.belongUsersId&shopid=@Model.ShopId",
-                    type: "get",
-                    dataType: "json",
-                    success: function (data, state) {
-                        if (data == "1") {
-                            $(".ksyh").hide();
-                            $(".endyh").show();
-                        }
-                        else if (data == "0") {
-                            layer.open({
-                                content: "今日已提交" , btn: '我知道了'
-                            });
-                        }
-                    },
-                    error: function (m) { parent.layer.msg("error"); }
-                });
-            });
+            $(".ksyh").on('click',ksyh);
+            function ksyh()
+            {
+                $this = $(".ksyh");
+                 $.ajax({
+                     url: "/MFlower/StartCurFlowers?ownedUsersId=@Model.belongUsersId&arrid=@Model.id",
+                     type: "get",
+                     dataType: "json",
+                     success: function (data, state) {
+                         if (data == "1") {  
+                             var i = 10;
+                             //console.log('k', i);
+                             $this.unbind("click"); //移除click
+                             //设置定时器
+                             var btnTimer = null;
+                             btnTimer= setInterval(function () {
+                                 // 开始计数
+                                 i--;
+                                 // 注意clearInterval一定要最后，不然attr和text函数不会执行
+                                 if (i <= 0) {
+                                     $this.bind("click", ksyh); //click
+                                     $(".ksyh").hide();
+                                     $(".endyh").show();
+                                     $(".endyh").text('结束养护');
+                                     clearInterval(btnTimer);
+                                 }
+                                 else { $this.text(i); }
+                             }, 1000);
+                           
+                         }
+                         else if (data == "0") {
+                             layer.open({
+                                 content: "今日已提交" , btn: '我知道了'
+                             });
+                         }
+                     },
+                     error: function (m) { parent.layer.msg("error"); }
+                 });
+            }
+
             //结束养护
-            $(".endyh").click(function () {
+            $(".endyh").on("click",endyh);
+            function endyh() {
+                $this = $(".endyh");
                 $.ajax({
-                    url: "/MFlower/EndCurFlowers?ownedUsersId=@Model.belongUsersId&shopid=@Model.ShopId",
+                    url: "/MFlower/EndCurFlowers?ownedUsersId=@Model.belongUsersId&arrid=@Model.id",
                     type: "get",
                     dataType: "json",
                     success: function (data, state) {
                         if (data == "1") {
-                            $(".ksyh").show();
-                            $(".endyh").hide();
+                            var i = 10;
+                            $this.unbind("click"); //移除click
+                            //设置定时器
+                            var btnTimer = null;
+                            btnTimer = setInterval(function () {
+                                // 开始计数
+                                i--;
+                                // 注意clearInterval一定要最后，不然attr和text函数不会执行
+                                if (i <= 0) {
+                                    $this.bind("click", endyh); //绑定自身的click
+                                    $(".ksyh").show();
+                                    $(".endyh").hide();
+                                    $(".ksyh").text('开始养护');
+                                    clearInterval(btnTimer);
+                                }
+                                else { $this.text(i); }
+                            }, 1000);
                         }
                     },
                     error: function (m) { parent.layer.msg("error"); }
                 });
-            });
+            }
             @*//养护记录
             $(".top_home").click(function () {
                 var isallower='@ViewData["IsAllower"].ToString()';
@@ -565,8 +624,15 @@ else
       //服务前图片
      function onloadServbefor()
      {
+         if ('@ViewBag.Treattime'!='')
+         {
+             //管理员             
+             $(".endyh").show();
+             $(".ksyh").hide();
+         }
+
          $.ajax({
-             url: "/MFlower/ServerBefor?ownedUsersId=@Model.belongUsersId&shopid=@Model.ShopId",
+             url: "/MFlower/ServerBefor?ownedUsersId=@Model.belongUsersId&arrid=@Model.id",
              type: "get",
              dataType: "json",
              success: function (res, state) {
@@ -588,10 +654,7 @@ else
                  else 
                  {
                      $("#serverbefor").show();
-                     $("#serveraf").hide();
-                     //管理员
-                     //$(".ksyh").hide();
-                     //$(".endyh").show();
+                     $("#serveraf").hide();                    
                  }
              },
              error: function (m) { parent.layer.msg("error"); }
