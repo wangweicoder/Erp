@@ -141,6 +141,7 @@ namespace ERP.MobleControllers
                     FlowerTreatment.State = "未完成";         
                     FlowerTreatment.UsersId = userid;
                     FlowerTreatment.ArrangementId = arrid;
+                    FlowerTreatment.FlowerNumber = FlowerArrangement.ShopId.ToString();
                     FlowerTreatment.OwnedUsersId = ownedUsersId;
                     FlowerTreatment.UserRealName = Utility.ChangeText.GetRealName();
                     FlowerTreatment.FlowerTreatmentAddress = FlowerArrangement.arrangement;
