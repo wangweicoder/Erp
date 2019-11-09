@@ -21,15 +21,26 @@ namespace ERP.MobleControllers
                 Model.FlowerArrangement  FlowerArrangement=Sys_FlowerArrangement.GetModel(id);
                 if (FlowerArrangement.belongUsersId != 0)
                 {
-                 DateTime dt = Sys_FlowerArrangement.GetFlowerTreatmentModel(FlowerArrangement.belongUsersId.ToString()).time;
-                 ViewBag.Treattime = dt;
-                 ViewBag.PlanTreatTime = dt.AddDays(7);
+                    //DateTime dt = Sys_FlowerArrangement.GetFlowerTreatmentModel(FlowerArrangement.belongUsersId.ToString()).time;                  
+                    Model.FlowerTreatment FlowerTreatment = new Model.FlowerTreatment();
+                    Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
+                    string userid = Utility.ChangeText.GetUsersId().ToString();
+                    FlowerTreatment = Sys_FlowerTreatment.GetModelbyid(id, FlowerArrangement.belongUsersId.ToString(),userid);
+                    if (FlowerTreatment != null)
+                    {
+                        if (FlowerTreatment.starttime != null && FlowerTreatment.endtime == null)//没有结束养护时间
+                        {
+                            DateTime dt = (DateTime)FlowerTreatment.starttime;//开始养护时间
+                            ViewBag.Treattime = dt;
+                            ViewBag.PlanTreatTime = dt.AddDays(7);
+                        }
+                    }
                 }
                 //if (Session["RoleCode"] != null && Session["RoleCode"].ToString() == "Tourist")
                 //{
                 //    ViewData["IsTourist"] = 1;
                 //}
-                
+
                 //当操作人不是对应绑定客户与超级管理员时,判断是否为养护人员,如果为养护人员则判断是否有权限操作此更换花卉
                 if (Session["RoleCode"] != null)
                 {
@@ -62,7 +73,7 @@ namespace ERP.MobleControllers
                     //    ViewData["IsAllower"] = 1;
                     //}
                     #endregion
-                    if (Session["RoleCode"].ToString() == "yanghu" || Session["RoleCode"].ToString() == "SuperAdministrator")
+                    if (Session["RoleCode"].ToString() != "Customer")
                     {
                         ViewData["IsAllower"] = 1;
                     }

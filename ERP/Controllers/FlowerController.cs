@@ -31,7 +31,7 @@ namespace ERP.Controllers
             {
                 sb.Append(" and FlowerWatchName='" + FlowerWatchName + "'");
             }
-            return Json(new { total = Sys_Flower.GetFlowerListCount(sb.ToString()), rows = Sys_Flower.FlowerList(offset, sb.ToString()) }, JsonRequestBehavior.AllowGet);
+            return Json(new { total = Sys_Flower.GetFlowerListCount(sb.ToString()), rows = Sys_Flower.GetFlowerList(offset, sb.ToString()) }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult CheckFlowerWatchName() 

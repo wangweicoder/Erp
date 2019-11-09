@@ -20,17 +20,29 @@ namespace Model
         /// 花卉编号
         /// </summary>
         public string FlowerNumber { set; get; }
-
+        /// <summary>
+        /// 摆放id
+        /// </summary>
+        public string ArrangementId { set; get; }
         /// <summary>
         /// 操作时间
         /// </summary>
         public DateTime time { set; get; }
        
         /// <summary>
+        /// 开始养护时间
+        /// </summary>
+        public DateTime? starttime { set; get; }
+       
+        /// <summary>
         /// 结束养护时间
         /// </summary>
         public DateTime? endtime { set; get; }
-       
+
+        /// <summary>
+        /// 状态  
+        /// </summary>
+        public string State { set; get; }
         /// <summary>
         /// 会员编号
         /// </summary>
@@ -65,7 +77,7 @@ namespace Model
         public string OwnedUsersRealName { set; get; }
 
         /// <summary>
-        /// 花卉养护当前地址
+        /// 花卉摆放地址
         /// </summary>
         public string FlowerTreatmentAddress { set; get; }
 

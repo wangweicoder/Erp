@@ -122,47 +122,58 @@ namespace ERP.MobleControllers
         /// <summary>
         /// 开始养护花卉
         /// </summary>
+        /// <param name="arrid">摆放的id</param>
         /// <returns></returns>
-        public ActionResult StartCurFlowers(string shopid,string ownedUsersId)
+        public ActionResult StartCurFlowers(string arrid, string ownedUsersId)
         {
             try
             {
-                Model.FlowerTreatment FlowerTreatment = new Model.FlowerTreatment();
-                Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
                 Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
                 int userid = Utility.ChangeText.GetUsersId();
-                FlowerTreatment.FlowerTreatmentType = "开始养护";
-                FlowerTreatment.UsersId = userid;
-                FlowerTreatment.FlowerNumber = shopid;
-                FlowerTreatment.OwnedUsersId = ownedUsersId;
-                FlowerTreatment.UserRealName = Utility.ChangeText.GetRealName();
-                FlowerTreatment.FlowerTreatmentAddress = "";
-                Model.UserAdmin UserAdmin = Sys_UserAdmin.GetUserAdminByUserId(Convert.ToInt32(FlowerTreatment.OwnedUsersId));
-                FlowerTreatment.OwnedUsersRealName = UserAdmin.RealName;
-                FlowerTreatment.OwnedCompany = UserAdmin.OwnedCompany;
-                FlowerTreatment.LogoPhoto = UserAdmin.LogoPhoto;
-                //同一登录人，同一公司，一天只能提交一次
-                StringBuilder stb = new StringBuilder();
-                if (userid != 0)
+                Business.Sys_FlowerArrangement Sys_FlowerArrangement = new Business.Sys_FlowerArrangement();
+                Model.FlowerArrangement FlowerArrangement = Sys_FlowerArrangement.GetModel(arrid);
+                Model.FlowerTreatment FTreatment = Sys_FlowerTreatment.GetModelbyid(arrid.ToString(), ownedUsersId,userid.ToString());
+                if (FTreatment == null || (FTreatment.endtime != null && FTreatment.State == "已完成"))//有了结束养护时间说明这个记录完成了
                 {
-                    stb.Append(" t.UsersId=" + userid + "");
-                }
-                if (!string.IsNullOrEmpty(FlowerTreatment.OwnedUsersId))
-                {
-                    stb.Append(" and t.OwnedUsersId='" + FlowerTreatment.OwnedUsersId + "'");
-                }
-                string dt = DateTime.Now.ToShortDateString();
-                {
-                    stb.Append(" and time>'" + dt + "'");
-                }
-                if (Sys_FlowerTreatment.FlowerTreatmentList(stb.ToString()).Count == 0)
-                {
-                    Sys_FlowerTreatment.InsertFlowerTreatment(FlowerTreatment);
-                    return Content("1");
-                }
-                else
-                {
-                    return Content("0");
+                    Model.FlowerTreatment FlowerTreatment = new Model.FlowerTreatment();
+                    Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();                   
+                    FlowerTreatment.FlowerTreatmentType = "开始养护";
+                    FlowerTreatment.State = "未完成";         
+                    FlowerTreatment.UsersId = userid;
+                    FlowerTreatment.ArrangementId = arrid;
+                    FlowerTreatment.OwnedUsersId = ownedUsersId;
+                    FlowerTreatment.UserRealName = Utility.ChangeText.GetRealName();
+                    FlowerTreatment.FlowerTreatmentAddress = FlowerArrangement.arrangement;
+                    Model.UserAdmin UserAdmin = Sys_UserAdmin.GetUserAdminByUserId(Convert.ToInt32(FlowerTreatment.OwnedUsersId));
+                    FlowerTreatment.OwnedUsersRealName = UserAdmin.RealName;
+                    FlowerTreatment.OwnedCompany = UserAdmin.OwnedCompany;
+                    FlowerTreatment.LogoPhoto = UserAdmin.LogoPhoto;
+                    FlowerTreatment.starttime = DateTime.Now;//记录开始养护时间
+                    //同一登录人，同一公司，一天只能提交一次
+                    StringBuilder stb = new StringBuilder();
+                    if (userid != 0)
+                    {
+                        stb.Append(" t.UsersId=" + userid + "");
+                    }
+                    if (!string.IsNullOrEmpty(FlowerTreatment.OwnedUsersId))
+                    {
+                        stb.Append(" and t.OwnedUsersId='" + FlowerTreatment.OwnedUsersId + "'");
+                    }
+                    string dt = DateTime.Now.ToShortDateString();
+                    {
+                        stb.Append(" and time>'" + dt + "'");
+                    }
+                    stb.Append(" and starttime !='' ");
+                    Utility.Log.WriteTextLog("开始养护花卉", "arrid", arrid, "stb", stb.ToString());
+                    if (Sys_FlowerTreatment.FlowerTreatmentList(stb.ToString()).Count == 0)
+                    {
+                        Sys_FlowerTreatment.InsertFlowerTreatment(FlowerTreatment);
+                        return Content("1");
+                    }
+                    else
+                    {
+                        return Content("0");//今天已经开始养护过了
+                    }
                 }
             }
             catch {
@@ -173,18 +184,19 @@ namespace ERP.MobleControllers
         /// 结束养护
         /// </summary>       
         /// <returns></returns>
-        public ActionResult EndCurFlowers(string shopid, string ownedUsersId)
+        public ActionResult EndCurFlowers(string arrid, string ownedUsersId)
         {
             Model.FlowerTreatment FlowerTreatment = new Model.FlowerTreatment();
             Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
             Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
             int userid = Utility.ChangeText.GetUsersId();
-            FlowerTreatment=Sys_FlowerTreatment.GetModelbyShopid(shopid, ownedUsersId, userid.ToString());
-            if (FlowerTreatment!=null && FlowerTreatment.id > 0)
+            FlowerTreatment=Sys_FlowerTreatment.GetModelbyid(arrid, ownedUsersId, userid.ToString());
+            if (FlowerTreatment!=null && FlowerTreatment.endtime==null)
             {
                 FlowerTreatment.endtime = DateTime.Now;
                 FlowerTreatment.FlowerTreatmentType = "结束养护";
-                if(Sys_FlowerTreatment.UpdateEndtime(FlowerTreatment))
+                FlowerTreatment.State = "已完成";
+                if (Sys_FlowerTreatment.UpdateServer(FlowerTreatment))
                 {
                     return Content("1");
                 }
@@ -195,13 +207,12 @@ namespace ERP.MobleControllers
         /// 查询服务前图片
         /// </summary>       
         /// <returns></returns>
-        public ActionResult ServerBefor(string shopid, string ownedUsersId)
+        public ActionResult ServerBefor(string arrid, string ownedUsersId)
         {
-            Model.FlowerTreatment FlowerTreatment = new Model.FlowerTreatment();
-            Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
+            Model.FlowerTreatment FlowerTreatment = new Model.FlowerTreatment();           
             Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
             int userid = Utility.ChangeText.GetUsersId();
-            FlowerTreatment = Sys_FlowerTreatment.GetModelbyShopid(shopid, ownedUsersId, userid.ToString());
+            FlowerTreatment = Sys_FlowerTreatment.GetModelbyArrid(arrid, ownedUsersId, userid.ToString());
             //只有服务前图片
             if (FlowerTreatment!=null && FlowerTreatment.Photo!=null && FlowerTreatment.ChangePhoto == null)
             {  
@@ -220,6 +231,33 @@ namespace ERP.MobleControllers
             Model.FlowerTreatment FlowerTreatment = new Model.FlowerTreatment()
             { id = int.Parse(Request["id"]),CompanyName= Request["ArrangementId"] };
             return View(FlowerTreatment);
+        }
+        /// <summary>
+        /// 服务后提交
+        /// </summary>
+        [HttpPost]
+        public ActionResult AddServerPhoto(Model.FlowerTreatment FlowerTreatment)
+        {
+            try
+            {
+                HttpPostedFileBase file = Request.Files["attach_paths"];
+                FlowerTreatment.ChangePhoto = Utility.ChangeText.SaveUploadPicture(file, "Serveraf");
+                FlowerTreatment.FlowerTreatmentType = "服务后";
+                FlowerTreatment.State = "已完成";
+                FlowerTreatment.endtime = DateTime.Now;
+                Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
+                Utility.Log.WriteTextLog("服务后提交图", "ID", Request["id"], "路径", FlowerTreatment.ChangePhoto);
+                if (Sys_FlowerTreatment.AddServerPhoto(FlowerTreatment))
+                {                                  
+                    return RedirectToAction("TreatRecord", "MFlower", new { ArrangementId = FlowerTreatment.CompanyName });
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.Log.WriteTextLog(" 服务后提交图", " FlowerTreatment.CompanyName", FlowerTreatment.CompanyName, "", ex.ToString());
+            }
+
+            return View();
         }
         /// <summary>
         /// 差评
@@ -325,62 +363,35 @@ namespace ERP.MobleControllers
             }
             return Json(new { gcount=gcount,bcount=bcount }, JsonRequestBehavior.AllowGet);
         }
-        /// <summary>
-        /// 服务后提交
-        /// </summary>
-        [HttpPost]
-        public ActionResult AddServerPhoto(Model.FlowerTreatment FlowerTreatment)
-        {
-            try
-            {
-                HttpPostedFileBase file = Request.Files["attach_paths"];
-                FlowerTreatment.ChangePhoto = Utility.ChangeText.SaveUploadPicture(file, "Serveraf");
-                FlowerTreatment.FlowerTreatmentType = "服务后";
-                Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();                
-                Utility.Log.WriteTextLog(" 服务后提交图", "ID", Request["id"], "路径", FlowerTreatment.ChangePhoto);
-                if (Sys_FlowerTreatment.AddServerPhoto(FlowerTreatment))
-                {                   
-                    //Response.Redirect("/MMain/GetArrangementInfo?ArrangementId="+ FlowerTreatment.CompanyName, true);                    
-                    return RedirectToAction("GetArrangementInfo", "MMain", new { ArrangementId = FlowerTreatment.CompanyName });
-                }
-            }
-            catch (Exception ex)
-            {
-                Utility.Log.WriteTextLog(" 服务后提交图", "", "", "", ex.ToString());
-            }
-
-            return View();
-        }
+       
         /// <summary>
         /// 扫码页管理员养护记录
         /// </summary>
         /// <returns></returns>
-        public ActionResult TreatRecord(string flowernumber)
+        public ActionResult TreatRecord(string ArrangementId)
         {
             Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
-            StringBuilder sb = new StringBuilder();
-            Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
-            Model.UserAdmin UserAdmin = Sys_UserAdmin.GetUserAdminByUserId(Utility.ChangeText.GetUsersId());
-            sb.Append(" and FlowerNumber=" + flowernumber);
-            //if (UserAdmin.RoleCode != "Customer" && UserAdmin.RoleCode != "Tourist")
-            //{
-            //    sb.Append(" and UsersId='" + Utility.ChangeText.GetUsersId() + "'");
-            //}
-            Utility.Log.WriteTextLog("testsql", "扫码页管理员养护记录", "TreatRecord", "sql:", sb.ToString());
-            return View(Sys_FlowerTreatment.MTreatmentList(10, 1, sb.ToString()));
+            StringBuilder sb = new StringBuilder();          
+            ViewBag.arrid = ArrangementId;
+            if (Utility.ChangeText.GetRoleCode() == "Customer")
+            {
+                sb.Append(" and OwnedUsersId='" + Utility.ChangeText.GetUsersId() + "'");
+            }
+            else {               
+               sb.Append(" and time >2019");                
+            }           
+            return View(Sys_FlowerTreatment.MFlowerTreatmentList(10, 1, sb.ToString()));
         }
         /// <summary>
-        /// 扫码页客户养护记录
+        /// ///扫码页客户养护记录
         /// </summary>
         /// <returns></returns>
         public ActionResult CusTreatRecord(string flowernumber)
         {
             Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
             StringBuilder sb = new StringBuilder();
-            Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
-            Model.UserAdmin UserAdmin = Sys_UserAdmin.GetUserAdminByUserId(Utility.ChangeText.GetUsersId());
-            sb.Append(" and FlowerNumber=" + flowernumber);
-            if (UserAdmin.RoleCode == "Customer")
+            ViewBag.arrid = flowernumber;
+            if (Utility.ChangeText.GetRoleCode() == "Customer")
             {
                 sb.Append(" and OwnedUsersId='" + Utility.ChangeText.GetUsersId() + "'");
             }
@@ -395,28 +406,22 @@ namespace ERP.MobleControllers
         public ActionResult GetMobleScanMore(string flowernumber)
         {
             Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
-            StringBuilder sb = new StringBuilder();           
-            if (!string.IsNullOrEmpty(flowernumber))//扫码页的
-            {
-                sb.Append(" and FlowerNumber=" + flowernumber);
-            }           
+            StringBuilder sb = new StringBuilder(); 
             if (Utility.ChangeText.GetRoleCode() == "Customer")//客户查看自己公司的
             {
                 sb.Append(" and OwnedUsersId='" + Utility.ChangeText.GetUsersId() + "'");
             }
-            Utility.Log.WriteTextLog("testsql", "养护", "GetMobleListMore", Request["page"], sb.ToString());
-            int page = int.Parse(Request["page"]);
-            //(@pagesize*(@pagenumber-1)+1) and (@pagesize*@pagenumber)按第几页
-            if (page > 1)
+            else
             {
-                page = (page - 1) * 1 + 1;//按偏移量
+                sb.Append(" and time >2019");
             }
-            List<Model.FlowerTreatment> List = Sys_FlowerTreatment.FlowerTreatmentList(10, Convert.ToInt32(page), sb.ToString());
+            int page = int.Parse(Request["page"]);            
+            List<Model.FlowerTreatment> List = Sys_FlowerTreatment.MFlowerTreatmentList(1, page, sb.ToString());
             return Json(List, JsonRequestBehavior.AllowGet);
         }
         // <summary>
         /// 扫码页面中的上传图片养护
-        /// </summary>
+        ///</summary>
         /// <returns></returns>
         public ActionResult Upload()
         {
@@ -429,8 +434,7 @@ namespace ERP.MobleControllers
                 {
                     Utility.Log.WriteTextLog("扫码页面上传图片养护", "FlowerArrangementId", FlowerArrangementId, "files", files == null ? "true" : "fasle");
                     return Json("Faild", JsonRequestBehavior.AllowGet);
-                }
-                string FilePath = Utility.ChangeText.SaveUploadPicture(files, "img");
+                }               
 
                 Business.Sys_FlowerArrangement Sys_FlowerArrangement = new Business.Sys_FlowerArrangement();
                 Model.FlowerArrangement FlowerArrangement = Sys_FlowerArrangement.GetModel(FlowerArrangementId);
@@ -439,46 +443,27 @@ namespace ERP.MobleControllers
 
                 Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();              
                 int userid = Utility.ChangeText.GetUsersId();
-                Model.FlowerTreatment FTreatment = Sys_FlowerTreatment.GetModelbyUsersid(FlowerArrangement.ShopId.ToString(), FlowerArrangement.belongUsersId.ToString(), userid.ToString());
-                if (FTreatment == null ||  FTreatment.time < DateTime.Now)//今天还没有提交
-                {                 
-               
+                Model.FlowerTreatment FTreatment = Sys_FlowerTreatment.GetModelbyArrid(FlowerArrangement.id.ToString(), FlowerArrangement.belongUsersId.ToString(),userid.ToString());
+                if (FTreatment == null)//有未上传服务后图，不可以再提交
+                {
+                    string FilePath = Utility.ChangeText.SaveUploadPicture(files, "img");
                     Model.FlowerTreatment FlowerTreatment = new Model.FlowerTreatment();
                     FlowerTreatment.FlowerTreatmentType = "服务前";
+                    FlowerTreatment.State = "未完成";
                     FlowerTreatment.UsersId = userid;
+                    FlowerTreatment.ArrangementId = FlowerArrangement.id.ToString();
                     FlowerTreatment.FlowerNumber = FlowerArrangement.ShopId.ToString();
                     FlowerTreatment.OwnedUsersId = FlowerArrangement.belongUsersId.ToString();
                     FlowerTreatment.UserRealName = Utility.ChangeText.GetRealName();
-                    FlowerTreatment.FlowerTreatmentAddress = FlowerArrangement.OwnedCompany;
+                    FlowerTreatment.FlowerTreatmentAddress = FlowerArrangement.arrangement;
                     Model.UserAdmin UserAdmin = Sys_UserAdmin.GetUserAdminByUserId(Convert.ToInt32(FlowerTreatment.OwnedUsersId));
                     FlowerTreatment.OwnedUsersRealName = UserAdmin.RealName;
                     FlowerTreatment.OwnedCompany = UserAdmin.OwnedCompany;
                     FlowerTreatment.LogoPhoto = UserAdmin.LogoPhoto;
                     FlowerTreatment.Photo = FilePath;//提交图片
-                    FlowerTreatment.ContentMsg = remarks;//提交内容
-                    //同一登录人，同一公司，一天只能提交一次
-                    StringBuilder stb = new StringBuilder();
-                    if (userid != 0)
-                    {
-                        stb.Append(" t.UsersId=" + userid + "");
-                    }
-                    if (!string.IsNullOrEmpty(FlowerTreatment.OwnedUsersId))
-                    {
-                        stb.Append(" and t.OwnedUsersId='" + FlowerTreatment.OwnedUsersId + "'");
-                    }
-                    string dt = DateTime.Now.ToShortDateString();
-                    {
-                        stb.Append(" and time>'" + dt + "'");
-                    }
-                    if (Sys_FlowerTreatment.FlowerTreatmentList(stb.ToString()).Count == 0)
-                    {
-                        Sys_FlowerTreatment.InsertFlowerTreatment(FlowerTreatment);                        
-                    }
-                    else
-                    {
-                        return Content("0");//今天已经上传
-                    }
-                    if(Session["RoleCode"].ToString() == "Customer" || Session["RoleCode"].ToString()=="Tourist")
+                    FlowerTreatment.ContentMsg = remarks;//提交内容                    
+
+                    if (Sys_FlowerTreatment.InsertFlowerTreatment(FlowerTreatment))
                     {
                         Model.Wx_SendMsg Wx_SendMsg = new Model.Wx_SendMsg()
                         {
@@ -496,12 +481,12 @@ namespace ERP.MobleControllers
                             }
                         };
                         WxHelper.WxMain.SendMsg(JsonConvert.SerializeObject(Wx_SendMsg));
-                    }
+                    }                    
                     return Content("1");
                 }
                 else
                 {
-                    return Content("0");//今天已经上传
+                    return Content("0");//未完成
                 }                
             }
             catch (Exception ex)

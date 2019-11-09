@@ -35,7 +35,7 @@ namespace ERP.MobleControllers
                 }
                 //登录成功
                 Session["UsersId"] = UserAdmin.ID;
-                Session["OpenId"] = UserAdmin.OpenId;
+                //Session["OpenId"] = UserAdmin.OpenId;//没有openid的，赋值"",更新也是""。
                 Session["UserName"] = UserAdmin.UserName;
                 Session["RealName"] = UserAdmin.RealName;
                 Session["RoleCode"] = UserAdmin.RoleCode;

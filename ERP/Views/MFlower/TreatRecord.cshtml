@@ -105,15 +105,10 @@
     <header id="header" style="">
         <div class="topbar">
             <a href="javascript:history.back();" class="back_btn"><i class="iconfont">ş</i></a>
-            <a href="javascript:;" class="top_home"><i class="iconfont">ƙ</i></a>
+            <a href="/MLogin/Index?ArrangementId=@ViewBag.arrid" style="float: right;margin: 12px;">退出</a>
             <h1 class="page_title">养护记录</h1>
         </div>
-        <div class="home_menu" id="hMenu">
-            <a href="/Shop/Index"><i class="iconfont">Ő</i><span>我要买花</span></a>
-            <a href="/MFlower/ConservationFlowers"><i class="iconfont">Ɔ</i><span>养护花卉</span></a>
-            <a href="/MFlower/ChangeFlowers"><i class="iconfont">ŭ</i><span>更换花卉</span></a>
-            <a href="/MMIndex/Index"><i class="iconfont">Œ</i><span>会员中心</span></a>
-        </div>
+      
     </header>
     <div class="list">
         <table style="width:100%">
@@ -128,11 +123,11 @@
                             <span class="list_img">
                                 @if (string.IsNullOrEmpty(item.Photo))
                                 {
-                                   <img src="~/FileCss/images/nopic.png" width="100" height="100" />
+                                   <img src="~/FileCss/images/nopic.png" width="90" height="90" />
                                 }
                                 else
                                 {
-                                    <img src="@item.Photo" class="imgphoto" width="100" height="100" />
+                                    <img src="@item.Photo" class="imgphoto" width="90" height="90" />
                                 }
                             </span>
                         </td>
@@ -140,20 +135,37 @@
                             <span class="list_img">
                                 @if (string.IsNullOrEmpty(item.ChangePhoto))
                                 {
-                                    <img src="~/FileCss/images/nopic.png" width="100" height="100" />
+                                    if (Utility.ChangeText.GetRoleCode() == "Customer")
+                                    {
+                                        <img src="~/FileCss/images/nopic.png" width="90" height="90" />
+                                    }
+                                    else
+                                    {
+                                    <a href="/MFlower/AddServerPhoto?id=@item.id&ArrangementId=@item.ArrangementId">
+                                        <img src="~/FileCss/images/nopic.png" width="90" height="90" />
+                                    </a>
+                                    }
                                 }
                                 else
                                 {
-                                    <img src="@item.ChangePhoto" class="imgphoto" width="100" height="100" />
+                                    <img src="@item.ChangePhoto" class="imgphoto" width="90" height="90" />
                                 }
 
                             </span>
                         </td>
                         <td>
-                            <span class="gh">                                
+                            <span class="gh">
+                                <em>@item.CompanyName</em>
                                 <em>
-                                    @item.ContentMsg <br />                                    
+                                    @item.OwnedCompany <br />
                                 </em>
+                                <em>@item.FlowerTreatmentAddress</em>
+                                <em>@item.ContentMsg</em>
+                                 @if(item.endtime != null)
+                                    {
+                                    <em style="float:right">@(((DateTime)item.endtime).ToString("yyyy-MM-dd"))</em>
+                                   }
+                                  
                             </span>                           
                         </td>
                     </tr>
@@ -175,6 +187,19 @@
             //    else target.toggle();
             //});
         });
+        function jsonDateFormat(jsonDate) {//json日期格式转换为正常格式
+            try {
+                var date = new Date(parseInt(jsonDate.replace("/Date(", "").replace(")/", ""), 10));
+                var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+                var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+                var hours = date.getHours();
+                var minutes = date.getMinutes();
+                var seconds = date.getSeconds();
+                return date.getFullYear() + "-" + month + "-" + day  ;
+            } catch (ex) {
+                return "";
+            }
+        }
         $(".imgphoto").click(function () {
             var url = $(this).attr("src");
             ShowPhotoInfo(url);
@@ -251,7 +276,7 @@
 
                     $.ajax({
                         type: 'GET',
-                        url: '/MFlower/GetMobleScanMore?page=' + page+'&flowernumber='+@Model[0].FlowerNumber ,
+                        url: '/MFlower/GetMobleScanMore?page=' + page ,
                         dataType: 'json',
                         success: function (data) {
                             //console.log(data);
@@ -269,7 +294,7 @@
                             for (var i = 0; i < data.length; i++) {
                                 result += '<tr><td><span class="list_img">';
                                 if(data[i].Photo!=undefined)
-                                { 
+                                {
                                  result+='<img src="' + data[i].Photo + '" class="imgphoto" width="100" height="100" /></span></td>';
                                 }
                                 else{
@@ -277,22 +302,35 @@
                                 }
                                 result+='<td><span class="list_img">';
                                 if(data[i].ChangePhoto!=undefined)
-                                {  
+                                {
                                   result+='<img src="' + data[i].ChangePhoto + '" class="imgphoto" width="100" height="100" /></span></td>';
                                 }
                                 else{
                                     result+='<img src="/FileCss/images/nopic.png" width="100" height="100" /></span></td>'
                                 }
-                                result+=' <td><span class="gh">';                            
-                                if(data[i].ContentMsg!=undefined)
-                                {   
-                                    result+='<em>'+data[i].ContentMsg+'</em><br></span></td>'; 
+                                result += ' <td><span class="gh">';
+                                if (data[i].CompanyName != undefined)
+                                {
+                                    result+='<em>'+data[i].CompanyName+'</em>';
                                 }
-                                else{
-                                    result+='<em></em><br></span></td>'; 
-                                }   
-                                result+='</tr>';
-                              }//end for
+                                if(data[i].OwnedCompany!=undefined)
+                                {
+                                  result+='<em>'+data[i].OwnedCompany+'</em>';
+                                }
+                                if (data[i].FlowerTreatmentAddress != undefined)
+                                {
+                                    result += '<em>'+data[i].FlowerTreatmentAddress+'</em>';
+                                }
+                                if (data[i].ContentMsg != undefined)
+                                {
+                                    result+='<em>'+data[i].ContentMsg+'</em>';
+                                }
+                                if (data[i].endtime != undefined)
+                                {
+                                    result += '<em style="float:right">' + jsonDateFormat(data[i].endtime) + '</em><br>';
+                                }
+                                  result+='</span></td></tr>';
+                                }//end for
                                 //为了测试，延迟1秒加载
                                 setTimeout(function () {
                                     $(".loadmore").remove();

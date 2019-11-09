@@ -131,11 +131,11 @@
             <a href="/MLogin/Index?ArrangementId=@Model.id"><i class="iconfont">Œ</i><span>切换帐号</span></a>
             @if (ViewData["IsAllower"].ToString() != "1")
             {
-            <a href="/MFlower/CusTreatRecord?flowernumber=@Model.id"><i class="iconfont">ŭ</i><span>反馈记录</span></a>
+            <a href="/MFlower/TreatRecord?ArrangementId=@Model.id"><i class="iconfont">ŭ</i><span>反馈记录</span></a>
             }
             else
             {
-             <a href="/MFlower/TreatRecord?flowernumber=@Model.id"><i class="iconfont">ŭ</i><span>养护记录</span></a>
+             <a href="/MFlower/TreatRecord?ArrangementId=@Model.id"><i class="iconfont">ŭ</i><span>养护记录</span></a>
             }
         </div>
     </header>     
@@ -262,7 +262,7 @@
                 </table>
             </div>
             <div id="serverbefor" style="padding-top:10px;height:200px;">
-                <textarea id="remarks" maxlength="100" style="margin: 0px auto;text-align:left; height: 105px; width: 98%;
+                <textarea id="remarks" maxlength="12" style="margin: 0px auto;text-align:left; height: 105px; width: 98%;
             border:1px solid #e6dddd; border-collapse:collapse; background-color: #eff2f5" placeholder="这一刻的想法..."></textarea>
                 <div id="uploader-demo" style="">
                     <!--用来存放item-->
@@ -280,7 +280,7 @@
             else
             {
         <div id="xyhh" style="padding-top:10px;height:200px;">
-            <textarea id="remarks" maxlength="100" style="margin: 0px auto;text-align:left; height: 105px; width: 98%;
+            <textarea id="remarks" maxlength="12" style="margin: 0px auto;text-align:left; height: 105px; width: 98%;
                 border:1px solid #e6dddd; border-collapse:collapse; background-color: #eff2f5" placeholder="这一刻的想法..."></textarea>
             <div id="uploader-demo" style="">
                 <!--用来存放item-->

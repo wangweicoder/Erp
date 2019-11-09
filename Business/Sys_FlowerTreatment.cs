@@ -31,7 +31,7 @@ namespace Business
             return Factory.DBHelper.Query<Model.FlowerTreatment>(SQLConString, strSql.ToString(), new DynamicParameters(new { offset,limit }));
         }
         /// <summary>
-        /// 养护记录
+        /// 服务记录
         /// </summary>
         /// <param name="pagesize"></param>
         /// <param name="pagenumber"></param>
@@ -40,34 +40,15 @@ namespace Business
         public List<Model.FlowerTreatment> MFlowerTreatmentList(int pagesize, int pagenumber, string StrWhere)
         {
             StringBuilder strSql = new StringBuilder();
-            strSql.Append("SELECT u.OwnedCompany as CompanyName,T.* FROM ( SELECT ROW_NUMBER() over(order by id desc) as rn ,* FROM FlowerTreatment");
+            strSql.Append("SELECT u.FlowerWatchName as CompanyName,T.* FROM ( SELECT ROW_NUMBER() over(order by id desc) as rn ,* FROM FlowerTreatment");
             if (!string.IsNullOrEmpty(StrWhere))
             {
-                strSql.Append(" where  1=1 " + StrWhere);
+                strSql.Append(" where  FlowerTreatmentType like '服务%'  " + StrWhere);
             }
-            strSql.Append(")T inner join [dbo].[UserAdmin] u on u.ID=T.OwnedUsersId  where t.rn between  (@pagesize*(@pagenumber-1)+1) and (@pagesize*@pagenumber)");
+            strSql.Append(")T inner join [dbo].[Flower] u on u.ID=T.FlowerNumber   where t.rn between  (@pagesize*(@pagenumber-1)+1) and (@pagesize*@pagenumber)");
 
             return Factory.DBHelper.Query<Model.FlowerTreatment>(SQLConString, strSql.ToString(), new DynamicParameters(new { pagenumber, pagesize }));
-        }
-        /// <summary>
-        /// 管理员养护列表
-        /// </summary>
-        /// <param name="pagesize"></param>
-        /// <param name="pagenumber"></param>
-        /// <param name="StrWhere"></param>
-        /// <returns></returns>
-        public List<Model.FlowerTreatment> MTreatmentList(int pagesize, int pagenumber, string StrWhere)
-        {
-            StringBuilder strSql = new StringBuilder();
-            strSql.Append("SELECT T.* FROM ( SELECT ROW_NUMBER() over(order by id desc) as rn ,* FROM FlowerTreatment");
-            if (!string.IsNullOrEmpty(StrWhere))
-            {
-                strSql.Append(" where  1=1 " + StrWhere);
-            }
-            strSql.Append(")T  where  t.rn between  (@pagesize*(@pagenumber-1)+1) and (@pagesize*@pagenumber)");
-
-            return Factory.DBHelper.Query<Model.FlowerTreatment>(SQLConString, strSql.ToString(), new DynamicParameters(new { pagenumber, pagesize }));
-        }       
+        }            
         /// <summary>
         /// 获得总记录数
         /// </summary>
@@ -191,7 +172,7 @@ ContentMsg=@ContentMsg,OwnedUsersRealName=@OwnedUsersRealName,OwnedUsersId=@Owne
             return FlowerTreatmentList.Count() > 0 ? FlowerTreatmentList[0] : null;
         }
         /// <summary>
-        /// 通过花卉id查询开始养护记录
+        /// 通过id查询开始养护记录
         /// </summary>        
         /// <returns></returns>
         public Model.FlowerTreatment GetModelbyid(string ArrangementId, string ownedUsersId, string usersid)
@@ -204,7 +185,21 @@ ContentMsg=@ContentMsg,OwnedUsersRealName=@OwnedUsersRealName,OwnedUsersId=@Owne
                 usersid
             }));
             return FlowerTreatmentList.Count() > 0 ? FlowerTreatmentList[0] : null;
-        }              
+        }
+        /// <summary>
+        /// 通过id查询养护记录(包括开始养护和服务前)
+        /// </summary>        
+        /// <returns></returns>
+        public Model.FlowerTreatment GetModelbyid(string ArrangementId, string ownedUsersId)
+        {
+            const string sql = @"SELECT top 1 * FROM  FlowerTreatment WHERE ArrangementId=@ArrangementId and OwnedUsersId=@ownedUsersId  order by time desc ";
+            List<Model.FlowerTreatment> FlowerTreatmentList = Factory.DBHelper.Query<Model.FlowerTreatment>(SQLConString, sql.ToString(), new DynamicParameters(new
+            {
+                ArrangementId,
+                ownedUsersId,                
+            }));
+            return FlowerTreatmentList.Count() > 0 ? FlowerTreatmentList[0] : null;
+        }
         /// <summary>
         /// 结束养护花卉
         /// </summary>     
@@ -224,12 +219,14 @@ ContentMsg=@ContentMsg,OwnedUsersRealName=@OwnedUsersRealName,OwnedUsersId=@Owne
         /// </summary>     
         public bool AddServerPhoto(Model.FlowerTreatment FlowerTreatment)
         {
-            const string sql = @"UPDATE  FlowerTreatment  SET FlowerTreatmentType=@FlowerTreatmentType,ChangePhoto=@ChangePhoto  WHERE id=@id";
+            const string sql = @"UPDATE  FlowerTreatment  SET FlowerTreatmentType=@FlowerTreatmentType,ChangePhoto=@ChangePhoto,endtime=@endtime,State=@State  WHERE id=@id";
             return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
-            {                
+            {
                 FlowerTreatment.FlowerTreatmentType,
                 FlowerTreatment.ChangePhoto,
                 FlowerTreatment.id,
+                FlowerTreatment.endtime,
+                FlowerTreatment.State
             }));
         }
     }

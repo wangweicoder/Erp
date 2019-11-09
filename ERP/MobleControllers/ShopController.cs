@@ -14,10 +14,25 @@ namespace ERP.MobleControllers
         public ActionResult Index()
         {
             Business.Sys_Flower Sys_Flower = new Business.Sys_Flower();
-
-            return View(Sys_Flower.GetFlowerList());
+            StringBuilder sb = new StringBuilder();
+            return View(Sys_Flower.GetFlowerList(1,sb.ToString()));
         }
-
+        /// <summary>
+        /// 花卉记录更多
+        /// </summary>   
+        /// <returns></returns>
+        public ActionResult GetMobleFlowerMore()
+        {
+            Business.Sys_Flower Sys_Flower = new Business.Sys_Flower();
+            StringBuilder sb = new StringBuilder();                
+            int page = int.Parse(Request["page"]);            
+            if (page > 1)
+            {
+                page = (page - 1) * 10 + 1;//按偏移量
+            }
+            List<Model.Flower> List = Sys_Flower.GetFlowerList(Convert.ToInt32(page), sb.ToString());
+            return Json(List, JsonRequestBehavior.AllowGet);
+        }
         string userid = Utility.ChangeText.GetUsersId().ToString();
 
         public ActionResult Details()
