@@ -250,7 +250,7 @@ namespace ERP.MobleControllers
                 Utility.Log.WriteTextLog("服务后提交图", "ID", Request["id"], "路径", FlowerTreatment.ChangePhoto);
                 if (Sys_FlowerTreatment.AddServerPhoto(FlowerTreatment))
                 {                                  
-                    return RedirectToAction("TreatRecord", "MFlower", new { ArrangementId = FlowerTreatment.CompanyName });
+                    return RedirectToAction("TreatRecord", "MFlower", new { ArrangementId = FlowerTreatment.CompanyName ,s="add" });
                 }
             }
             catch (Exception ex)
@@ -417,7 +417,7 @@ namespace ERP.MobleControllers
                 sb.Append(" and time >2019");
             }
             int page = int.Parse(Request["page"]);            
-            List<Model.FlowerTreatment> List = Sys_FlowerTreatment.MFlowerTreatmentList(1, page, sb.ToString());
+            List<Model.FlowerTreatment> List = Sys_FlowerTreatment.MFlowerTreatmentList(10, page, sb.ToString());
             return Json(List, JsonRequestBehavior.AllowGet);
         }
         // <summary>

@@ -332,6 +332,7 @@
             function ksyh()
             {
                 $this = $(".ksyh");
+                $this.unbind("click"); //移除click
                  $.ajax({
                      url: "/MFlower/StartCurFlowers?ownedUsersId=@Model.belongUsersId&arrid=@Model.id",
                      type: "get",
@@ -339,8 +340,7 @@
                      success: function (data, state) {
                          if (data == "1") {  
                              var i = 10;
-                             //console.log('k', i);
-                             $this.unbind("click"); //移除click
+                             //console.log('k', i);                           
                              //设置定时器
                              var btnTimer = null;
                              btnTimer= setInterval(function () {
@@ -372,6 +372,7 @@
             $(".endyh").on("click",endyh);
             function endyh() {
                 $this = $(".endyh");
+                $this.unbind("click"); //移除click
                 $.ajax({
                     url: "/MFlower/EndCurFlowers?ownedUsersId=@Model.belongUsersId&arrid=@Model.id",
                     type: "get",
@@ -379,7 +380,7 @@
                     success: function (data, state) {
                         if (data == "1") {
                             var i = 10;
-                            $this.unbind("click"); //移除click
+                            //$this.unbind("click"); //移除click
                             //设置定时器
                             var btnTimer = null;
                             btnTimer = setInterval(function () {
@@ -420,8 +421,9 @@
                     type: "get",
                     dataType: "json",
                     success: function (res, state) {
+                        $(".iconfontdi").unbind('click');
                         if (res.data != "0") {
-                            layer.msg('提交成功');
+                            layer.msg('提交成功');                          
                             Appraisecount();
                         } else {
                             layer.msg('今日已评价');
@@ -479,7 +481,7 @@
                 if (response == "1") {
                     layer.msg('提交成功');
                     //客户
-                    //$('.hehu div').text('正在维护中……');
+                    $("#remarks").val("");
                     $("#xyhh").html("植物问题已提交，请您耐心等待……");
                 }
                 else {

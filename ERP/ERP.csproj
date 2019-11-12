@@ -2050,7 +2050,6 @@
     <Content Include="Views\MMIndex\webup.cshtml" />
     <Content Include="Views\MFlower\AddServerPhoto.cshtml" />
     <Content Include="Views\MFlower\TreatRecord.cshtml" />
-    <Content Include="Views\MFlower\CusTreatRecord.cshtml" />
     <Content Include="Views\MFlower\SetFlowerBad.cshtml" />
   </ItemGroup>
   <ItemGroup>

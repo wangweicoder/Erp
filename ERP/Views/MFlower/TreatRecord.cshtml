@@ -104,7 +104,14 @@
 <body>
     <header id="header" style="">
         <div class="topbar">
-            <a href="javascript:history.back();" class="back_btn"><i class="iconfont">ş</i></a>
+            @if (Request["s"] != null && Request["s"] == "add")
+            {
+                 <a href="/MMain/GetArrangementInfo?ArrangementId=@ViewBag.arrid" class="back_btn"><i class="iconfont">ş</i></a>
+            }
+            else
+            {
+                <a href="javascript:history.back();" class="back_btn"><i class="iconfont">ş</i></a>
+            }
             <a href="/MLogin/Index?ArrangementId=@ViewBag.arrid" style="float: right;margin: 12px;">退出</a>
             <h1 class="page_title">养护记录</h1>
         </div>

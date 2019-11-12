@@ -39,7 +39,10 @@ namespace ERP.MobleControllers
                 Session["UserName"] = UserAdmin.UserName;
                 Session["RealName"] = UserAdmin.RealName;
                 Session["RoleCode"] = UserAdmin.RoleCode;
-                Sys_UserAdmin.UpdateOpenId(Session["OpenId"] != null ? Session["OpenId"].ToString() : "", UserAdmin.ID);
+                if (string.IsNullOrEmpty(UserAdmin.OpenId))
+                {
+                    Sys_UserAdmin.UpdateOpenId(Session["OpenId"] != null ? Session["OpenId"].ToString() : "", UserAdmin.ID);
+                }
                 //记录日志  跳转界面
                 Business.Sys_UsersLoginLog Sys_Userlog = new Business.Sys_UsersLoginLog();
                 Model.UsersLoginLog model = new Model.UsersLoginLog();
