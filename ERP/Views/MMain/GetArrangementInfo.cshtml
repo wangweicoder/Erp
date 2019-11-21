@@ -316,10 +316,12 @@
             var fangfa = $("#fangfa").html();
             var reg = /\d+/g;
             var ms = fangfa.match(reg);
-            for (var i = 0; i < ms.length; i++) {
-                fangfa = fangfa.replace(ms[i], "<span class='changec'>" + ms[i] + "</span>");
+            if (ms != undefined) {
+                for (var i = 0; i < ms.length; i++) {
+                    fangfa = fangfa.replace(ms[i], "<span class='changec'>" + ms[i] + "</span>");
+                }
+                $("#fangfa").html(fangfa);
             }
-            $("#fangfa").html(fangfa);
             //数字转换星期
             var oldv = $("#kly").text().trim();
             var show_day = new Array('一', '二', '三', '四', '五', '六', '日');
