@@ -183,9 +183,9 @@
             <p>
             </p>*@
             <div class="appraise" style="float:right;">
-                <a href="javascript:void(0)"><span class="iconfontdi icon-dianzan">5</span></a>
+                <a href="javascript:void(0)"><span class="iconfontdi icon-dianzan">0</span></a>
 
-                <a href="javascript:void(0)"> <span class="iconfontca icon-dianzan_active">1</span></a>
+                <a href="javascript:void(0)"> <span class="iconfontca icon-dianzan_active">0</span></a>
             </div>
         </div>
         
@@ -317,8 +317,10 @@
             $(".product").height(width);//2019-1105第一栏白色区域高度
             //数字变颜色
             var fangfa = $("#fangfa").html();
-            var reg = /\d+/g;
-            var ms = fangfa.match(reg);
+            if (fangfa != undefined) {
+                var reg = /\d+/g;
+                var ms = fangfa.match(reg);
+            }
             if (ms != undefined) {
                 for (var i = 0; i < ms.length; i++) {
                     fangfa = fangfa.replace(ms[i], "<span class='changec'>" + ms[i] + "</span>");
@@ -621,7 +623,7 @@
                  if (res.gcount != "0") {
                      $('.iconfontdi').text(res.gcount);
                  }
-                 else if(reg.bcount!=0){
+                 else if(res.bcount!=0){
                      $(".iconfontca").text(res.bcount);
                  }
              },
