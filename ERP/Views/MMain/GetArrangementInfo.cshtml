@@ -7,7 +7,7 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>商品详情</title>
+    <title>花卉详情</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <link href="~/layui/css/layui.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?version=847" />
@@ -152,9 +152,13 @@
                         </ul>
                     </div>
                     <div class="pro_img_nav">
-                 @*<i class="iconfont pro_img_item cur">Ƴ</i>
-                  <i class="iconfont pro_img_item">Ƴ</i>
-                System.Web.HttpUtility.UrlEncode(Model.OwnedCompany, System.Text.Encoding.UTF8)*@
+                        @*<i class="iconfont pro_img_item cur">Ƴ</i>
+              <i class="iconfont pro_img_item">Ƴ</i>
+            System.Web.HttpUtility.UrlEncode(Model.OwnedCompany, System.Text.Encoding.UTF8)*@
+                    </div>
+                    <div class="appraise" style="float:right;">
+                        <a href="javascript:void(0)"><span class="iconfontdi icon-dianzan">0</span></a>
+                        <a href="javascript:void(0)"> <span class="iconfontca icon-dianzan_active">0</span></a>
                     </div>
                 </div>
             </div>
@@ -182,11 +186,7 @@
           </div>
             <p>
             </p>*@
-            <div class="appraise" style="float:right;">
-                <a href="javascript:void(0)"><span class="iconfontdi icon-dianzan">0</span></a>
-
-                <a href="javascript:void(0)"> <span class="iconfontca icon-dianzan_active">0</span></a>
-            </div>
+            
         </div>
         
         <div class="jb_canshu">            
@@ -194,6 +194,10 @@
                 @if (!string.IsNullOrEmpty(Model.OwnedCompany))
                 {
                     <li>【单位】@Model.OwnedCompany </li>
+                }
+                 @if (!string.IsNullOrEmpty(Model.arrangement))
+                {
+                    <li>【位置】@Model.arrangement </li>
                 }
                 @if (!string.IsNullOrEmpty(Model.XiXin))
                 {
@@ -231,7 +235,7 @@
             if (ViewData["IsAllower"].ToString() == "1")
             {
             <div>
-                <span style="font-size:15px;font-weight:600">养护花卉:</span>
+                <span style="font-size:15px;font-weight:600"></span>
             </div>
             @*<div class="layui-upload" style="text-align:center;">
             <button type="button" class="layui-btn upload" id="test8">+上传图片</button>
@@ -266,7 +270,7 @@
             </div>
             <div id="serverbefor" style="padding-top:10px;height:200px;">
                 <textarea id="remarks" maxlength="12" style="margin: 0px auto;text-align:left; height: 105px; width: 98%;
-            border:1px solid #e6dddd; border-collapse:collapse; background-color: #eff2f5" placeholder="这一刻的想法..."></textarea>
+            border:0px solid #e6dddd; border-collapse:collapse; " placeholder="可填写：植物缺水枯萎、环境冷需撤离等"></textarea>
                 <div id="uploader-demo" style="">
                     <!--用来存放item-->
                     <div style="height:2px;"><img src="" /></div>
@@ -280,11 +284,11 @@
             </div>
 
             }
-            else
+            else  //客户
             {
         <div id="xyhh" style="padding-top:10px;height:200px;">
             <textarea id="remarks" maxlength="12" style="margin: 0px auto;text-align:left; height: 105px; width: 98%;
-                border:1px solid #e6dddd; border-collapse:collapse; background-color: #eff2f5" placeholder="这一刻的想法..."></textarea>
+                border:0px solid #e6dddd; border-collapse:collapse; " placeholder="可填写：植物缺水枯萎、环境冷需撤离等"></textarea>
             <div id="uploader-demo" style="">
                 <!--用来存放item-->
                 <div id="fileList" class="uploader-list"></div>

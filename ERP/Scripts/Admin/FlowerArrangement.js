@@ -49,7 +49,7 @@ var TableInit = function () {
             showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
             cardView: false,                    //是否显示详细视图
             detailView: false,                   //是否显示父子表
-            singleSelect: false,
+            singleSelect: false,                 //是否单选
             columns: [{
                 checkbox: true
             }, {
@@ -253,7 +253,7 @@ $(function () {
     });
     $("#btn_edit").click(function () {
         var ids = $("#tb_departments").bootstrapTable('getSelections');
-        console.log(ids);
+        //console.log(ids);
         if (ids.length == 0) {
             parent.layer.msg('请先选中一行');
             return false;
@@ -302,21 +302,26 @@ $(function () {
         var ids = $("#tb_departments").bootstrapTable('getSelections');
         if (ids.length == 0) {
             parent.layer.msg('请先选中一行');
-            return false;
-        } else if (ids.length > 1) {
-            parent.layer.msg('请选中一行,不可多行删除');
-            return false;
+            return false;        
         }
         parent.layer.confirm('删除?', {
             btn: ['确定', '取消'] //按钮
         }, function () {
+            var id = '';
+            for (var i = 0; i < ids.length; i++) {
+                id += ids[i].id + ",";
+            }
+            id = id.substr(0, id.length - 1);
             $.ajax({
-                url: '/FlowerArrangement/Delete?id=' + ids[0].id,
+                url: '/FlowerArrangement/Delete?ids=' +id,
                 async: false,
                 success: function (data) {
+                    if (data == "1") {
+                        onloadTable();
+                    } else {
+                        parent.layer.msg(data);
+                    }                    
                     parent.layer.closeAll();
-                    onloadTable();
-                    // parent.layer.closeAll();
                 }
             })
 

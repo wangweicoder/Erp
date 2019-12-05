@@ -8,19 +8,10 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
-    @*加载表格*@
-    @Scripts.Render("~/plugins/jQuery/jquery-2.2.3.min.js")
+
     <link href="~/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" />
     @Styles.Render("~/Bootstrap/css/bootstrap.css")
-    @Scripts.Render("~/Bootstrap/js/bootstrap.js")
-
-    @Styles.Render("~/Bootstrap/bootstrap-table/bootstrap-table.css")
-    @Scripts.Render("~/Bootstrap/bootstrap-table/bootstrap-table.js")
-    @*加载弹出层*@
-    @Scripts.Render("~/Thems/js/layer/layer.js")
-
-    <script src="~/Scripts/Admin/FlowerTreatment.js"></script>
-    <script src="~/My97DatePicker/WdatePicker.js"></script>
+    @Styles.Render("~/Bootstrap/bootstrap-table/bootstrap-table.css")   
 </head>
 <body>
     <div class="panel-body" style="padding-bottom:0px;">
@@ -45,7 +36,7 @@
                             养护时间
                         </label>
                         <div class="col-sm-2">
-                            <input type="text" id="time" name="time" onfocus="WdatePicker()"/>
+                            <input type="text" id="time" name="time" onfocus="WdatePicker()" />
                         </div>
                         <div class="col-sm-2" style="text-align:left;">
                             <button type="button" class="btn btn-default" onclick="onloadTable();">
@@ -66,8 +57,15 @@
         </div>
         <table id="tb_departments" data-reorderable-columns="true"></table>
 
-
+        <div id="PhotoShowDiv"><img src="" id="ShowPhotoImg" style="max-height:500px;max-width:400px;" /></div>
     </div>
+    @*加载表格*@
+    @Scripts.Render("~/plugins/jQuery/jquery-2.2.3.min.js")
+    @Scripts.Render("~/Bootstrap/js/bootstrap")
+    @*加载弹出层*@
+    @Scripts.Render("~/Thems/js/layer/layer.js")
+    <script src="~/Scripts/Admin/FlowerTreatment.js?v=1"></script>
+    <script src="~/My97DatePicker/WdatePicker.js"></script>
     <script>
         $(function () {
             onloadTable();
@@ -98,8 +96,13 @@
                 parent.layer.confirm('删除当前记录?', {
                     btn: ['确定', '取消'] //按钮
                 }, function () {
+                    var id = '';
+                    for (var i = 0; i < ids.length; i++) {
+                        id += ids[i].id + ",";
+                    }
+                    id = id.substr(0, id.length - 1);
                     $.ajax({
-                        url: '/FlowerTreatment/DeleteInfo?id=' + ids[0].id,
+                        url: '/FlowerTreatment/DeleteInfo?ids=' + id,
                         async: false,
                         success: function (data) {
                             if (data == "1") {
@@ -115,7 +118,23 @@
                 }, function () {
                 });
             });
-        })
+        });
+        function ShowPhotoInfo(values) {
+            parent.layer.closeAll();
+            $("#ShowPhotoImg").attr("src", values);
+            parent.layer.open({
+                type: 1,
+                shade: false,
+                offset: ['120px', '500px'],
+                title: false, //不显示标题
+                content: $('#PhotoShowDiv').html(), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
+                cancel: function () {
+
+                }
+            });
+            $("#ShowPhotoImg").attr("src", "");
+        }
+
         function ShowMsg(msg) {
             parent.layer.alert(msg, {
                 skin: 'layui-layer-lan'

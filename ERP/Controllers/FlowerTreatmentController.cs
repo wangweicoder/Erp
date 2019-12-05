@@ -170,13 +170,44 @@ namespace ERP.Controllers
 
         public ActionResult DeleteInfo()
         {
-            string id = Request["id"];
-            Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
-            if (Sys_FlowerTreatment.DeleteInfo(id))
+            string ids = Request["ids"];
+            try
             {
+                string strwhere = " id in(" + ids + ")";
+                Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
+                List<Model.FlowerTreatment> list = Sys_FlowerTreatment.FlowerTreatmentList(strwhere);
+                foreach (var item in list)
+                {
+                    if (Sys_FlowerTreatment.DeleteInfo(item.id.ToString()))
+                    {
+                        if (item.Photo != null && !string.IsNullOrEmpty(item.Photo))
+                        {
+                            DeleteFlowerPhoto(item.Photo);
+                        }
+                        if (item.ChangePhoto != null && !string.IsNullOrEmpty(item.ChangePhoto))
+                        {
+                            DeleteFlowerPhoto(item.ChangePhoto);
+                        }                        
+                    }
+                }
                 return Content("1");
             }
-            return Content("0");
+            catch (Exception ex) {
+                return Content("0");
+            }
+        }
+        /// <summary>
+        /// 删除图片
+        /// </summary>
+        /// <param name="photourl"></param>
+        private void DeleteFlowerPhoto(string photourl)
+        {
+            string path = Server.MapPath("~") + photourl;
+            //删除图片
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
         }
         /// <summary>
         /// 绑定养护人、客户

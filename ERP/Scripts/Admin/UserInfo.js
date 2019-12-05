@@ -49,8 +49,8 @@ var TableInit = function () {
             uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
             showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
             cardView: false,                    //是否显示详细视图
-            detailView: false,                   //是否显示父子表
-            singleSelect: true,
+            detailView: false,                  //是否显示父子表
+            singleSelect: false,                 //是否单选
             columns: [{
                 checkbox: true
             }, {

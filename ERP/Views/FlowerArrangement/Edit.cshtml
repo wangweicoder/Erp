@@ -28,28 +28,28 @@
             layer.msg('位置不能为空');
             return false;
         }
-        if ($("#Specifications").val().length == 0) {
-            layer.msg('规格不能为空');
-            return false;
-        }
-        if ($("#UnitPrice").val() != "") {
-            if (!isMoney($("#UnitPrice").val())) {
-                layer.msg('单价输入格式不正确');
-                return false;
-            }
-        }
-        if ($("#Count").val() != "") {
-            if (!isNumber($("#Count").val())) {
-                layer.msg('数量输入格式不正确');
-                return false;
-            }
-        }
-        if ($("#Total").val() != "") {
-            if (!isMoney($("#Total").val())) {
-                layer.msg('合计输入格式不正确');
-                return false;
-            }
-        }
+        //if ($("#Specifications").val().length == 0) {
+        //    layer.msg('规格不能为空');
+        //    return false;
+        //}
+        //if ($("#UnitPrice").val() != "") {
+        //    if (!isMoney($("#UnitPrice").val())) {
+        //        layer.msg('单价输入格式不正确');
+        //        return false;
+        //    }
+        //}
+        //if ($("#Count").val() != "") {
+        //    if (!isNumber($("#Count").val())) {
+        //        layer.msg('数量输入格式不正确');
+        //        return false;
+        //    }
+        //}
+        //if ($("#Total").val() != "") {
+        //    if (!isMoney($("#Total").val())) {
+        //        layer.msg('合计输入格式不正确');
+        //        return false;
+        //    }
+        //}
         return true;
     }
 </script>
@@ -72,7 +72,7 @@
                      @Html.HiddenFor(m => m.ImgORCodePath)
                 </div>
             </div>
-            <div style="width:50%;float:left">
+            @*<div style="width:50%;float:left">
                 <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>规格</span>
                 <div class="col-sm-6">
                     @Html.TextBoxFor(m => m.Specifications, new { @class = "form-control" })
@@ -95,7 +95,7 @@
                 <div class="col-sm-6">
                     @Html.TextBoxFor(m => m.Total, new { @class = "form-control" })
                 </div>
-            </div>
+            </div>*@
             <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>备注</span>
             <div class="col-sm-6">
                 @Html.TextAreaFor(m => m.Remark, new { @class = "form-control" })

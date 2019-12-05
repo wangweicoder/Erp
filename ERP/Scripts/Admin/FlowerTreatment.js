@@ -62,7 +62,7 @@ var TableInit = function () {
             showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
             cardView: false,                    //是否显示详细视图
             detailView: false,                   //是否显示父子表
-            singleSelect: true,
+            singleSelect: false,                  //是否单选
             columns: [{
                 checkbox: true
             }, {
@@ -71,27 +71,48 @@ var TableInit = function () {
             }, {
                 field: 'UserRealName',
                 title: '养护人'
-            }
-            , {
-                field: 'FlowerTreatmentAddress',
-                title: '养护地址'
-            }, {
+            },
+            {
                 field: 'CompanyName',
                 title: '养护所属客户名称'
             }
             , {
                 field: 'ContentMsg',
                 title: '养护内容'
+            },
+            {
+                field: 'FlowerTreatmentAddress',
+                title: '摆放位置'
             }
-            //, {
-            //    field: 'ChangePhoto',
-            //    title: '养护之后图片', formatter: function (value, row, index) {
-            //        return '<img style="height:40px;width:40px"  src="' + value + '" />';
-            //    }
-            //}
             , {
-                field: 'time',
-                title: '操作时间', formatter: function (value, row, index) {
+                field: 'FlowerTreatmentType',
+                title:'养护类型'
+            }
+            ,{
+                field: 'Photo',
+                title: '服务前图片', formatter: function (value, row, index) {
+                    return ' <a onclick="ShowPhotoInfo(\'' + value + '\')"  href="javascript:void(0)"><img style="height:40px;width:40px"  src="' + value + '" /></a>';
+                }
+            }
+            ,{
+                field: 'ChangePhoto',
+                title: '服务后图片', formatter: function (value, row, index) {
+                    return ' <a onclick="ShowPhotoInfo(\'' + value + '\')"  href="javascript:void(0)"><img style="height:40px;width:40px"  src="' + value + '" /></a>';
+                }
+            }
+             , {
+                 field: 'State',
+                 title: '状态'
+             }
+            , {
+                field: 'starttime',
+                title: '开始养护时间', formatter: function (value, row, index) {
+                    return jsonDateFormat(value);
+                }
+            }
+            , {
+                field: 'endtime',
+                title: '结束养护时间', formatter: function (value, row, index) {
                     return jsonDateFormat(value);
                 }
             }

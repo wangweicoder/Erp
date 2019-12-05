@@ -7,21 +7,9 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-    @*加载表格*@
-    @Scripts.Render("~/plugins/jQuery/jquery-2.2.3.min.js")
-
-    @Styles.Render("~/Bootstrap/css/bootstrap.css")
-    @Scripts.Render("~/Bootstrap/js/bootstrap.js")
-
-    @Styles.Render("~/Bootstrap/bootstrap-table/bootstrap-table.css")
-    @Scripts.Render("~/Bootstrap/bootstrap-table/bootstrap-table.js")
-    @*加载弹出层*@
-    @Scripts.Render("~/Thems/js/layer/layer.js")
-    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">*@
-    <script src="~/Scripts/Admin/UserInfo.js"></script>
-
+    <title>Index</title> 
+    @Styles.Render("~/Bootstrap/css/bootstrap.css")   
+    @Styles.Render("~/Bootstrap/bootstrap-table/bootstrap-table.css")    
 </head>
 <body>
     <div class="panel-body" style="padding-bottom:0px;">
@@ -71,6 +59,12 @@
         </div>
         <table id="tb_departments" data-reorderable-columns="true"></table>
     </div>
+    @*加载表格*@
+    @Scripts.Render("~/plugins/jQuery/jquery-2.2.3.min.js")
+    @Scripts.Render("~/Bootstrap/js/bootstrap")
+    @*加载弹出层*@
+    @Scripts.Render("~/Thems/js/layer/layer.js")
+    <script src="~/Scripts/Admin/UserInfo.js?v=1"></script>
     <script>
         $(function () {
             onloadTable();
@@ -110,12 +104,17 @@
                 if (ids.length == 0) {
                     parent.layer.msg('请先选中一行');
                     return false;
-                }   
-                parent.layer.confirm('删除当前管理员?', {
+                }
+                parent.layer.confirm('删除当前用员?', {
                     btn: ['确定', '取消'] //按钮
                 }, function () {
+                    var id = '';
+                    for (var i = 0; i < ids.length; i++) {
+                        id += ids[i].ID + ",";
+                    }
+                    id = id.substr(0, id.length - 1);
                     $.ajax({
-                        url: '/UserInfo/DeleteUserAdminInfo?UsersId=' + ids[0].ID,
+                        url: '/UserInfo/DeleteUserAdminInfo?UsersId=' + id,
                         async: false,
                         success: function (data) {
                             parent.layer.closeAll();

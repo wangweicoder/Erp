@@ -150,31 +150,31 @@ namespace ERP.MobleControllers
                     FlowerTreatment.OwnedCompany = UserAdmin.OwnedCompany;
                     FlowerTreatment.LogoPhoto = UserAdmin.LogoPhoto;
                     FlowerTreatment.starttime = DateTime.Now;//记录开始养护时间
-                    //同一登录人，同一公司，一天只能提交一次
-                    StringBuilder stb = new StringBuilder();
-                    if (userid != 0)
-                    {
-                        stb.Append(" t.UsersId=" + userid + "");
-                    }
-                    if (!string.IsNullOrEmpty(FlowerTreatment.OwnedUsersId))
-                    {
-                        stb.Append(" and t.OwnedUsersId='" + FlowerTreatment.OwnedUsersId + "'");
-                    }
-                    string dt = DateTime.Now.ToShortDateString();
-                    {
-                        stb.Append(" and time>'" + dt + "'");
-                    }
-                    stb.Append(" and starttime !='' ");
-                    Utility.Log.WriteTextLog("开始养护花卉", "arrid", arrid, "stb", stb.ToString());
-                    if (Sys_FlowerTreatment.FlowerTreatmentList(stb.ToString()).Count == 0)
-                    {
+                    ////同一登录人，同一公司，一天只能提交一次
+                    //StringBuilder stb = new StringBuilder();
+                    //if (userid != 0)
+                    //{
+                    //    stb.Append(" t.UsersId=" + userid + "");
+                    //}
+                    //if (!string.IsNullOrEmpty(FlowerTreatment.OwnedUsersId))
+                    //{
+                    //    stb.Append(" and t.OwnedUsersId='" + FlowerTreatment.OwnedUsersId + "'");
+                    //}
+                    //string dt = DateTime.Now.ToShortDateString();
+                    //{
+                    //    stb.Append(" and time>'" + dt + "'");
+                    //}
+                    //stb.Append(" and starttime !='' ");
+                    //Utility.Log.WriteTextLog("开始养护花卉", "arrid", arrid, "stb", stb.ToString());
+                    //if (Sys_FlowerTreatment.FlowerTreatmentList(stb.ToString()).Count == 0)
+                    //{
                         Sys_FlowerTreatment.InsertFlowerTreatment(FlowerTreatment);
                         return Content("1");
-                    }
-                    else
-                    {
-                        return Content("0");//今天已经开始养护过了
-                    }
+                    //}
+                    //else
+                    //{
+                    //    return Content("0");//今天已经开始养护过了
+                    //}
                 }
             }
             catch {

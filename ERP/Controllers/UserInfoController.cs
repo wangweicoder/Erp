@@ -67,14 +67,23 @@ namespace ERP.Controllers
         /// <returns></returns>
         public ActionResult DeleteUserAdminInfo()
         {
-            ViewData["deptSelectItems"] = GetdeptSelectItems();
-            int ID = int.Parse(Request["UsersId"]);
-            Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
-            if (Sys_UserAdmin.DeleteUserAdminInfo(ID))
+            ViewData["deptSelectItems"] = GetdeptSelectItems();          
+            string ids = Request["UsersId"];
+            try
             {
+                string strwhere = "and id in(" + ids + ")";
+                Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
+                List<Model.UserAdmin> list = Sys_UserAdmin.GetUserAdminList(strwhere);
+                foreach (var item in list)
+                {
+                    Sys_UserAdmin.DeleteUserAdminInfo(item.ID);                    
+                }
                 return Content("True");
             }
-            return Content("False");
+            catch (Exception ex)
+            {
+                return Content("False");
+            }
         }
 
         public ActionResult Edit()

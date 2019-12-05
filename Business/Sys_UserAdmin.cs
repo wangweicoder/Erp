@@ -156,9 +156,7 @@ namespace Business
         /// 分页获得数据信息
         /// </summary>
         /// <param name="limit">页码大小</param>
-        /// <param name="offset">第几页</param>
-        /// <param name="UserName">用户名</param>
-        /// <param name="Role">角色ID</param>
+        /// <param name="offset">第多少条</param>        
         /// <returns></returns>
         public List<Model.UserAdmin> UserAdminList(int limit, int offset, string StrWhere)  
         {
@@ -172,9 +170,28 @@ namespace Business
             {
                 strSql.Append(" where  1=1 " + StrWhere);
             }
-            strSql.Append(")T where t.rn between   @offset and (@offset+9)");
-            return Factory.DBHelper.Query<Model.UserAdmin>(SQLConString, strSql.ToString(), new DynamicParameters(new { offset }));
+            strSql.Append(")T where t.rn between   @offset and (@offset+@limit-1)");
+            return Factory.DBHelper.Query<Model.UserAdmin>(SQLConString, strSql.ToString(), new DynamicParameters(new { offset,limit
+            }));
         }
+        /// <summary>
+        /// 获得数据
+        /// </summary>       
+        /// <returns></returns>
+        public List<Model.UserAdmin> GetUserAdminList( string StrWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("SELECT  UserAdmin.IsEnable,UserAdmin.ID,UserAdmin.UserName,UserAdmin.RealName,");
+            strSql.Append(" UserAdmin.CheckAddress,UserAdmin.RoleName,");
+            strSql.Append(" UserAdmin.OwnedCompany,UserAdmin.WorkRealName,");
+            strSql.Append(" UserAdmin.WorkUsersId,UserAdmin.LogoPhoto,UserAdmin.Weekly  FROM UserAdmin");
+            if (!string.IsNullOrEmpty(StrWhere))
+            {
+                strSql.Append(" where  1=1 " + StrWhere);
+            }          
+            return Factory.DBHelper.Query<Model.UserAdmin>(SQLConString, strSql.ToString(),new DynamicParameters ());
+        }
+
         #endregion
 
         #region 写

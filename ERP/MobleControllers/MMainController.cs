@@ -23,9 +23,8 @@ namespace ERP.MobleControllers
                 {
                     //DateTime dt = Sys_FlowerArrangement.GetFlowerTreatmentModel(FlowerArrangement.belongUsersId.ToString()).time;                  
                     Model.FlowerTreatment FlowerTreatment = new Model.FlowerTreatment();
-                    Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
-                    string userid = Utility.ChangeText.GetUsersId().ToString();
-                    FlowerTreatment = Sys_FlowerTreatment.GetModelbyid(id, FlowerArrangement.belongUsersId.ToString(),userid);
+                    Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();                  
+                    FlowerTreatment = Sys_FlowerTreatment.GetModelbyOwnid(FlowerArrangement.belongUsersId.ToString());
                     if (FlowerTreatment != null)
                     {
                         if (FlowerTreatment.starttime != null && FlowerTreatment.endtime == null)//没有结束养护时间

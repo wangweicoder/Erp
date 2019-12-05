@@ -66,10 +66,8 @@ namespace Business
             return FlowerTreatmentList.Count() > 0 ? FlowerTreatmentList[0].id : 0;
         }
         /// <summary>
-        /// 分页查询
+        /// 按条件查询
         /// </summary>
-        /// <param name="limit"></param>
-        /// <param name="offset"></param>
         /// <param name="StrWhere"></param>
         /// <returns></returns>
         public List<Model.FlowerTreatment> FlowerTreatmentList(string StrWhere)
@@ -172,7 +170,7 @@ ContentMsg=@ContentMsg,OwnedUsersRealName=@OwnedUsersRealName,OwnedUsersId=@Owne
             return FlowerTreatmentList.Count() > 0 ? FlowerTreatmentList[0] : null;
         }
         /// <summary>
-        /// 通过id查询开始养护记录
+        /// 通过摆放id查询开始养护记录
         /// </summary>        
         /// <returns></returns>
         public Model.FlowerTreatment GetModelbyid(string ArrangementId, string ownedUsersId, string usersid)
@@ -187,15 +185,14 @@ ContentMsg=@ContentMsg,OwnedUsersRealName=@OwnedUsersRealName,OwnedUsersId=@Owne
             return FlowerTreatmentList.Count() > 0 ? FlowerTreatmentList[0] : null;
         }
         /// <summary>
-        /// 通过id查询养护记录(包括开始养护和服务前)
+        /// 通过客户id查询养护记录(公司有一盆花开始养护，其他花也在养护)
         /// </summary>        
         /// <returns></returns>
-        public Model.FlowerTreatment GetModelbyid(string ArrangementId, string ownedUsersId)
+        public Model.FlowerTreatment GetModelbyOwnid(string ownedUsersId)
         {
-            const string sql = @"SELECT top 1 * FROM  FlowerTreatment WHERE ArrangementId=@ArrangementId and OwnedUsersId=@ownedUsersId  order by time desc ";
+            const string sql = @"SELECT top 1 * FROM  FlowerTreatment WHERE OwnedUsersId=@ownedUsersId and FlowerTreatmentType ='开始养护' order by time desc ";
             List<Model.FlowerTreatment> FlowerTreatmentList = Factory.DBHelper.Query<Model.FlowerTreatment>(SQLConString, sql.ToString(), new DynamicParameters(new
             {
-                ArrangementId,
                 ownedUsersId,                
             }));
             return FlowerTreatmentList.Count() > 0 ? FlowerTreatmentList[0] : null;

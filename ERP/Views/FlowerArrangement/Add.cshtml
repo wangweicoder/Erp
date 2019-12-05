@@ -14,28 +14,28 @@
                 layer.msg('位置不能为空');
                 return false;
         }
-        if ($("#Specifications").val().length ==0) {
-                layer.msg('规格不能为空');
-                return false;
-        }
-        if ($("#UnitPrice").val() != "") {
-            if (!isMoney($("#UnitPrice").val())) {
-                layer.msg('单价输入格式不正确');
-                return false;
-            }
-        } 
-        if ($("#Count").val() != "") {
-            if (!isNumber($("#Count").val())) {
-                layer.msg('数量输入格式不正确');
-                return false;
-            }
-        }
-        if ($("#Total").val() != "") {
-            if (!isMoney($("#Total").val())) {
-                layer.msg('合计输入格式不正确');
-                return false;
-            }
-        }
+        //if ($("#Specifications").val().length ==0) {
+        //        layer.msg('规格不能为空');
+        //        return false;
+        //}
+        //if ($("#UnitPrice").val() != "") {
+        //    if (!isMoney($("#UnitPrice").val())) {
+        //        layer.msg('单价输入格式不正确');
+        //        return false;
+        //    }
+        //} 
+        //if ($("#Count").val() != "") {
+        //    if (!isNumber($("#Count").val())) {
+        //        layer.msg('数量输入格式不正确');
+        //        return false;
+        //    }
+        //}
+        //if ($("#Total").val() != "") {
+        //    if (!isMoney($("#Total").val())) {
+        //        layer.msg('合计输入格式不正确');
+        //        return false;
+        //    }
+        //}
         return true;
     }
     ///返回主页的数据，为提交做准备
@@ -54,7 +54,7 @@
     <div class="box-body">
         <br />
         <div class="form-group" style="height:30px;width:100%;">
-            <div style="width:50%;float:left">
+            <div style="width:100%;float:left">
                 <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>位置&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <div class="col-sm-4">
                     @Html.TextBoxFor(m => m.arrangement, new { @class = "form-control" })
@@ -63,7 +63,7 @@
                 @*<span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>花卉照片</span>
             <div class="col-sm-6">
                 <input type="file" class="form-control" id="attach_path" name="attach_path" />
-            </div>*@
+            </div>
             <div style="width:50%;float:right">
                 <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>规格</span>
                 <div class="col-sm-6">
@@ -85,9 +85,9 @@
                 <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>总计</span>
                 <div class="col-sm-6">
                     @Html.TextBoxFor(m => m.Total, new { @class = "form-control" })
-                </div>
+                </div>*@
                 <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>备注</span>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     @Html.TextAreaFor(m => m.Remark, new { @class = "form-control" })
                 </div>
                 <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>对应公司</span>

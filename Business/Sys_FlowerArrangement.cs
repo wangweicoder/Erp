@@ -50,8 +50,8 @@ namespace Business
             {
                 strSql.Append(" where  1=1 " + StrWhere);
             }
-            strSql.Append(")T where t.rn between   @offset and (@offset+9)");
-            return Factory.DBHelper.Query<Model.FlowerArrangement>(SQLConString, strSql.ToString(), new DynamicParameters(new { offset }));
+            strSql.Append(")T where t.rn between   @offset and (@offset+@limit-1)");
+            return Factory.DBHelper.Query<Model.FlowerArrangement>(SQLConString, strSql.ToString(), new DynamicParameters(new { offset,limit }));
         }
         /// <summary>
         /// 查询详情

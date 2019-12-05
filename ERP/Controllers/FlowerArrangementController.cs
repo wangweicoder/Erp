@@ -109,19 +109,36 @@ namespace ERP.Controllers
             }
                 return Content("");
         }
-
-        public ActionResult Delete(string id)
+        /// <summary>
+        /// 多选删除
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public ActionResult Delete(string ids)
         {
-            Business.Sys_FlowerArrangement Sys_FlowerArrangement = new Business.Sys_FlowerArrangement();
-            Model.FlowerArrangement FlowerArrangement = Sys_FlowerArrangement.GetModel(id);
-            string path = Server.MapPath("~") + FlowerArrangement.ImgORCodePath;
-            //删除二维码图片
-            if (System.IO.File.Exists(path))
+            try
             {
-                System.IO.File.Delete(path);
+                Business.Sys_FlowerArrangement Sys_FlowerArrangement = new Business.Sys_FlowerArrangement();
+                string strwhere = "and id in(" + ids + ")";
+                List<Model.FlowerArrangement> list = Sys_FlowerArrangement.GetList(50, 1, strwhere);
+                foreach (var item in list)
+                {
+                    if (Sys_FlowerArrangement.Delete(item.id.ToString()))
+                    {
+                        string path = Server.MapPath("~") + item.ImgORCodePath;
+                        //删除二维码图片
+                        if (System.IO.File.Exists(path))
+                        {
+                            System.IO.File.Delete(path);
+                        }
+                    }
+                }
+                return Content("1");
             }
-            Sys_FlowerArrangement.Delete(id);
-            return Content("");
+            catch (Exception ex)
+            {
+                return Content(ex.Message);
+            }            
         }
         /// <summary>
         /// 获得公司json数据
