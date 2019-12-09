@@ -54,6 +54,21 @@ namespace Business
             return Factory.DBHelper.Query<Model.FlowerArrangement>(SQLConString, strSql.ToString(), new DynamicParameters(new { offset,limit }));
         }
         /// <summary>
+        /// 删除时获得多条记录
+        /// </summary>      
+        /// <param name="StrWhere"></param>
+        /// <returns></returns>
+        public List<Model.FlowerArrangement> GetList(string StrWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("SELECT  *  FROM FlowerArrangement");            
+            if (!string.IsNullOrEmpty(StrWhere))
+            {
+                strSql.Append(" where  1=1 " + StrWhere);
+            }           
+            return Factory.DBHelper.Query<Model.FlowerArrangement>(SQLConString, strSql.ToString(), new DynamicParameters(new { }));
+        }
+        /// <summary>
         /// 查询详情
         /// </summary>
         /// <param name="id"></param>
@@ -101,7 +116,7 @@ namespace Business
                 FlowerArrangement.UnitPrice,
                 FlowerArrangement.Count,
                 FlowerArrangement.Total,
-                FlowerArrangement.Remark,
+                FlowerArrangement.Remark,             
                 FlowerArrangement.belongUsersId,
                 FlowerArrangement.ShopId,
 
@@ -123,7 +138,7 @@ UnitPrice=@UnitPrice,Count=@Count,Total=@Total,Remark=@Remark,belongUsersId=@bel
                 FlowerArrangement.UnitPrice,
                 FlowerArrangement.Count,
                 FlowerArrangement.Total,
-                FlowerArrangement.Remark,
+                FlowerArrangement.Remark,              
                 FlowerArrangement.belongUsersId,  
                 FlowerArrangement.ShopId,
                 FlowerArrangement.id

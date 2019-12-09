@@ -111,7 +111,7 @@ namespace ERP.Controllers
                 Model.FlowerChange FlowerChange=list.Count > 0 ? list[0] : new Model.FlowerChange();
                 if (FlowerChange.ChangePhoto!=null)
                 DeleteFlowerPhoto(FlowerChange.ChangePhoto);
-                FlowerChange.ChangePhoto = Utility.ChangeText.SaveUploadPicture(files, "attach");
+                FlowerChange.ChangePhoto = Utility.ChangeText.SaveUploadPicture(files, "changeaf");
                 Sys_FlowerChange.AddFlowerPhotoInfo(FlowerChange.Number, FlowerChange.ChangePhoto);                             
                 return Json(new { result = "OK", msg = "更换花卉成功" }, "text/html", JsonRequestBehavior.AllowGet);
             }

@@ -51,6 +51,12 @@
             <button id="btn_edit" type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 修改
             </button>
+            <button id="btn_serverbefor" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>修改服务前的图片
+            </button>
+            <button id="btn_serverafter" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>修改服务后的图片
+            </button>
             <button id="btn_delete" type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 删除
             </button>
@@ -82,6 +88,50 @@
                     shade: 0.8,
                     area: ['250px;', '400px;'],
                     content: '/FlowerTreatment/Edit?id=' + ids[0].id,
+                    end: function () { //层彻底关闭后执行的回调
+                        onloadTable();
+                    }
+                });
+            });
+            //修改服务前的图片
+            $("#btn_serverbefor").click(function () {
+                var ids = $("#tb_departments").bootstrapTable('getSelections');
+                if (ids.length == 0) {
+                    parent.layer.msg('请先选中一行');
+                    return false;
+                } else if (ids.length > 1) {
+                    parent.layer.msg('请选中一行,不可多行同时编辑');
+                    return false;
+                }
+                parent.layer.open({
+                    type: 2,
+                    title: '修改服务前的图片',
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['320px;', '350px;'],
+                    content: '/FlowerTreatment/serverbefor?id=' + ids[0].id,
+                    end: function () { //层彻底关闭后执行的回调
+                        onloadTable();
+                    }
+                });
+            });
+            //修改服务后的图片
+            $("#btn_serverafter").click(function () {
+                var ids = $("#tb_departments").bootstrapTable('getSelections');
+                if (ids.length == 0) {
+                    parent.layer.msg('请先选中一行');
+                    return false;
+                } else if (ids.length > 1) {
+                    parent.layer.msg('请选中一行,不可多行同时编辑');
+                    return false;
+                }
+                parent.layer.open({
+                    type: 2,
+                    title: '修改服务后的图片',
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['320px;', '350px;'],
+                    content: '/FlowerTreatment/serverafter?id=' + ids[0].id,
                     end: function () { //层彻底关闭后执行的回调
                         onloadTable();
                     }

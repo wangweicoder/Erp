@@ -167,7 +167,66 @@ namespace ERP.Controllers
             }
             return Content("0");
         }
-
+        /// <summary>
+        /// 服务前图片
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult serverbefor()
+        {
+            
+            string id = Request["id"];
+            Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
+            Model.FlowerTreatment FlowerTreatment = Sys_FlowerTreatment.GetModel(id);
+            return View(FlowerTreatment);
+        }
+        /// <summary>
+        /// 服务后图片
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult serverafter()
+        {
+            string id = Request["id"];
+            Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
+            Model.FlowerTreatment FlowerTreatment = Sys_FlowerTreatment.GetModel(id);
+            return View(FlowerTreatment);
+        }
+        /// <summary>
+        /// 上传服务前后的图片
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Upload()
+        {
+            try
+            {
+                string FlowerTreatmentId = Request["FlowerTreatmentId"];
+                HttpPostedFileBase files = Request.Files["file"];
+                string type = Request["servertype"];
+                Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
+               
+                Model.FlowerTreatment FlowerTreatment = Sys_FlowerTreatment.GetModel(FlowerTreatmentId.ToString());
+                if (type == "befor")//服务前图片
+                {
+                    if (!string.IsNullOrEmpty(FlowerTreatment.Photo))
+                    {
+                        DeleteFlowerPhoto(FlowerTreatment.Photo);
+                    }
+                    FlowerTreatment.Photo = Utility.ChangeText.SaveUploadPicture(files, "img");
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(FlowerTreatment.ChangePhoto))
+                        DeleteFlowerPhoto(FlowerTreatment.ChangePhoto);
+                    FlowerTreatment.ChangePhoto = Utility.ChangeText.SaveUploadPicture(files, "Serveraf");
+                }
+                Sys_FlowerTreatment.UpdateServerPhoto(FlowerTreatment);
+                return Json(new { result = "OK", msg = "更换图片成功" }, "text/html", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Utility.Log.WriteTextLog("报错", "FlowerTreatment", "upload", "后台提交服务的图片", "");
+                return null;
+            }
+        }
         public ActionResult DeleteInfo()
         {
             string ids = Request["ids"];

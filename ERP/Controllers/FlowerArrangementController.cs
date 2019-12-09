@@ -120,7 +120,7 @@ namespace ERP.Controllers
             {
                 Business.Sys_FlowerArrangement Sys_FlowerArrangement = new Business.Sys_FlowerArrangement();
                 string strwhere = "and id in(" + ids + ")";
-                List<Model.FlowerArrangement> list = Sys_FlowerArrangement.GetList(50, 1, strwhere);
+                List<Model.FlowerArrangement> list = Sys_FlowerArrangement.GetList(strwhere);
                 foreach (var item in list)
                 {
                     if (Sys_FlowerArrangement.Delete(item.id.ToString()))

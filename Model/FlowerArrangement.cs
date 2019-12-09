@@ -54,7 +54,7 @@ namespace Model
         /// <summary>
         /// 备注
         /// </summary>
-        public string Remark { set; get; }
+        public string Remark { set; get; }        
 
         /// <summary>
         /// 所属用户

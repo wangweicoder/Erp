@@ -116,5 +116,67 @@ namespace Business
             sql.Append(")t where t.rn between   @offset and (@offset+@limit)");
             return Factory.DBHelper.Query<Model.Adviertisement>(SQLConString, sql.ToString(), new DynamicParameters(new { limit, offset }));
         }
+
+        /// <summary>
+        /// 获得总记录数
+        /// </summary>
+        /// <param name="StrWhere"></param>
+        /// <returns></returns>
+        public int GetWarmCount(string StrWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("SELECT COUNT(ID) as id FROM Warm_prompt");
+            if (!string.IsNullOrEmpty(StrWhere))
+            {
+                strSql.Append(" where  1=1 " + StrWhere);
+            }
+            List<Model.Warm_prompt> FlowerList = Factory.DBHelper.Query<Model.Warm_prompt>(SQLConString, strSql.ToString(), new DynamicParameters(new { StrWhere }));
+            return FlowerList.Count() > 0 ? FlowerList[0].ID : 0;
+        }
+        /// <summary>
+        /// 获得数据信息
+        /// </summary>
+        /// <param name="limit">(@limit)必须加括号，否则报错</param>        
+        /// <returns></returns>        
+        public List<Model.Warm_prompt> GetWarmList(int limit, int offset, string StrWhere)
+        {
+            StringBuilder sql = new StringBuilder();
+            sql.Append("SELECT * FROM (SELECT ROW_NUMBER() over(order by UpdateTime desc) as rn,* FROM Warm_prompt");
+            if (!string.IsNullOrEmpty(StrWhere))
+            {
+                sql.Append(" where  1=1 " + StrWhere);
+            }
+            sql.Append(")t where t.rn between   @offset and (@offset+@limit)");
+            return Factory.DBHelper.Query<Model.Warm_prompt>(SQLConString, sql.ToString(), new DynamicParameters(new { limit, offset }));
+        }
+        /// <summary>
+        /// 写入一条记录
+        /// </summary>
+        /// <param name="Adviertisement"></param>
+        /// <returns></returns>
+        public bool InsertWarm_prompt(Model.Warm_prompt adv)
+        {
+            const string sql = @"INSERT INTO Warm_prompt(Content,CreateTime,UpdateTime) 
+            VALUES(@Content,@CreateTime,@UpdateTime)";
+            return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
+            {              
+                adv.Content,
+                adv.CreateTime,
+                adv.UpdateTime,              
+            }));
+        }
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool DeleteWarm(int id)
+        {
+            const string sql = @"DELETE from Warm_prompt WHERE Id=@id";
+            return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
+            {
+                id,
+            }));
+        }
     }
 }

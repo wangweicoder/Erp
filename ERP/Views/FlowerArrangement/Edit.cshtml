@@ -55,7 +55,7 @@
 </script>
 @using (Html.BeginForm("Edit", "FlowerArrangement", FormMethod.Post, new { onsubmit = "return  CheckFrom()", enctype = "multipart/form-data" }))
 {
-
+    @Html.HiddenFor(m => m.id)
     <div class="box-body">
         <br />
         <div class="form-group" style="width:100%;height:30px;">
@@ -67,9 +67,9 @@
             </div>
             <div style="width:50%;float:right">
                 <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>二维码</span>
-                <div class="col-sm-3">                   
+                <div class="col-sm-3">
                     <img id="imgpath" src="" style="height:40px;width:40px" />
-                     @Html.HiddenFor(m => m.ImgORCodePath)
+                    @Html.HiddenFor(m => m.ImgORCodePath)
                 </div>
             </div>
             @*<div style="width:50%;float:left">
@@ -95,11 +95,14 @@
                 <div class="col-sm-6">
                     @Html.TextBoxFor(m => m.Total, new { @class = "form-control" })
                 </div>
-            </div>*@
-            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>备注</span>
-            <div class="col-sm-6">
-                @Html.TextAreaFor(m => m.Remark, new { @class = "form-control" })
-                @Html.HiddenFor(m => m.id)
+            </div
+              <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>备注</span>
+             <div class="col-sm-6">
+            @Html.TextAreaFor(m => m.Remark, new { @class = "form-control" })
+            </div>>*@
+            <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>温馨提示</span>
+            <div class="col-sm-4">
+                @Html.TextAreaFor(m => m.Warm_prompt, new { @class = "form-control" })
             </div>
             <div style="width:50%;float:left">
                 <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>对应公司</span>
@@ -113,9 +116,9 @@
                     @Html.DropDownListFor(m => m.ShopId, ViewData["GetShopList"] as List<SelectListItem>, new { @class = "form-control" })
                 </div>
             </div>
-          </div>
+        </div>
     </div>
-    <!-- /.box-body 
+    <!-- /.box-body
     <div class="box-footer" style="text-align: center; margin-top: 320px;">
         <button id="btn_add" type="submit" class="btn btn-default">
             <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>保存

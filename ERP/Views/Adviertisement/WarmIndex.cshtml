@@ -1,0 +1,88 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    @*加载表格*@
+    @Scripts.Render("~/plugins/jQuery/jquery-2.2.3.min.js")
+
+    @Styles.Render("~/Bootstrap/css/bootstrap.css")
+    @Scripts.Render("~/Bootstrap/js/bootstrap.js")
+
+    @Styles.Render("~/Bootstrap/bootstrap-table/bootstrap-table.css")
+    @Scripts.Render("~/Bootstrap/bootstrap-table/bootstrap-table.js")
+    @*加载弹出层*@
+    @Scripts.Render("~/Thems/js/layer/layer.js")  
+    <script src="~/Scripts/Admin/Warm.js"></script>
+</head>
+<body>
+    <div class="panel-body" style="padding-bottom:0px;">
+        <div class="panel panel-default">
+            <div class="panel-heading">温馨提示列表</div>
+            
+        </div>
+
+        <div id="toolbar" class="btn-group">
+            <button id="btn_add" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加
+                </button>
+             @*   <button id="btn_edit" type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 修改
+    </button>*@
+            <button id="btn_delete" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 删除
+            </button>
+        </div>
+        <table id="tb_departments" data-reorderable-columns="true"></table>
+    </div>
+   
+    <script>       
+        $(function () {
+            onloadTable();
+            $("#btn_add").click(function () {
+                parent.layer.open({
+                    type: 2,
+                    title: '增加',
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['400px;', '420px;'],
+                    content: '/Adviertisement/Warm',
+                    end: function () { //层彻底关闭后执行的回调
+                        onloadTable();
+                    }
+                });
+            });          
+            $("#btn_delete").click(function () {
+                var ids = $("#tb_departments").bootstrapTable('getSelections');
+                if (ids.length == 0) {
+                    parent.layer.msg('请先选中一行');
+                    return false;
+                }
+                parent.layer.confirm('删除当前信息吗?', {
+                    btn: ['确定', '取消'] //按钮
+                }, function () {
+                    $.ajax({
+                        url: '/Adviertisement/DeleteWarmInfo?Id=' + ids[0].ID,
+                        async: false,
+                        success: function (data) {
+                            parent.layer.closeAll();
+                            onloadTable();
+                           // parent.layer.closeAll();
+                        }
+                    })
+
+                }, function () {
+                });
+            });
+        })
+
+
+    </script>
+</body>
+</html>
+

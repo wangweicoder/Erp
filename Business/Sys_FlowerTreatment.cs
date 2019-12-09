@@ -226,5 +226,19 @@ ContentMsg=@ContentMsg,OwnedUsersRealName=@OwnedUsersRealName,OwnedUsersId=@Owne
                 FlowerTreatment.State
             }));
         }
+        /// <summary>
+        /// 养护花卉服务前后
+        /// </summary>     
+        public bool UpdateServerPhoto(Model.FlowerTreatment FlowerTreatment)
+        {
+            const string sql = @"UPDATE  FlowerTreatment  SET Photo=@Photo,ChangePhoto=@ChangePhoto  WHERE id=@id";
+            return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
+            {
+                FlowerTreatment.Photo,
+                FlowerTreatment.ChangePhoto,
+                FlowerTreatment.id
+                
+            }));
+        }
     }
 }

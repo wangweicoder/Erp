@@ -778,6 +778,7 @@
     <Content Include="points\sourse\layer\skin\default\loading-1.gif" />
     <Content Include="points\sourse\layer\skin\default\loading-2.gif" />
     <Content Include="points\zhifu.html" />
+    <Content Include="Scripts\Admin\Warm.js" />
     <Content Include="Scripts\Admin\ChangingFlowerExpenses.js" />
     <Content Include="Scripts\Admin\ClockAttendance.js" />
     <Content Include="Scripts\Admin\ContractCustomer.js" />
@@ -2046,11 +2047,14 @@
     <Content Include="Views\Adviertisement\Index.cshtml" />
     <Content Include="Views\Adviertisement\testSlide.cshtml" />
     <Content Include="Views\Adviertisement\Add.cshtml" />
-    <Content Include="Views\MMain\GetArrangementInfo - 副本.cshtml" />
     <Content Include="Views\MMIndex\webup.cshtml" />
     <Content Include="Views\MFlower\AddServerPhoto.cshtml" />
     <Content Include="Views\MFlower\TreatRecord.cshtml" />
     <Content Include="Views\MFlower\SetFlowerBad.cshtml" />
+    <Content Include="Views\FlowerTreatment\serverbefor.cshtml" />
+    <Content Include="Views\FlowerTreatment\serverafter.cshtml" />
+    <Content Include="Views\Adviertisement\Warm.cshtml" />
+    <Content Include="Views\Adviertisement\WarmIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />

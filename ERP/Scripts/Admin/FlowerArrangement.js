@@ -68,20 +68,20 @@ var TableInit = function () {
                     }
 
                 }
-               
-            }, {
-                field: 'Specifications',
-                title: '规格(M)',
-            }, {
-                field: 'UnitPrice',
-                title: '单价',
-            }, {
-                field: 'Count',
-                title: '数量',
-            }, {
-                field: 'Total',
-                title: '合计',
             }
+            //}, {
+            //    field: 'Specifications',
+            //    title: '规格(M)',
+            //}, {
+            //    field: 'UnitPrice',
+            //    title: '单价',
+            //}, {
+            //    field: 'Count',
+            //    title: '数量',
+            //}, {
+            //    field: 'Total',
+            //    title: '合计',
+            //}
             , {
                 field: 'OwnedCompany',
                 title: '所属公司',
@@ -102,17 +102,18 @@ var TableInit = function () {
                       }
                       return ' <a onclick="ShowPhotoInfo(\'' + value + '\')"  href="javascript:void(0)"><img style="height:40px;width:40px"  src="' + value + '" /></a>';
                   }
-              }, {
-                field: 'Remark',
-                title: '备注',
-                 formatter: function (value, row, index) {
-                    if (value.length>50) {
-                        return value.substring(0,49)+"……";
-                    }
-                    return value;
+              }
+              //{
+              //  field: 'Remark',
+              //  title: '备注',
+              //   formatter: function (value, row, index) {
+              //      if (value.length>50) {
+              //          return value.substring(0,49)+"……";
+              //      }
+              //      return value;
 
-                }
-            }
+              //  }
+              // }
             ]
         });
     };
