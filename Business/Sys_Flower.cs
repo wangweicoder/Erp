@@ -35,20 +35,20 @@ namespace Business
         /// 分页获得数据信息
         /// </summary>
         /// <param name="limit">页码大小</param>
-        /// <param name="offset">第几页</param>
+        /// <param name="offset">从第几条开始</param>
         /// <param name="UserName">用户名</param>
         /// <param name="Role">角色ID</param>
         /// <returns></returns>
-        public List<Model.Flower> GetFlowerList ( int offset, string StrWhere)  
+        public List<Model.Flower> GetFlowerList (int limit ,int offset, string StrWhere)  
         {
             StringBuilder strSql = new StringBuilder();
             strSql.Append("SELECT * FROM ( SELECT ROW_NUMBER() over(order by Flower.id desc) as rn ,* FROM Flower");
             if (!string.IsNullOrEmpty(StrWhere))
             {
-                strSql.Append(" where  1=1 " + StrWhere);
+                strSql.Append(" where  1=1 " + StrWhere); 
             }
-            strSql.Append(")T where t.rn between   @offset and (@offset+9)");
-            return Factory.DBHelper.Query<Model.Flower>(SQLConString, strSql.ToString(), new DynamicParameters(new { offset }));
+            strSql.Append(")T where t.rn between   @offset and (@offset+@limit-1)");
+            return Factory.DBHelper.Query<Model.Flower>(SQLConString, strSql.ToString(), new DynamicParameters(new { offset,limit }));
         }
         /// <summary>
         /// 验证花卉名称是否存在
@@ -163,9 +163,13 @@ FlowerStock=@FlowerStock,FlowerIntroduction=@FlowerIntroduction,FlowerWatchType=
         }
 
 
-        public List<Model.Flower> GetFlowerList() 
+        public List<Model.Flower> GetFlowerList(string StrWhere = "") 
         {
-            const string sql =@"SELECT * FROM Flower";
+            string sql =@"SELECT * FROM Flower";
+            if (!string.IsNullOrEmpty(StrWhere))
+            {
+                sql+=(" where  1=1 " + StrWhere);
+            }
             return Factory.DBHelper.Query<Model.Flower>(SQLConString, sql.ToString(), new DynamicParameters(new {  }));
         }
     }

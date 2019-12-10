@@ -17,5 +17,18 @@ namespace ERP
                 Response.End();
             }
         }
+        /// <summary>
+        /// 删除图片
+        /// </summary>
+        /// <param name="photourl"></param>
+        protected void DeleteFlowerPhoto(string photourl)
+        {
+            string path = Server.MapPath("~") + photourl;
+            //删除图片
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
+        }
     }
 }

@@ -9,7 +9,10 @@ namespace ERP.Controllers
 {
     public class AdviertisementController : Controller
     {
-        // GET: Adviertisement
+        /// <summary>
+        /// 广告列表页
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             return View();
@@ -92,7 +95,10 @@ namespace ERP.Controllers
             return Json(FlowerList, JsonRequestBehavior.AllowGet);
         }
         #region 温馨提示
-        // GET: Adviertisement
+        /// <summary>
+        /// 温馨提示列表页
+        /// </summary>
+        /// <returns></returns>
         public ActionResult WarmIndex()
         {
             return View();
@@ -110,10 +116,19 @@ namespace ERP.Controllers
 
             return Json(new { total = Sys_UserLog.GetWarmCount(sb.ToString()), rows = Sys_UserLog.GetWarmList(limit, offset, sb.ToString()) }, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// 温馨提示
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Warm()
         {
             return View();
         }
+        /// <summary>
+        /// 温馨提示
+        /// </summary>
+        /// <param name="warm"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Warm(Model.Warm_prompt warm)
         {

@@ -15,7 +15,7 @@ namespace ERP.MobleControllers
         {
             Business.Sys_Flower Sys_Flower = new Business.Sys_Flower();
             StringBuilder sb = new StringBuilder();
-            return View(Sys_Flower.GetFlowerList(1,sb.ToString()));
+            return View(Sys_Flower.GetFlowerList(10,1,sb.ToString()));
         }
         /// <summary>
         /// 花卉记录更多
@@ -30,7 +30,7 @@ namespace ERP.MobleControllers
             {
                 page = (page - 1) * 10 + 1;//按偏移量
             }
-            List<Model.Flower> List = Sys_Flower.GetFlowerList(Convert.ToInt32(page), sb.ToString());
+            List<Model.Flower> List = Sys_Flower.GetFlowerList(10,Convert.ToInt32(page), sb.ToString());
             return Json(List, JsonRequestBehavior.AllowGet);
         }
         string userid = Utility.ChangeText.GetUsersId().ToString();

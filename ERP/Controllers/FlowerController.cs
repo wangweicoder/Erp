@@ -20,8 +20,12 @@ namespace ERP.Controllers
         {
             return View();
         }
-
-        public ActionResult GetList()
+        /// <summary>
+        /// 分页获得数据信息
+        /// </summary>
+        /// <param name="limit">页码大小</param>
+        /// <returns></returns>
+        public ActionResult GetList(int limit)
         {
             int offset = Convert.ToInt32(Request["offset"]);
             string FlowerWatchName = Request["FlowerWatchName"];
@@ -29,9 +33,9 @@ namespace ERP.Controllers
             StringBuilder sb = new StringBuilder();
             if (!string.IsNullOrEmpty(FlowerWatchName))
             {
-                sb.Append(" and FlowerWatchName='" + FlowerWatchName + "'");
+                sb.Append(" and FlowerWatchName like'%" + FlowerWatchName + "%'");
             }
-            return Json(new { total = Sys_Flower.GetFlowerListCount(sb.ToString()), rows = Sys_Flower.GetFlowerList(offset, sb.ToString()) }, JsonRequestBehavior.AllowGet);
+            return Json(new { total = Sys_Flower.GetFlowerListCount(sb.ToString()), rows = Sys_Flower.GetFlowerList(limit,offset, sb.ToString()) }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult CheckFlowerWatchName() 
@@ -95,32 +99,37 @@ namespace ERP.Controllers
             Response.Write("<script>parent.layer.closeAll();</script>");
             return View();
         }
-
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Delete() 
         {
-            Business.Sys_Flower Sys_Flower = new Business.Sys_Flower();
-            string id = Request["id"];
-            Model.Flower Flower = Sys_Flower.GetFlower(id);
-            if (Sys_Flower.DeleteFlowerWatch(id))
+            try
             {
-                DeleteFlowerPhoto(Flower.FlowerWatchPhoto);
+                Business.Sys_Flower Sys_Flower = new Business.Sys_Flower();
+                Business.Sys_FlowerArrangement Sys_FlowerArr = new Business.Sys_FlowerArrangement();
+                string ids = Request["id"];
+                string strwhere = "and id in(" + ids + ")";
+                List<Model.Flower> list = Sys_Flower.GetFlowerList(ids.Split(',').Length , 1, strwhere);
+                foreach (var item in list)
+                {
+                    if (Sys_FlowerArr.GetListCount("and shopid =" + item.id) == 0)
+                    {
+                        if (Sys_Flower.DeleteFlowerWatch(item.id.ToString()))
+                        {
+                            if (!string.IsNullOrEmpty(item.FlowerWatchPhoto))
+                                DeleteFlowerPhoto(item.FlowerWatchPhoto);
+                        }
+                    }
+                }
                 return Content("True");
             }
-            return Content("Fasle");
-        }
-        /// <summary>
-        /// 删除花卉图片
-        /// </summary>
-        /// <param name="photourl"></param>
-        private void DeleteFlowerPhoto(string photourl) 
-        {
-            string path = Server.MapPath("~") + photourl;
-            //删除图片
-            if (System.IO.File.Exists(path))
+            catch (Exception ex)
             {
-                System.IO.File.Delete(path);
+                return Content("Fasle");
             }
-        }
+        }        
         public ActionResult CheckFlowerNumber() 
         {
             string FlowerNumber = Request["FlowerNumber"]; 

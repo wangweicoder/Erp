@@ -76,20 +76,7 @@ namespace ERP.Controllers
                 return Content("Fasle");
             }          
            
-        }
-        /// <summary>
-        /// 删除图片
-        /// </summary>
-        /// <param name="photourl"></param>
-        private void DeleteFlowerPhoto(string photourl)
-        {
-            string path = Server.MapPath("~") + photourl;
-            //删除图片
-            if (System.IO.File.Exists(path))
-            {
-                System.IO.File.Delete(path);
-            }
-        }
+        }        
         public ActionResult Edit()
         {
             string id = Request["id"];

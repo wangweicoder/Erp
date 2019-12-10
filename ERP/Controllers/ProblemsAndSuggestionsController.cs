@@ -26,25 +26,53 @@ namespace ERP.Controllers
             }
             if (!string.IsNullOrEmpty(Stateinfo))
             {
-                  sb.Append(" and State='" + Stateinfo + "'");
+                sb.Append(" and State='" + Stateinfo + "'");
             }
             return Json(new { total = Sys_ProblemsAndSuggestions.GetProblemsAndSuggestionsListCount(sb.ToString()), rows = Sys_ProblemsAndSuggestions.UserProblemsAndSuggestionsList(limit, offset, sb.ToString()) }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult UpdateState() 
+        public ActionResult UpdateState()
         {
             ViewData["idText"] = Request["id"];
             return View();
         }
 
-        public ActionResult UpdateStateInfo() 
+        public ActionResult UpdateStateInfo()
         {
             Business.Sys_ProblemsAndSuggestions Sys_ProblemsAndSuggestions = new Business.Sys_ProblemsAndSuggestions();
             if (Sys_ProblemsAndSuggestions.UpdateState(Request["State"], Request["id"]))
             {
-                  return Content("1");
+                return Content("1");
             }
             return Content("0");
         }
-	}
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Delete()
+        {
+            try
+            {
+                Business.Sys_ProblemsAndSuggestions Sys_Flower = new Business.Sys_ProblemsAndSuggestions();
+                string ids = Request["id"];
+                string strwhere = "and ProblemsAndSuggestions.id in(" + ids + ")";
+                List<Model.ProblemsAndSuggestions> list = Sys_Flower.UserProblemsAndSuggestionsList(ids.Split(',').Length, 1, strwhere);
+                foreach (var item in list)
+                {
+                    if (Sys_Flower.Delete(item.id.ToString()))
+                    {
+                        if (!string.IsNullOrEmpty(item.PhotoList))
+                            DeleteFlowerPhoto(item.PhotoList);
+                    }
+                }
+                return Content("True");
+            }
+            catch (Exception ex)
+            {
+                return Content("Fasle");
+            }
+        }
+
+    }
 }

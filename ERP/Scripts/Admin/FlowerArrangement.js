@@ -220,7 +220,7 @@ $(function () {
             title: '增加',
             shadeClose: true,
             shade: 0.8,
-            area: ['630px;', '520px;'],
+            area: ['630px;', '320px;'],
             content: '/FlowerArrangement/Add',
             //end: function () { //层销毁后触发的回调
             //    onloadTable();
@@ -267,7 +267,7 @@ $(function () {
             title: '修改',
             shadeClose: true,
             shade: 0.8,
-            area: ['630px;', '500px;'],
+            area: ['630px;', '300px;'],
             content: '/FlowerArrangement/Edit?id=' + ids[0].id,
             //end: function (){ //层彻底关闭后执行的回调
             //    onloadTable();

@@ -172,8 +172,7 @@ namespace ERP.Controllers
         /// </summary>
         /// <returns></returns>
         public ActionResult serverbefor()
-        {
-            
+        {            
             string id = Request["id"];
             Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
             Model.FlowerTreatment FlowerTreatment = Sys_FlowerTreatment.GetModel(id);
@@ -254,20 +253,7 @@ namespace ERP.Controllers
             catch (Exception ex) {
                 return Content("0");
             }
-        }
-        /// <summary>
-        /// 删除图片
-        /// </summary>
-        /// <param name="photourl"></param>
-        private void DeleteFlowerPhoto(string photourl)
-        {
-            string path = Server.MapPath("~") + photourl;
-            //删除图片
-            if (System.IO.File.Exists(path))
-            {
-                System.IO.File.Delete(path);
-            }
-        }
+        }       
         /// <summary>
         /// 绑定养护人、客户
         /// </summary>

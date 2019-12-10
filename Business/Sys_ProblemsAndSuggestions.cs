@@ -86,5 +86,18 @@ namespace Business
                 state,id
             }));
         }
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool Delete(string id)
+        {
+            const string sql = @"DELETE from ProblemsAndSuggestions WHERE id=@id";
+            return Factory.DBHelper.ExecSQL(SQLConString, sql.ToString(), new DynamicParameters(new
+            {
+                id,
+            }));
+        }
     }
 }

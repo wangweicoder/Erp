@@ -7,26 +7,15 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-    @*加载表格*@
-    @Scripts.Render("~/plugins/jQuery/jquery-2.2.3.min.js")
-
+    <title>Index</title>   
     @Styles.Render("~/Bootstrap/css/bootstrap.css")
-    @Scripts.Render("~/Bootstrap/js/bootstrap.js")
-
     @Styles.Render("~/Bootstrap/bootstrap-table/bootstrap-table.css")
-    @Scripts.Render("~/Bootstrap/bootstrap-table/bootstrap-table.js")
-    @*加载弹出层*@
-    @Scripts.Render("~/Thems/js/layer/layer.js")
-    <script src="~/Scripts/Admin/Flower.js"></script>
-
 </head>
 <body>
     <div class="panel-body" style="padding-bottom:0px;">
         <div class="panel panel-default">
             <div class="panel-heading">花卉列表</div>
-            <div class="panel-body">
-                <form id="formSearch" class="form-horizontal">
+            <div class="panel-body">               
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="txt_search_departmentname">
                             花卉名称
@@ -39,11 +28,10 @@
                                 查询 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                             </button>
                         </div>
-                    </div>
-                </form>
+                    </div>                
             </div>
         </div>
-     
+
         <div id="toolbar" class="btn-group">
             <button id="btn_add" type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加
@@ -53,18 +41,24 @@
             </button>
             <button id="btn_delete" type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 删除
-            </button>   
+            </button>
             <button type="button" class="btn btn-default">
-             <a href="/Flower/DownExcel"><span class="glyphicon glyphicon-download" aria-hidden="true"></span> 下载Excel模板</a>
+                <a href="/Flower/DownExcel"><span class="glyphicon glyphicon-download" aria-hidden="true"></span> 下载Excel模板</a>
             </button>
             <button type="button" class="btn btn-default" onclick="AlertAddByExcel()">
-             <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导入Excel
+                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导入Excel
             </button>
 
         </div>
         <table id="tb_departments" data-reorderable-columns="true"></table>
     </div>
-    <script>
+    @*加载表格*@
+    @Scripts.Render("~/plugins/jQuery/jquery-2.2.3.min.js")
+    @Scripts.Render("~/Bootstrap/js/bootstrap")
+    @*加载弹出层*@
+    @Scripts.Render("~/Thems/js/layer/layer.js")
+   <script src="~/Scripts/Admin/Flower.js?v=1"></script>
+   <script>
         //导入Excel
         function AlertAddByExcel() {
             var layindex = parent.layer.open({
@@ -83,6 +77,11 @@
             });
         }
         $(function () {
+            $("#FlowerWatchName").keydown(function (event) {
+                if (event.keyCode == 13) {
+                    onloadTable();
+                }
+            });
             onloadTable();
             $("#btn_add").click(function () {
                 parent.layer.open({
@@ -124,8 +123,13 @@
                 parent.layer.confirm('删除当前花卉?', {
                     btn: ['确定', '取消'] //按钮
                 }, function () {
+                    var id = '';
+                    for (var i = 0; i < ids.length; i++) {
+                        id += ids[i].id + ",";
+                    }
+                    id = id.substr(0, id.length - 1);
                     $.ajax({
-                        url: '/Flower/Delete?id=' + ids[0].id,
+                        url: '/Flower/Delete?id=' + id,
                         async: false,
                         success: function (data) {
                             if (data == "True") {
