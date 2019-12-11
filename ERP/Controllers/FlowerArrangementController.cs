@@ -57,8 +57,8 @@ namespace ERP.Controllers
 
         public ActionResult Add()
         {
-            ViewData["GetOwnedCompanyList"] = GetOwnedCompanyList();
-            ViewData["GetShopList"] = GetShopList();
+            //ViewData["GetOwnedCompanyList"] = GetOwnedCompanyList();
+            //ViewData["GetShopList"] = GetShopList();
             return View();
         }
 
@@ -107,7 +107,7 @@ namespace ERP.Controllers
             {
                 Sys_FlowerArrangement.UpdateImgORCodePath(CreateORCode(FlowerArrangement.id), FlowerArrangement.id);
             }
-                return Content("");
+            return Content("");
         }
         /// <summary>
         /// 多选删除
@@ -145,17 +145,47 @@ namespace ERP.Controllers
         /// </summary>
         /// <author>wangwei</author>
         /// <returns></returns>
-        public JsonResult GetCompanyList()
+        public JsonResult GetCompanyList(string key)
         {
+            List<SelectListItem> hourList = new List<SelectListItem>();
             Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
             List<Model.UserAdmin> UserAdminList = Sys_UserAdmin.GetAdminInfoList("Customer");
-            List<SelectListItem> hourList = new List<SelectListItem>();
-            foreach (var item in UserAdminList)
+            if (key == null)
+            {              
+                foreach (var item in UserAdminList)
+                {
+                    hourList.Add(new SelectListItem { Text = item.OwnedCompany, Value = item.ID.ToString() });
+                }               
+            }
+            else
             {
-                hourList.Add(new SelectListItem { Text = item.OwnedCompany, Value = item.ID.ToString() });
+                var clist = UserAdminList.Where(x => x.OwnedCompany.Contains(key)).ToList().Take(5);
+                foreach (var item in clist)
+                {
+                    hourList.Add(new SelectListItem { Text = item.OwnedCompany, Value = item.ID.ToString() });
+                }
+               
             }
             return Json(hourList, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// 获得花卉列表
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public JsonResult GetFlowerList(string key)
+        {
+            Business.Sys_Flower Sys_Flower = new Business.Sys_Flower();
+            List<Model.Flower> FlowerList = Sys_Flower.GetFlowerList();
+            var flolist = FlowerList.Where(x => x.FlowerWatchName.Contains(key)).ToList().Take(5);
+            List<SelectListItem> hourList = new List<SelectListItem>();
+            foreach (var item in flolist)
+            {
+                hourList.Add(new SelectListItem { Text = item.FlowerWatchName, Value = item.id.ToString() });
+            }
+            return Json(hourList, JsonRequestBehavior.AllowGet);
+        }
+
         public List<SelectListItem> GetOwnedCompanyList(int UsersId = 0)
         {
             Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();

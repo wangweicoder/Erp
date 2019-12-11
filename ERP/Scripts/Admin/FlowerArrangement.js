@@ -157,25 +157,6 @@ function ShowPhotoInfo(values) {
     });
     $("#ShowPhotoImg").attr("src", "");
 }
-//加载公司
-function onloadDropdownlist() {
-    var html;
-    $.ajax({
-        url: "/FlowerArrangement/GetCompanyList",
-        type: "get",
-        dataType: "json",
-        success: function (data, state) {
-            var companylist = data;
-            for (var i = 0; i < companylist.length; i++) {
-                html += '<option value="' + companylist[i].Value + '">' + companylist[i].Text + '</option>';
-            }
-            $(".companyid").append(html);
-        },
-        error: function (m) { parent.layer.msg("error"); }
-
-    });
-
-}
 //导入Excel
 function AlretAddByExcel() {
     parent.layer.open({
@@ -212,7 +193,7 @@ function DownExcel() {
 }
 //页面初始化
 $(function () {
-    onloadDropdownlist();
+   
     onloadTable();
     $("#btn_add").click(function () {
         var layindex = parent.layer.open({
@@ -220,7 +201,7 @@ $(function () {
             title: '增加',
             shadeClose: true,
             shade: 0.8,
-            area: ['630px;', '320px;'],
+            area: ['630px;', '520px;'],
             content: '/FlowerArrangement/Add',
             //end: function () { //层销毁后触发的回调
             //    onloadTable();
@@ -267,7 +248,7 @@ $(function () {
             title: '修改',
             shadeClose: true,
             shade: 0.8,
-            area: ['630px;', '300px;'],
+            area: ['630px;', '500px;'],
             content: '/FlowerArrangement/Edit?id=' + ids[0].id,
             //end: function (){ //层彻底关闭后执行的回调
             //    onloadTable();
