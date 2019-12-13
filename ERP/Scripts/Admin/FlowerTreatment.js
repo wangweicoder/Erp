@@ -84,38 +84,48 @@ var TableInit = function () {
                 field: 'FlowerTreatmentAddress',
                 title: '摆放位置'
             }
-            , {
-                field: 'FlowerTreatmentType',
-                title:'养护类型'
-            }
+            //, {
+            //    field: 'FlowerTreatmentType',
+            //    title:'养护类型'
+            //}
             ,{
                 field: 'Photo',
                 title: '服务前图片', formatter: function (value, row, index) {
-                    return ' <a onclick="ShowPhotoInfo(\'' + value + '\')"  href="javascript:void(0)"><img style="height:40px;width:40px"  src="' + value + '" /></a>';
+                    if (value != null) {
+                        return ' <a onclick="ShowPhotoInfo(\'' + value + '\')"  href="javascript:void(0)"><img style="height:40px;width:40px"  src="' + value + '" /></a>';
+                    }
                 }
             }
             ,{
                 field: 'ChangePhoto',
                 title: '服务后图片', formatter: function (value, row, index) {
-                    return ' <a onclick="ShowPhotoInfo(\'' + value + '\')"  href="javascript:void(0)"><img style="height:40px;width:40px"  src="' + value + '" /></a>';
+                    if (value != null) {
+                        return ' <a onclick="ShowPhotoInfo(\'' + value + '\')"  href="javascript:void(0)"><img style="height:40px;width:40px"  src="' + value + '" /></a>';
+                    }
                 }
             }
              , {
                  field: 'State',
                  title: '状态'
              }
-            , {
-                field: 'starttime',
-                title: '开始养护时间', formatter: function (value, row, index) {
+             , {
+                field: 'time',
+                title: '养护时间', formatter: function (value, row, index) {
                     return jsonDateFormat(value);
                 }
             }
-            , {
-                field: 'endtime',
-                title: '结束养护时间', formatter: function (value, row, index) {
-                    return jsonDateFormat(value);
-                }
-            }
+            //, {
+            //    field: 'starttime',
+            //    title: '开始养护时间', formatter: function (value, row, index) {
+            //        return jsonDateFormat(value);
+            //    }
+            //}
+            //, {
+            //    field: 'endtime',
+            //    title: '结束养护时间', formatter: function (value, row, index) {
+            //        return jsonDateFormat(value);
+            //    }
+            //}
             ]
         });
     };

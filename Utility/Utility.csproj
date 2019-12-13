@@ -30,13 +30,22 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NPOI">
       <HintPath>..\packages\NPOI\NPOI.dll</HintPath>
     </Reference>
+    <Reference Include="StackExchange.Redis">
+      <HintPath>..\..\TaohuaY\packages\StackExchange.Redis.1.2.6\lib\net45\StackExchange.Redis.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -46,7 +55,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CacheHelper.cs" />
+    <Compile Include="CacheUtility\Cache.cs" />
+    <Compile Include="CacheUtility\CacheHelper.cs" />
+    <Compile Include="CacheUtility\Caching.cs" />
+    <Compile Include="CacheUtility\RedisEnum\RedisDBEnum.cs" />
+    <Compile Include="CacheUtility\RedisHelper.cs" />
     <Compile Include="ChangeText.cs" />
+    <Compile Include="config\BaseComm.cs" />
     <Compile Include="Excel.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Log.cs" />

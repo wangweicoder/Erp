@@ -105,7 +105,7 @@
                     parent.layer.msg('请先选中一行');
                     return false;
                 }
-                parent.layer.confirm('删除当前用员?', {
+                parent.layer.confirm('确定删除当前用户吗?', {
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     var id = '';
@@ -202,6 +202,7 @@
                 title: '设置周次',
                 shadeClose: true,
                 shade: 0.8,
+                area: ['300px;', '400px;'],
                 content: '/UserInfo/SetWeekly?id=' + id,
                 end: function () { //层彻底关闭后执行的回调
                     onloadTable();

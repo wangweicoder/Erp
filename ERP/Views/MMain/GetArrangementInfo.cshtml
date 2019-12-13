@@ -207,7 +207,7 @@
                 {
                      if (!string.IsNullOrEmpty(Model.Weekly))
                      {
-                     <li>&nbsp;每周<span id="kly">@Model.Weekly</span>养护 </li>
+                     <li>&nbsp;每<span id="kly">@Model.Weekly</span>养护 </li>
                      }
                 }
                 @if (!string.IsNullOrEmpty(Model.YangHuFangFa))
@@ -320,7 +320,7 @@
             //图片正方形
             var width = $(".pro_img_box li img").width();
             $(".pro_img_box li img").height(width);
-            $(".product").height(width);//2019-1105第一栏白色区域高度
+            $(".product").height(width);//2019-1105第一栏白色区域高度          
             //数字变颜色
             var fangfa = $("#fangfa").html();
             if (fangfa != undefined) {
@@ -335,8 +335,19 @@
             }
             //数字转换星期
             var oldv = $("#kly").text().trim();
-            var show_day = new Array('一', '二', '三', '四', '五', '六', '日');
-            $("#kly").text(show_day[oldv - 1]);
+            if (oldv != undefined) {
+                var klys = oldv.split(',');
+                var show_day = new Array('周一', '周二', '周三', '周四', '周五', '周六', '周日');
+                var kt = "";
+                for (var i = 0; i < klys.length; i++) {
+                   kt +=(show_day[klys[i] - 1])+"、";
+                }
+                if (kt != "") {
+                    kt = kt.substr(0, kt.length - 1);
+                    $("#kly").text(kt);
+                }              
+                
+            }
             //加载广告
             //onloadAdvlist();
 

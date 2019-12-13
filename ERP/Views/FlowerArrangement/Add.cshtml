@@ -5,16 +5,16 @@
 
 @Styles.Render("~/bootstrap/css/bootstrap.css")
 @Styles.Render("~/Content/jquery-ui.min.css")
-@Scripts.Render("~/Plugins/jQuery/jquery-2.2.3.min.js")
+@Scripts.Render("~/Scripts/jquery-1.10.2.min.js")
 @*加载弹出层*@
 @Scripts.Render("~/Thems/js/layer/layer.js")
-<script src="~/Scripts/jquery.valiedate.form.js"></script>
+@*<script src="~/Scripts/jquery.valiedate.form.js"></script>*@
 <script src="~/Scripts/jquery-ui.js"></script>
 <script type="text/javascript">
     $(function () {
         $("#belongUsersId").autocomplete({
             source: function (request, response) {
-                var key = $("#belongUsersId").val();
+                var key = $("#belongUsersId").val().trim();
                 if (key != '') {
                     $.ajax({
                         type: "get",
@@ -40,7 +40,7 @@
                 }
             },
             delay: 1000,//延迟1000ms便于输入
-            select: function (event, ui) {               
+            select: function (event, ui) {
                 $(this).val(ui.item.id);//取出在return里面放入到item中的属性
                 $(this).attr("value", ui.item.id);
             },
@@ -51,7 +51,7 @@
         //花卉数据
         $("#ShopId").autocomplete({
             source: function (request, response) {
-                var key = $("#ShopId").val();
+                var key = $("#ShopId").val().trim();
                 if (key != '') {
                     $.ajax({
                         type: "get",
@@ -180,7 +180,7 @@
             </div>
             <span for="inputEmail3" class="col-sm-2 control-label"><span style="color:red;">*</span>对应商品</span>
             <div class="col-sm-6">
-               @Html.TextBoxFor(m => m.ShopId, new { @class = "form-control" })
+                @Html.TextBoxFor(m => m.ShopId, new { @class = "form-control" })
             </div>
         </div>
     </div>
