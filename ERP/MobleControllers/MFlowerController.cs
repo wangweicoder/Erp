@@ -191,7 +191,7 @@ namespace ERP.MobleControllers
             Business.Sys_UserAdmin Sys_UserAdmin = new Business.Sys_UserAdmin();
             Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
             int userid = Utility.ChangeText.GetUsersId();
-            FlowerTreatment=Sys_FlowerTreatment.GetModelbyid(arrid, ownedUsersId, userid.ToString());
+            FlowerTreatment=Sys_FlowerTreatment.GetModelbyOwnid(ownedUsersId);
             if (FlowerTreatment!=null && FlowerTreatment.endtime==null)
             {
                 FlowerTreatment.endtime = DateTime.Now;
