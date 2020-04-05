@@ -319,6 +319,10 @@ namespace ERP.Controllers
             Bitmap bt;
             string enCodeString = url;
             QRCodeEncoder qrCodeEncoder = new QRCodeEncoder();
+            qrCodeEncoder.QRCodeEncodeMode = QRCodeEncoder.ENCODE_MODE.BYTE;//设置二维码编码格式 
+            qrCodeEncoder.QRCodeScale = 4;//设置编码测量度             
+            qrCodeEncoder.QRCodeVersion = 8;//设置编码版本   
+            qrCodeEncoder.QRCodeErrorCorrect = QRCodeEncoder.ERROR_CORRECTION.H;//设置错误校验 
             bt = qrCodeEncoder.Encode(enCodeString, Encoding.UTF8);
 
             string filename = "arr" + DateTime.Now.ToString("yyyymmddhhmmss") + ArrangementId;
@@ -444,15 +448,22 @@ namespace ERP.Controllers
                 {
                     PubClass.FileDel(item.FullName);
                 }
-
+                Business.Sys_FlowerArrangement Sys_FlowerArrangement = new Business.Sys_FlowerArrangement();
                 for (int i = 0; i < flist.Count; i++)
                 {
-                    string path = flist[i].ImgORCodePath;
-                    int index = path.IndexOf(".");
-                    string exc = path.Substring(index, path.Length - index);
+                    string path = Server.MapPath("~") + flist[i].ImgORCodePath;
+                    string upath = string.Empty;
+                    if (System.IO.File.Exists(path))
+                    {
+                        System.IO.File.Delete(path);
+                        upath = CreateORCode(flist[i].id);
+                        Sys_FlowerArrangement.UpdateImgORCodePath(upath, flist[i].id);
+                    }
+                    int index = upath.IndexOf(".");
+                    string exc = upath.Substring(index, upath.Length - index);
                     string filename = flist[i].OwnedCompany + flist[i].arrangement + flist[i].FlowerWatchName + exc;//获得图片的真实名字
                     string targetPath = dir + "/" + filename;
-                    string abpath = Server.MapPath("~") + path;
+                    string abpath = Server.MapPath("~") + upath;
                     System.IO.File.Copy(abpath, targetPath, true);
                 }
             }
