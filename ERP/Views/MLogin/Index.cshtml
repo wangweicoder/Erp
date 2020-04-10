@@ -13,7 +13,9 @@
     <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?debug=847" />
     <script src="~/FileCss/js/zepto.min.js?debug=847" type="text/javascript"></script>
     <script src="~/FileCss/js/main.js?debug=847" type="text/javascript"></script>
-    <script src="~/Thems/js/layer/mobile/layer.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>   
+    @Scripts.Render("~/Thems/js/layer/layer.js")
+    @*<script src="~/Thems/js/layer/mobile/layer.js"></script>*@
     <style>
         #autoPwsLogin {
             display: inline-block;
@@ -22,7 +24,7 @@
         }
     </style>
     <script type="text/javascript">
-        var backurl = "http://m.ch999.com/product/36170.html";
+        //var backurl = "http://m.ch999.com/product/36170.html";
         var sig = request("sig");
         var openid = request("openid");
         var time = request("time");
@@ -48,34 +50,9 @@
     </script>
 </head>
 <body>
-    @Html.Partial("header")
-    <script>
-        SiteName = "淘花运";
-        var isApp = Cookie.Get("isApp");
-        if (isApp == null || isApp == "") { isApp = 0; }
-        if (isApp == 1) { $("#header").hide(); }
-        $(".top_home").click(function () {
-            var target = $(".home_menu");
-            if (target.slideToggle) target.slideToggle();
-            else target.toggle();
-        });
-    </script>
-    <script type="text/javascript">
-        var _mvq = window._mvq || [];
-        window._mvq = _mvq;
-        _mvq.push(['$setAccount', 'm-23995-6']);
-
-        _mvq.push(['$logConversion']);
-        (function () {
-            var mvl = document.createElement('script');
-            mvl.type = 'text/javascript'; mvl.async = true;
-            mvl.src = ('https:' == document.location.protocol ? 'https://static-ssl.mediav.com/mvl.js' : 'http://static.mediav.com/mvl.js');
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(mvl, s);
-        })();
-
-    </script>
-    @using (Html.BeginForm("Index", "MLogin", FormMethod.Post, new { onsubmit = "return  CheckFrom()" }))
+    @Html.Partial("header")  
+   
+    @using (Html.BeginForm("Index", "MLogin", FormMethod.Post, new { onsubmit = "return  CheckFrom()",id="form" }))
     {
         <div class="wrapper">
 
@@ -98,12 +75,35 @@
         </div>
     }
     <script>
-        $(function () {
+        $(function () {           
+            $(".back_btn").hide();
+            //记录帐号
+            var user = document.getElementById('UserName'),
+                pass = document.getElementById('PassWord'),
+                localUser = localStorage.getItem('user') || ''; //获取到user的值并保存
+            localPass = localStorage.getItem('pass') || ''; //获取到pwd的值并保存
+            user.value = localUser;
+            pass.value = localPass;
+            var aid = $("input[name='ArrangementId']").val();
+            var out = request("LoginOut");//退出
+            if (out =="") {
+                if ($("#UserName").val() != "" && $("#PassWord").val() != "" && aid != undefined) {                   
+                    var index = layer.load(1, {
+                        offset: ['50%', "45%"],
+                        shade: [0.1, '#fff'] //0.1透明度的白色背景
+                    });
+                    var btnTimer = null;
+                    btnTimer = setTimeout(function () {
+                        layer.close(index)
+                        document.getElementById("form").submit();
+                    }, 1000);
+                }
+            }
             if ($("#msg").val() != "") {
                 //信息框
                 layer.open({
                     content: $("#msg").val()
-                  , btn: '我知道了'
+                    , btn: '我知道了'
                 });
             }
         })
@@ -112,7 +112,7 @@
                 //信息框
                 layer.open({
                     content: '用户名不能为空'
-                  , btn: '我知道了'
+                    , btn: '我知道了'
                 });
                 return false;
             }
@@ -120,10 +120,15 @@
                 //信息框
                 layer.open({
                     content: '密码不能为空'
-                  , btn: '我知道了'
+                    , btn: '我知道了'
                 });
                 return false;
-            } return true;
+            }
+            var user = document.getElementById('UserName');
+            var pass = document.getElementById('PassWord');
+            localStorage.setItem('user', user.value);
+            localStorage.setItem('pass', pass.value);
+            return true;
         }
     </script>
     @Html.Partial("FootView")

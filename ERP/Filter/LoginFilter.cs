@@ -8,7 +8,11 @@ namespace ERP
 {
     public class LoginFilter : Controller
     {
-        //要过滤的控制器     
+
+        /// <summary>
+        /// 要过滤的控制器
+        /// </summary>
+        /// <param name="filterContext"></param>
         protected override void OnActionExecuting(ActionExecutingContext filterContext) //Protected 只能被子类访问
         {
             if (System.Web.HttpContext.Current.Session["UsersId"] == null)

@@ -128,7 +128,7 @@
         <a href="/MFlower/ConservationFlowers"><i class="iconfont">Ɔ</i><span>养护花卉</span></a>
         <a href="/MFlower/ChangeFlowers"><i class="iconfont">ŭ</i><span>更换花卉</span></a>
         <a href="/MMIndex/Index"><i class="iconfont">Œ</i><span>会员中心</span></a>*@
-            <a href="/MLogin/Index?ArrangementId=@Model.id"><i class="iconfont">Œ</i><span>切换帐号</span></a>
+            <a href="/MLogin/Index?ArrangementId=@Model.id&LoginOut=1"><i class="iconfont">Œ</i><span>切换帐号</span></a>
             @if (ViewData["IsAllower"].ToString() != "1")
             {
             <a href="/MFlower/TreatRecord?ArrangementId=@Model.id"><i class="iconfont">ŭ</i><span>反馈记录</span></a>
@@ -350,9 +350,10 @@
             }
             //加载广告
             //onloadAdvlist();
-
+           
             //开始养护
-            $(".ksyh").on('click',ksyh);
+            $(".ksyh").on('click', ksyh);
+           
             function ksyh()
             {
                 $this = $(".ksyh");
@@ -638,7 +639,7 @@
              url: "/MFlower/GetAppraiseCount?ArrangementId=@Model.id",
              type: "get",
              dataType: "json",
-             success: function (res, state) {
+             success: function (res, state) {                
                  if (res.gcount != "0") {
                      $('.iconfontdi').text(res.gcount);
                  }
@@ -664,6 +665,7 @@
              error: function (m) { parent.layer.msg(m); }
          });
      }
+    
       //服务前图片
      function onloadServbefor()
      {

@@ -380,25 +380,11 @@ namespace ERP.MobleControllers
             }
             else {               
                sb.Append(" and time >2019");                
-            }           
-            return View(Sys_FlowerTreatment.MFlowerTreatmentList(10, 1, sb.ToString()));
-        }
-        /// <summary>
-        /// ///扫码页客户养护记录
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult CusTreatRecord(string flowernumber)
-        {
-            Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
-            StringBuilder sb = new StringBuilder();
-            ViewBag.arrid = flowernumber;
-            if (Utility.ChangeText.GetRoleCode() == "Customer")
-            {
-                sb.Append(" and OwnedUsersId='" + Utility.ChangeText.GetUsersId() + "'");
             }
-            Utility.Log.WriteTextLog("testsql", "扫码页客户养护记录", "TreatRecord", "sql:", sb.ToString());
-            return View(Sys_FlowerTreatment.MFlowerTreatmentList(10, 1, sb.ToString()));
+            var list = Sys_FlowerTreatment.MFlowerTreatmentList(10, 1, sb.ToString()).OrderByDescending(x => x.endtime).ToList();
+            return View(list);
         }
+        
         /// <summary>
         /// 养护记录共用的更多
         /// </summary>
@@ -420,7 +406,7 @@ namespace ERP.MobleControllers
             List<Model.FlowerTreatment> List = Sys_FlowerTreatment.MFlowerTreatmentList(10, page, sb.ToString());
             return Json(List, JsonRequestBehavior.AllowGet);
         }
-        // <summary>
+        /// <summary>
         /// 扫码页面中的上传图片养护
         ///</summary>
         /// <returns></returns>
