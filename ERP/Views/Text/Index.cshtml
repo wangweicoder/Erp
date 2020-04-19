@@ -6,48 +6,41 @@
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/uploadify/jquery.uploadify.min.js"></script>
-    <link href="~/uploadify/uploadify.css" rel="stylesheet" />
-    <script>
-        $(function () {
-            $('#file_upload').uploadify({
-                'swf': '/uploadify/uploadify.swf',                        //FLash文件路径
-                'buttonText': '浏  览',                        //按钮文本
-                'uploader': '/Text/TextImg', //处理ASHX页面
-                'formData': { 'id': '5124512' },         //传参数
-                'queueID': 'fileQueue',                        //队列的ID
-                'queueSizeLimit': 1,                           //队列最多可上传文件数量，默认为999
-                'auto': false,                                 //选择文件后是否自动上传，默认为true
-                'multi': true,                                 //是否为多选，默认为true
-                'removeCompleted': true,                       //是否完成后移除序列，默认为true
-                'fileSizeLimit': '10MB',                       //单个文件大小，0为无限制，可接受KB,MB,GB等单位的字符串值
-                'fileTypeDesc': 'Image Files',                 //文件描述
-                'fileTypeExts': '*.gif; *.jpg; *.png; ',  //上传的文件后缀过滤器
-                'onQueueComplete': function (event, data) {    //所有队列完成后事件
-                    //ShowUpFiles(guid, type, show_div);
-                    alert("上传完毕！");
-                },
-                'onUploadError': function (event, queueId, fileObj, errorObj) {
-                    alert(errorObj.type + "：" + errorObj.info);
-                }
-            });
-
-        })
-    </script>
+    <title>图片放大</title>
 </head>
+<style type="text/css">
+    .main_div {
+        margin: 20px auto;
+        text-align: center;
+    }
+
+    .pic_div {
+        position: relative;
+        background-color: pink;
+        border: 1px dotted red;
+        margin: 10px auto;
+        width: 800px;
+        height: 600px;
+    }
+
+    img {
+        width: 600px;
+        height: 400px;
+    }
+</style>
+<script type="text/javascript">
+    function bigit() {
+        var image = document.getElementsByClassName("pic")[0];
+        image.style.height = image.height * 1.1 + 'px';
+        image.style.width = image.width * 1.1 + 'px';
+    }
+    function littleit() {
+        var image = document.getElementsByClassName("pic")[0];
+        image.style.height = image.height / 1.1 + 'px';
+        image.style.width = image.width / 1.1 + 'px';
+    }
+</script>
 <body>
-    <div>
-        <input type="file" name="file_upload" id="file_upload" />
-        <p>
-            <input type="button" class="shortbutton" id="btnUpload" onclick="javascript:$('#file_upload').uploadify('upload','*')" value="上传" />
-
-            <input type="button" class="shortbutton" id="btnCancelUpload" onclick="javascript:$('#file_upload').uploadify('cancel')" value="取消" />
-
-        </p>
-        <div id="div_show_files"></div>
-    </div>
+    <div style="" class="main_div"> <p>图片在一个区域里放大缩小</p> <button onclick="bigit()">图片放大</button>&nbsp;&nbsp;<button onclick="littleit()">图片缩小</button> <div class="pic_div"> <img src="http://www.thuay.com/Upload/Serveraf/Large/ThumbNail8eb13804-4b7c-4717-bba4-7a461dce3bdb.jpg" class="pic"> </div> </div>
 </body>
 </html>

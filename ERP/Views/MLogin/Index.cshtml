@@ -75,7 +75,18 @@
         </div>
     }
     <script>
-        $(function () {           
+        $(function () {
+            //错误判断
+            if ($("#msg").val() != "") {
+                //信息框
+                layer.open({
+                    content: $("#msg").val()
+                    , btn: '我知道了'
+                });
+                localStorage.removeItem('user');
+                localStorage.removeItem('pass');
+                return false;
+            }
             $(".back_btn").hide();
             //记录帐号
             var user = document.getElementById('UserName'),
@@ -99,13 +110,7 @@
                     }, 1000);
                 }
             }
-            if ($("#msg").val() != "") {
-                //信息框
-                layer.open({
-                    content: $("#msg").val()
-                    , btn: '我知道了'
-                });
-            }
+            
         })
         function CheckFrom() {
             if ($("#UserName").val() == "") {

@@ -91,13 +91,26 @@
             height: 40px;
             background: #f6f6f6;
         }
-
         .list table tbody td {
             padding: 4px 4px;
         }
-
         .shaixuan {
             z-index: 100;
+        }
+        /*//20200418*/
+        .list_img {
+            height: 120px
+        }
+        .gh span {
+            font-size: 16px;
+            font-weight: 600;
+            line-height:30px;
+        }
+        .gh label {
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 30px;
+            color:black;
         }
     </style>
 </head>
@@ -130,11 +143,11 @@
                             <span class="list_img">
                                 @if (string.IsNullOrEmpty(item.Photo))
                                 {
-                                   <img src="~/FileCss/images/nopic.png" width="90" height="90" />
+                                   <img src="~/FileCss/images/nopic.png" width="100" height="120" />
                                 }
                                 else
                                 {
-                                    <img src="@item.Photo" class="imgphoto" width="90" height="90" />
+                                    <img src="@item.Photo" class="imgphoto" width="100" height="120" />
                                 }
                             </span>
                         </td>
@@ -144,29 +157,27 @@
                                 {
                                     if (Utility.ChangeText.GetRoleCode() == "Customer")
                                     {
-                                        <img src="~/FileCss/images/nopic.png" width="90" height="90" />
+                                        <img src="~/FileCss/images/nopic.png" width="100" height="120" />
                                     }
                                     else
                                     {
                                     <a href="/MFlower/AddServerPhoto?id=@item.id&ArrangementId=@item.ArrangementId">
-                                        <img src="~/FileCss/images/nopic.png" width="90" height="90" />
+                                        <img src="~/FileCss/images/nopic.png" width="100" height="120" />
                                     </a>
                                     }
                                 }
                                 else
                                 {
-                                    <img src="@item.ChangePhoto" class="imgphoto" width="90" height="90" />
+                                    <img src="@item.ChangePhoto" class="imgphoto" width="100" height="120" />
                                 }
 
                             </span>
                         </td>
                         <td>
                             <span class="gh">
-                                <em>@item.CompanyName</em>
-                                <em>
-                                    @item.OwnedCompany <br />
-                                </em>
+                                <span>@item.CompanyName</span>                                
                                 <em>@item.FlowerTreatmentAddress</em>
+                                <label>问题反馈：</label>
                                 <em>@item.ContentMsg</em>
                                  @if(item.endtime != null)
                                     {
@@ -180,10 +191,8 @@
             </tbody>
         </table>
     </div>
-    <div id="PhotoShowDiv"><img src="" id="ShowPhotoImg" style="max-height:400px;max-width:300px;" /></div>
-    <a href="javascript:;" class="loadmore">加载更多</a>
-    @*<script src="~/FileCss/js/zepto.min.js?debug=847" type="text/javascript"></script>
-        <script type="text/javascript" src="~/FileCss/js/main.js?debug=8478"></script>*@
+    <div id="PhotoShowDiv"><img src="" id="ShowPhotoImg" style="max-height:400px;max-width:350px;" /></div>
+    <a href="javascript:;" class="loadmore">加载更多</a>   
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     @Scripts.Render("~/Thems/js/layer/layer.js")
     <script>
@@ -207,10 +216,11 @@
                 return "";
             }
         }
-        $(".imgphoto").click(function () {
+        //动态绑定事件，未加载出来的元素也能绑定
+        $("#prolist").on('click', '.imgphoto',function () {
             var url = $(this).attr("src");
             ShowPhotoInfo(url);
-        });
+        });        
         $(".backtop_btn").click(function () {
             $("html,body").animate({ scrollTop: 0 }, 500);
         });
@@ -220,12 +230,16 @@
             $("#ShowPhotoImg").attr("src", values);
             var layindex = parent.layer.open({
                 type: 1,
+                closeBtn: 0, //不显示关闭按钮  
+                shadeClose: false,
                 shade: false,
                 title: false, //不显示标题
                 content: $('#PhotoShowDiv').html(), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
-                cancel: function () {
-                    parent.layer.close(layindex);
-                }
+               
+            });
+            //点图片关闭
+            $("body").on('click', "#ShowPhotoImg",function () {               
+                parent.layer.close(layindex);
             });
             $("#ShowPhotoImg").attr("src", "");
         }
@@ -258,6 +272,9 @@
                     var txt = '<div class="loadover"><span>' + overtext + '</span></div>'
                     $("body").append(txt);
                 }
+                //此处是滚动条到底部时候触发的事件，在这里写要加载的数据，或者是拉动滚动条的操作
+                var ht = '<a href="#" class="backtop_btn" style="position:fixed;bottom:0;left:85%;">↑回顶部</a>';
+                $("body").append(ht);
             }
         }
 
@@ -275,9 +292,7 @@
                 }
 
                 if (scrollTop + windowHeight - scrollHeight <= 50) {
-                    //此处是滚动条到底部时候触发的事件，在这里写要加载的数据，或者是拉动滚动条的操作
-                    var ht = '<a href="#" class="backtop_btn" style="position:fixed;bottom:0;left:85%;">↑回顶部</a>';
-                    $("body").append(ht);
+                   
                     //防止未加载完再次执行
                     finished = 1;
 
@@ -302,35 +317,31 @@
                                 result += '<tr><td><span class="list_img">';
                                 if(data[i].Photo!=undefined)
                                 {
-                                 result+='<img src="' + data[i].Photo + '" class="imgphoto" width="100" height="100" /></span></td>';
+                                 result+='<img src="' + data[i].Photo + '" class="imgphoto" width="100" height="120" /></span></td>';
                                 }
                                 else{
-                                  result+='<img src="/FileCss/images/nopic.png" width="100" height="100" /></span></td>'
+                                  result+='<img src="/FileCss/images/nopic.png" width="100" height="120" /></span></td>'
                                 }
                                 result+='<td><span class="list_img">';
                                 if(data[i].ChangePhoto!=undefined)
                                 {
-                                  result+='<img src="' + data[i].ChangePhoto + '" class="imgphoto" width="100" height="100" /></span></td>';
+                                  result+='<img src="' + data[i].ChangePhoto + '" class="imgphoto" width="100" height="120" /></span></td>';
                                 }
                                 else{
-                                    result+='<img src="/FileCss/images/nopic.png" width="100" height="100" /></span></td>'
+                                    result += '<a href="/MFlower/AddServerPhoto?id=' + data[i].id +'&ArrangementId=' + data[i].ArrangementId +'"><img src="/FileCss/images/nopic.png" width="100" height="120" /></a></span></td>'
                                 }
                                 result += ' <td><span class="gh">';
                                 if (data[i].CompanyName != undefined)
                                 {
-                                    result+='<em>'+data[i].CompanyName+'</em>';
-                                }
-                                if(data[i].OwnedCompany!=undefined)
-                                {
-                                  result+='<em>'+data[i].OwnedCompany+'</em>';
-                                }
+                                    result+='<span>'+data[i].CompanyName+'</span>';
+                                }                               
                                 if (data[i].FlowerTreatmentAddress != undefined)
                                 {
                                     result += '<em>'+data[i].FlowerTreatmentAddress+'</em>';
                                 }
                                 if (data[i].ContentMsg != undefined)
                                 {
-                                    result+='<em>'+data[i].ContentMsg+'</em>';
+                                    result +=' <label>问题反馈：</label><em>'+data[i].ContentMsg+'</em>';
                                 }
                                 if (data[i].endtime != undefined)
                                 {

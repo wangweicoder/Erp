@@ -62,6 +62,7 @@ namespace ERP.MobleControllers
                     //Utility.Log.WriteTextLog("微信自动关注公众号", "result", result, "gzhurl", gzhurl);
                     if (UserAdmin == null )
                     {
+                        #region 旧逻辑
                         //System.Random Random = new System.Random();
                         //int Result = Random.Next(0, 9999);
                         //Business.Sys_Role Sys_Role = new Business.Sys_Role();
@@ -92,8 +93,10 @@ namespace ERP.MobleControllers
                         //model.Day = currentTime.Day.ToString();
                         //Sys_Userlog.InsertUsersLoginLog(model);
                         //return RedirectToAction("GetArrangementInfo", "MMain", new { ArrangementId = Request["id"]});
+                        #endregion
                         return RedirectToAction("Index", "MLogin", new { ArrangementId = Request["id"] });
                     }
+                    #region 旧逻辑
                     //if (UserAdmin.RoleCode=="Tourist")
                     //{
                     //    Session["UsersId"] = UserAdmin.ID;
@@ -114,6 +117,7 @@ namespace ERP.MobleControllers
                     //    Sys_Userlog.InsertUsersLoginLog(model);
                     //    return RedirectToAction("GetArrangementInfo", "MMain", new { ArrangementId = Request["id"] });
                     //}
+                    #endregion
                 }
                 return RedirectToAction("Index", "MLogin"); 
             }
