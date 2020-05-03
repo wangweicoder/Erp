@@ -765,6 +765,7 @@
     <Content Include="points\sourse\layer\skin\default\loading-1.gif" />
     <Content Include="points\sourse\layer\skin\default\loading-2.gif" />
     <Content Include="points\zhifu.html" />
+    <Content Include="Scripts\Admin\MFlower.js" />
     <Content Include="Scripts\Admin\Warm.js" />
     <Content Include="Scripts\Admin\ChangingFlowerExpenses.js" />
     <Content Include="Scripts\Admin\ClockAttendance.js" />
@@ -2046,6 +2047,7 @@
     <Content Include="Views\Adviertisement\Warm.cshtml" />
     <Content Include="Views\Adviertisement\WarmIndex.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Text\img.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Upload\" />

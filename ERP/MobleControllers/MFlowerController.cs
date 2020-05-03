@@ -230,7 +230,7 @@ namespace ERP.MobleControllers
         public ActionResult AddServerPhoto()
         {
             Model.FlowerTreatment FlowerTreatment = new Model.FlowerTreatment()
-            { id = int.Parse(Request["id"]),CompanyName= Request["ArrangementId"] };
+            { id = int.Parse(Request["id"]), ArrangementId = Request["ArrangementId"] };
             return View(FlowerTreatment);
         }
         /// <summary>
@@ -241,23 +241,47 @@ namespace ERP.MobleControllers
         {
             try
             {
-                HttpPostedFileBase file = Request.Files["attach_paths"];
+                HttpPostedFileBase file = Request.Files["attach_paths"];                
                 FlowerTreatment.ChangePhoto = Utility.ChangeText.SaveUploadPicture(file, "Serveraf");
                 FlowerTreatment.FlowerTreatmentType = "服务后";
                 FlowerTreatment.State = "已完成";
                 FlowerTreatment.endtime = DateTime.Now;
                 Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();
-                Utility.Log.WriteTextLog("服务后提交图", "ID", Request["id"], "路径", FlowerTreatment.ChangePhoto);
                 if (Sys_FlowerTreatment.AddServerPhoto(FlowerTreatment))
-                {                                  
-                    return RedirectToAction("TreatRecord", "MFlower", new { ArrangementId = FlowerTreatment.CompanyName ,s="add" });
+                {
+                    return RedirectToAction("TreatRecord", "MFlower", new { ArrangementId = FlowerTreatment.ArrangementId, s="add" });                   
                 }
             }
             catch (Exception ex)
             {
-                Utility.Log.WriteTextLog(" 服务后提交图", " FlowerTreatment.CompanyName", FlowerTreatment.CompanyName, "", ex.ToString());
+                Utility.Log.WriteTextLog("服务后提交图", "AddServerPhoto", FlowerTreatment.id.ToString(), "", ex.ToString());
             }
 
+            return View();
+        }
+        /// <summary>
+        /// 服务后上传
+        /// </summary>
+        [HttpPost]
+        public ActionResult UpServerPhoto(Model.FlowerTreatment FlowerTreatment)
+        {
+            try
+            {
+                HttpPostedFileBase file = Request.Files["file"];
+                FlowerTreatment.ChangePhoto = Utility.ChangeText.SaveUploadPicture(file, "Serveraf");
+                FlowerTreatment.FlowerTreatmentType = "服务后";
+                FlowerTreatment.State = "已完成";
+                FlowerTreatment.endtime = DateTime.Now;
+                Business.Sys_FlowerTreatment Sys_FlowerTreatment = new Business.Sys_FlowerTreatment();               
+                if (Sys_FlowerTreatment.AddServerPhoto(FlowerTreatment))
+                {                    
+                    return Json(new { msg = "1",path= FlowerTreatment.ChangePhoto });
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.Log.WriteTextLog("服务后提交图", "UpServerPhoto", FlowerTreatment.id.ToString(), "", ex.ToString());
+            }
             return View();
         }
         /// <summary>
@@ -381,7 +405,7 @@ namespace ERP.MobleControllers
             else {               
                sb.Append(" and time >2019");                
             }
-            var list = Sys_FlowerTreatment.MFlowerTreatmentList(10, 1, sb.ToString()).OrderByDescending(x => x.endtime).ToList();
+            var list = Sys_FlowerTreatment.MFlowerTreatmentList(10, 1, sb.ToString());
             return View(list);
         }
         

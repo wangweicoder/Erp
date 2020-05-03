@@ -14,11 +14,10 @@ namespace ERP.MobleControllers
             return View();
         }
 
-        public ActionResult TextImg() 
+        public ActionResult Img() 
         {
-            string id = Request["id"];
-            HttpPostedFileBase file = Request.Files["Filedata"];
-            return Json(new { result = "OK", msg = "更换花卉成功" }, "text/html", JsonRequestBehavior.AllowGet);
+            ViewBag.url = Request["url"];
+            return View();
         }
         public ActionResult yIndex()
         {

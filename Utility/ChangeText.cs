@@ -282,16 +282,23 @@ namespace Utility
             {
                 Directory.CreateDirectory(dire + "\\");
             }
-            string newname = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            string filepath = dire + "\\" + newname;
-            string newfilepath = dire + "\\" + "ThumbNail" + newname;
+            string newname = Guid.NewGuid().ToString() ;
+            string extname = Path.GetExtension(file.FileName);
+            Utility.Log.WriteTextLog("服务后提交图", "extname", extname, "SaveUploadFile", file.ContentType);
+            string filepath = string.Empty;
+            if (string.IsNullOrEmpty(extname))
+            {
+                extname=".jpg";
+            }            
+            filepath = dire + "\\" + newname+extname;//绝对路径            
+            string newfilepath = dire + "\\" + "ThumbNail" + newname + extname;
             file.SaveAs(filepath);
-            int maxWidth = 400;  //最大宽度
-            int maxHeight = 532;  //最大高度 
+            int maxWidth = 600;  //最大宽度
+            int maxHeight = 732;  //最大高度 
             if (type=="FlowerPhoto")
             {
-                maxWidth = 600;
-                maxHeight = 732;
+                maxWidth += 200;
+                maxHeight += 200;
             }
             RemoveRotateFlip(filepath, newfilepath,maxWidth,maxHeight);
             #endregion
@@ -299,7 +306,7 @@ namespace Utility
             //string filename = Path.GetFileName(file.FileName);//文件名
             //string newname = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
             //file.SaveAs(dire + "\\" + newname);
-            return folder + "/Large/" + "ThumbNail" + newname;
+            return folder + "/Large/" + "ThumbNail" + newname + extname;
         }
         /// <summary>  
         /// 移除图片的翻转旋转设置  

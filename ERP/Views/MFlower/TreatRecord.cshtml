@@ -13,6 +13,8 @@
     <meta name="format-detection" content="telephone=no" />
     <link rel="apple-touch-icon-precomposed" href="~/FileCss/images/screenLogo.png?debug=847" />
     <link rel="stylesheet" type="text/css" href="~/FileCss/css/m2015.css?debug=847" />
+    <link href="~/uploadify/webuploader.css" rel="stylesheet" />
+    <link href="~/FileCss/css/Arrangement.css?v=1" rel="stylesheet" />
     <style>
         #tj_sx .sx_div {
             min-height: 360px;
@@ -91,26 +93,41 @@
             height: 40px;
             background: #f6f6f6;
         }
+
         .list table tbody td {
             padding: 4px 4px;
         }
+
         .shaixuan {
             z-index: 100;
         }
         /*//20200418*/
         .list_img {
-            height: 120px
+            height: 120px;
+            padding-top: 2px;
         }
         .gh span {
             font-size: 16px;
             font-weight: 600;
-            line-height:30px;
+            line-height: 30px;
         }
         .gh label {
             font-size: 12px;
             font-weight: 600;
             line-height: 30px;
-            color:black;
+            color: black;
+        }
+        table tr {
+            border-bottom: 3px solid #f6f6f6;
+        }
+        .layui-layer-content img {
+            margin: 0px auto;
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        .webuploader-pick span{
+           font-size:69px;
         }
     </style>
 </head>
@@ -119,7 +136,7 @@
         <div class="topbar">
             @if (Request["s"] != null && Request["s"] == "add")
             {
-                 <a href="/MMain/GetArrangementInfo?ArrangementId=@ViewBag.arrid" class="back_btn"><i class="iconfont">ş</i></a>
+                <a href="/MMain/GetArrangementInfo?ArrangementId=@ViewBag.arrid" class="back_btn"><i class="iconfont">ş</i></a>
             }
             else
             {
@@ -128,10 +145,10 @@
             <a href="/MLogin/Index?ArrangementId=@ViewBag.arrid&LoginOut=1" style="float: right;margin: 12px;">退出</a>
             <h1 class="page_title">养护记录</h1>
         </div>
-      
+
     </header>
     <div class="list">
-        <table style="width:100%">
+        <table style="width:100%;">
             <thead>
                 <tr><th>服务前</th><th>服务后</th><th>详情</th></tr>
             </thead>
@@ -139,11 +156,11 @@
                 @foreach (Model.FlowerTreatment item in Model)
                 {
                     <tr>
-                        <td>                          
+                        <td>
                             <span class="list_img">
                                 @if (string.IsNullOrEmpty(item.Photo))
                                 {
-                                   <img src="~/FileCss/images/nopic.png" width="100" height="120" />
+                                    <img src="~/FileCss/images/nopic.png" width="100" height="120" />
                                 }
                                 else
                                 {
@@ -161,9 +178,9 @@
                                     }
                                     else
                                     {
-                                    <a href="/MFlower/AddServerPhoto?id=@item.id&ArrangementId=@item.ArrangementId">
-                                        <img src="~/FileCss/images/nopic.png" width="100" height="120" />
-                                    </a>
+                                        <div class="filePicker" id="@item.id" style="float: left;">
+                                            <span class="icon iconfontzp icon-icon-zhaopian-shangchuan"></span>
+                                        </div>
                                     }
                                 }
                                 else
@@ -175,16 +192,16 @@
                         </td>
                         <td>
                             <span class="gh">
-                                <span>@item.CompanyName</span>                                
+                                <span>@item.CompanyName</span>
                                 <em>@item.FlowerTreatmentAddress</em>
                                 <label>问题反馈：</label>
                                 <em>@item.ContentMsg</em>
-                                 @if(item.endtime != null)
-                                    {
+                                @if (item.endtime != null)
+                                {
                                     <em style="float:right">@(((DateTime)item.endtime).ToString("yyyy-MM-dd"))</em>
-                                   }
-                                  
-                            </span>                           
+                                }
+
+                            </span>
                         </td>
                     </tr>
                 }
@@ -192,9 +209,12 @@
         </table>
     </div>
     <div id="PhotoShowDiv"><img src="" id="ShowPhotoImg" style="max-height:400px;max-width:350px;" /></div>
-    <a href="javascript:;" class="loadmore">加载更多</a>   
+    <input type="hidden" id="FlowerArrangementId" value="@ViewBag.arrid" />
+    <a href="javascript:;" class="loadmore">加载更多</a>
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     @Scripts.Render("~/Thems/js/layer/layer.js")
+    <script src="~/uploadify/webuploader.html5only.min.js"></script>
+    <script src="~/Scripts/Admin/MFlower.js"></script>
     <script>
         $(function () {
             //$(".top_home").click(function () {
@@ -202,6 +222,7 @@
             //    if (target.slideToggle) target.slideToggle();
             //    else target.toggle();
             //});
+            upload();
         });
         function jsonDateFormat(jsonDate) {//json日期格式转换为正常格式
             try {
@@ -211,16 +232,16 @@
                 var hours = date.getHours();
                 var minutes = date.getMinutes();
                 var seconds = date.getSeconds();
-                return date.getFullYear() + "-" + month + "-" + day  ;
+                return date.getFullYear() + "-" + month + "-" + day;
             } catch (ex) {
                 return "";
             }
         }
         //动态绑定事件，未加载出来的元素也能绑定
-        $("#prolist").on('click', '.imgphoto',function () {
+        $("#prolist").on('click', '.imgphoto', function () {
             var url = $(this).attr("src");
             ShowPhotoInfo(url);
-        });        
+        });
         $(".backtop_btn").click(function () {
             $("html,body").animate({ scrollTop: 0 }, 500);
         });
@@ -230,17 +251,20 @@
             $("#ShowPhotoImg").attr("src", values);
             var layindex = parent.layer.open({
                 type: 1,
-                closeBtn: 0, //不显示关闭按钮  
-                shadeClose: false,
-                shade: false,
+                closeBtn: 0, //不显示关闭按钮
+                shadeClose: true,
+                shade: 1,
+                area: ['100%'],
                 title: false, //不显示标题
                 content: $('#PhotoShowDiv').html(), //捕获的元素，注意：最好该指定的元素要存放在body最外层，否则可能被其它的相对元素所影响
-               
+
             });
             //点图片关闭
-            $("body").on('click', "#ShowPhotoImg",function () {               
+            $("body").on('click', "#ShowPhotoImg", function () {
                 parent.layer.close(layindex);
             });
+            var imgh = $("#ShowPhotoImg").css("height");
+            $(".layui-layer-content").css("height", imgh);
             $("#ShowPhotoImg").attr("src", "");
         }
         var page = 2;
@@ -292,13 +316,13 @@
                 }
 
                 if (scrollTop + windowHeight - scrollHeight <= 50) {
-                   
+
                     //防止未加载完再次执行
                     finished = 1;
 
                     $.ajax({
                         type: 'GET',
-                        url: '/MFlower/GetMobleScanMore?page=' + page ,
+                        url: '/MFlower/GetMobleScanMore?page=' + page,
                         dataType: 'json',
                         success: function (data) {
                             //console.log(data);
@@ -312,42 +336,36 @@
                                 }
                             }
                             else {
-                            var result = ''
-                            for (var i = 0; i < data.length; i++) {
-                                result += '<tr><td><span class="list_img">';
-                                if(data[i].Photo!=undefined)
-                                {
-                                 result+='<img src="' + data[i].Photo + '" class="imgphoto" width="100" height="120" /></span></td>';
-                                }
-                                else{
-                                  result+='<img src="/FileCss/images/nopic.png" width="100" height="120" /></span></td>'
-                                }
-                                result+='<td><span class="list_img">';
-                                if(data[i].ChangePhoto!=undefined)
-                                {
-                                  result+='<img src="' + data[i].ChangePhoto + '" class="imgphoto" width="100" height="120" /></span></td>';
-                                }
-                                else{
-                                    result += '<a href="/MFlower/AddServerPhoto?id=' + data[i].id +'&ArrangementId=' + data[i].ArrangementId +'"><img src="/FileCss/images/nopic.png" width="100" height="120" /></a></span></td>'
-                                }
-                                result += ' <td><span class="gh">';
-                                if (data[i].CompanyName != undefined)
-                                {
-                                    result+='<span>'+data[i].CompanyName+'</span>';
-                                }                               
-                                if (data[i].FlowerTreatmentAddress != undefined)
-                                {
-                                    result += '<em>'+data[i].FlowerTreatmentAddress+'</em>';
-                                }
-                                if (data[i].ContentMsg != undefined)
-                                {
-                                    result +=' <label>问题反馈：</label><em>'+data[i].ContentMsg+'</em>';
-                                }
-                                if (data[i].endtime != undefined)
-                                {
-                                    result += '<em style="float:right">' + jsonDateFormat(data[i].endtime) + '</em><br>';
-                                }
-                                  result+='</span></td></tr>';
+                                var result = ''
+                                for (var i = 0; i < data.length; i++) {
+                                    result += '<tr><td><span class="list_img">';
+                                    if (data[i].Photo != undefined) {
+                                        result += '<img src="' + data[i].Photo + '" class="imgphoto" width="100" height="120" /></span></td>';
+                                    }
+                                    else {
+                                        result += '<img src="/FileCss/images/nopic.png" width="100" height="120" /></span></td>'
+                                    }
+                                    result += '<td><span class="list_img">';
+                                    if (data[i].ChangePhoto != undefined) {
+                                        result += '<img src="' + data[i].ChangePhoto + '" class="imgphoto" width="100" height="120" /></span></td>';
+                                    }
+                                    else {
+                                        result += '<a href="/MFlower/AddServerPhoto?id=' + data[i].id + '&ArrangementId=' + data[i].ArrangementId + '"><img src="/FileCss/images/nopic.png" width="100" height="120" /></a></span></td>';
+                                    }
+                                    result += ' <td><span class="gh">';
+                                    if (data[i].CompanyName != undefined) {
+                                        result += '<span>' + data[i].CompanyName + '</span>';
+                                    }
+                                    if (data[i].FlowerTreatmentAddress != undefined) {
+                                        result += '<em>' + data[i].FlowerTreatmentAddress + '</em>';
+                                    }
+                                    if (data[i].ContentMsg != undefined) {
+                                        result += ' <label>问题反馈：</label><em>' + data[i].ContentMsg + '</em>';
+                                    }
+                                    if (data[i].endtime != undefined) {
+                                        result += '<em style="float:right">' + jsonDateFormat(data[i].endtime) + '</em><br>';
+                                    }
+                                    result += '</span></td></tr>';
                                 }//end for
                                 //为了测试，延迟1秒加载
                                 setTimeout(function () {

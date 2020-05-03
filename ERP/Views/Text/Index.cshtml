@@ -7,40 +7,60 @@
 <html>
 <head>
     <title>图片放大</title>
+    <style type="text/css">
+        .main_div {
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .pic_div {
+            position: relative;
+            background-color: pink;
+            border: 1px dotted red;
+            margin: 10px auto;
+            width: 800px;
+            height: 600px;
+        }
+
+        img {
+            width: 600px;
+            height: 400px;
+        }
+    </style>
+
+    <script type="text/javascript">
+        function bigit() {
+            var image = document.getElementsByClassName("pic")[0];
+            image.style.height = image.height * 1.1 + 'px';
+            image.style.width = image.width * 1.1 + 'px';
+        }
+        function littleit() {
+            var image = document.getElementsByClassName("pic")[0];
+            image.style.height = image.height / 1.1 + 'px';
+            image.style.width = image.width / 1.1 + 'px';
+        }
+    </script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    @Scripts.Render("~/Thems/js/layer/layer.js")
+    <script src="~/Scripts/pinchzoom.js"></script>
 </head>
-<style type="text/css">
-    .main_div {
-        margin: 20px auto;
-        text-align: center;
-    }
 
-    .pic_div {
-        position: relative;
-        background-color: pink;
-        border: 1px dotted red;
-        margin: 10px auto;
-        width: 800px;
-        height: 600px;
-    }
-
-    img {
-        width: 600px;
-        height: 400px;
-    }
-</style>
-<script type="text/javascript">
-    function bigit() {
-        var image = document.getElementsByClassName("pic")[0];
-        image.style.height = image.height * 1.1 + 'px';
-        image.style.width = image.width * 1.1 + 'px';
-    }
-    function littleit() {
-        var image = document.getElementsByClassName("pic")[0];
-        image.style.height = image.height / 1.1 + 'px';
-        image.style.width = image.width / 1.1 + 'px';
-    }
-</script>
 <body>
     <div style="" class="main_div"> <p>图片在一个区域里放大缩小</p> <button onclick="bigit()">图片放大</button>&nbsp;&nbsp;<button onclick="littleit()">图片缩小</button> <div class="pic_div"> <img src="http://www.thuay.com/Upload/Serveraf/Large/ThumbNail8eb13804-4b7c-4717-bba4-7a461dce3bdb.jpg" class="pic"> </div> </div>
-</body>
-</html>
+    <div class="pinch-zoom" id="test" data-scale="1">
+        <img src="~/FileCss/js/20150910060117183.jpg" />
+    </div>    
+    <script>
+        $(function () {
+            //$(".top_home").click(function () {
+            //    var target = $(".home_menu");
+            //    if (target.slideToggle) target.slideToggle();
+            //    else target.toggle();
+            //});
+            $('div.pinch-zoom').each(function () {
+                new RTP.PinchZoom($(this), {});
+            });
+    });
+    </script>
+</body >
+</html >

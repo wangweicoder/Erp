@@ -116,7 +116,7 @@
           }
     </style>
 </head>
-<body>    
+<body>
     <header id="header" style="background:#ffffff">
         <div class="topbar">
             <a href="javascript:history.back();" class="back_btn"><i class="iconfont">ş</i></a>
@@ -125,190 +125,192 @@
         </div>
         <div class="home_menu" id="hMenu">
             @*<a href="/Shop/Index"><i class="iconfont">Ő</i><span>我要买花</span></a>
-        <a href="/MFlower/ConservationFlowers"><i class="iconfont">Ɔ</i><span>养护花卉</span></a>
-        <a href="/MFlower/ChangeFlowers"><i class="iconfont">ŭ</i><span>更换花卉</span></a>
-        <a href="/MMIndex/Index"><i class="iconfont">Œ</i><span>会员中心</span></a>*@
+                <a href="/MFlower/ConservationFlowers"><i class="iconfont">Ɔ</i><span>养护花卉</span></a>
+                <a href="/MFlower/ChangeFlowers"><i class="iconfont">ŭ</i><span>更换花卉</span></a>
+                <a href="/MMIndex/Index"><i class="iconfont">Œ</i><span>会员中心</span></a>*@
             <a href="/MLogin/Index?ArrangementId=@Model.id&LoginOut=1"><i class="iconfont">Œ</i><span>切换帐号</span></a>
             @if (ViewData["IsAllower"].ToString() != "1")
             {
-            <a href="/MFlower/TreatRecord?ArrangementId=@Model.id"><i class="iconfont">ŭ</i><span>反馈记录</span></a>
+                <a href="/MFlower/TreatRecord?ArrangementId=@Model.id"><i class="iconfont">ŭ</i><span>反馈记录</span></a>
             }
             else
             {
-             <a href="/MFlower/TreatRecord?ArrangementId=@Model.id"><i class="iconfont">ŭ</i><span>养护记录</span></a>
+                <a href="/MFlower/TreatRecord?ArrangementId=@Model.id"><i class="iconfont">ŭ</i><span>养护记录</span></a>
             }
         </div>
-    </header>     
-        <div class="product" style="position:relative;">
-            <div id="bigImg">
-                <div id="pro_img" class="pro_img">
-                    <div class="pro_img_box">
-                        <ul>
-                            <li>
-                                <div class="pro_img_wrap">
-                                    <img src="@Model.Photo" />
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="pro_img_nav">
-                        @*<i class="iconfont pro_img_item cur">Ƴ</i>
-              <i class="iconfont pro_img_item">Ƴ</i>
-            System.Web.HttpUtility.UrlEncode(Model.OwnedCompany, System.Text.Encoding.UTF8)*@
-                    </div>
-                    <div class="appraise" style="float:right;">
-                        <a href="javascript:void(0)"><span class="iconfontdi icon-dianzan">0</span></a>
-                        <a href="javascript:void(0)"> <span class="iconfontca icon-dianzan_active">0</span></a>
-                    </div>
+    </header>
+    <div class="product" style="position:relative;">
+        <div id="bigImg">
+            <div id="pro_img" class="pro_img">
+                <div class="pro_img_box">
+                    <ul>
+                        <li>
+                            <div class="pro_img_wrap">
+                                <img src="@Model.Photo" />
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="pro_img_nav">
+                    @*<i class="iconfont pro_img_item cur">Ƴ</i>
+                          <i class="iconfont pro_img_item">Ƴ</i>
+                        System.Web.HttpUtility.UrlEncode(Model.OwnedCompany, System.Text.Encoding.UTF8)*@
+                </div>
+                <div class="appraise" style="float:right;">
+                    <a href="javascript:void(0)"><span class="iconfontdi icon-dianzan">0</span></a>
+                    <a href="javascript:void(0)"> <span class="iconfontca icon-dianzan_active">0</span></a>
                 </div>
             </div>
         </div>
-        <div class="pro_tit border_bottom" style="min-height: 60px;">
-            <h2 class="spanstyle">名称: @Model.FlowerWatchName </h2>
-            @if (ViewData["IsAllower"].ToString() != "1")
-            {
-                @*<div class="week left">每周<span id="kly">@Model.Weekly</span>养护 </div>
+    </div>
+    <div class="pro_tit border_bottom" style="min-height: 60px;">
+        <h2 class="spanstyle">名称: @Model.FlowerWatchName </h2>
+        @if (ViewData["IsAllower"].ToString() != "1")
+        {
+            @*<div class="week left">每周<span id="kly">@Model.Weekly</span>养护 </div>
                 <a class="hehu"><div class="week left">需要呵护</div></a>*@
-                 if(ViewBag.Treattime!=null)
-                 {
-                    <div class="left">正在养护中……</div>
-                 }
-            }
-            else
+            if (ViewBag.Treattime != null)
             {
-            @*<a href="/MFlower/ConservationFlowers?ownedcompany=@Model.OwnedCompany"><div class="week left">养护</div></a>*@  
-              <a href="javascript:void(0)"><div class="endyh week" style="background-color:#ff6a00;display:none;">结束养护</div></a>            
-              <a href="javascript:void(0)"><div class="ksyh week">开始养护</div></a>
+                <div class="left">正在养护中……</div>
             }
-            @* <div style="padding-top:12px;padding-left: 72%;">
-           <img width="20" height="20" src="~/static/image/1160675719.jpg" />
-        规格: <span style="color:#f44623">@Model.Specifications </span>cm
-          </div>
-            <p>
-            </p>*@
-            
-        </div>
-        
-        <div class="jb_canshu">            
-            <ul>
-                @if (!string.IsNullOrEmpty(Model.OwnedCompany))
+        }
+        else
+        {
+            <a href="javascript:void(0)"><div class="endyh week" style="background-color:#ff6a00;display:none;">结束养护</div></a>
+            <a href="javascript:void(0)"><div class="ksyh week">开始养护</div></a>
+        }
+        @* <div style="padding-top:12px;padding-left: 72%;">
+               <img width="20" height="20" src="~/static/image/1160675719.jpg" />
+            规格: <span style="color:#f44623">@Model.Specifications </span>cm
+              </div>
+                <p>
+                </p>*@
+
+    </div>
+
+    <div class="jb_canshu">
+        <ul>
+            @if (!string.IsNullOrEmpty(Model.OwnedCompany))
+            {
+                <li>【单位】@Model.OwnedCompany </li>
+            }
+            @if (!string.IsNullOrEmpty(Model.arrangement))
+            {
+                <li>【位置】@Model.arrangement </li>
+            }
+            @if (!string.IsNullOrEmpty(Model.XiXin))
+            {
+                <li>【习性】@Model.XiXin</li>
+            }
+            @if (ViewData["IsAllower"].ToString() == "1")
+            {
+                if (!string.IsNullOrEmpty(Model.Weekly))
                 {
-                    <li>【单位】@Model.OwnedCompany </li>
+                    <li>&nbsp;每<span id="kly">@Model.Weekly</span>养护 </li>
                 }
-                 @if (!string.IsNullOrEmpty(Model.arrangement))
-                {
-                    <li>【位置】@Model.arrangement </li>
-                }
-                @if (!string.IsNullOrEmpty(Model.XiXin))
-                {
-                    <li>【习性】@Model.XiXin</li>
-                }
-                @if (ViewData["IsAllower"].ToString() == "1")
-                {
-                     if (!string.IsNullOrEmpty(Model.Weekly))
-                     {
-                     <li>&nbsp;每<span id="kly">@Model.Weekly</span>养护 </li>
-                     }
-                }
-                @if (!string.IsNullOrEmpty(Model.YangHuFangFa))
-                {
-                    <li><span class="spanstyle">&nbsp;养护方法：</span><span id="fangfa">@Model.YangHuFangFa</span></li>
-                }                
-                <li style="color:#ff6a00;display:none;"><span class="spanstyle">&nbsp;温馨提示：</span><span id="tisi"></span></li>
-                 
-                @if(ViewBag.Treattime!=null)
-                {
-                   <li>
-                     <span class="spanstyle">&nbsp;养护时间：</span>@ViewBag.Treattime.ToString("yyyy-MM-dd HH:mm:ss")
-                  </li>
-                }
-                 @if(ViewBag.Treattime!=null)
-                {
+            }
+            @if (!string.IsNullOrEmpty(Model.YangHuFangFa))
+            {
+                <li><span class="spanstyle">&nbsp;养护方法：</span><span id="fangfa">@Model.YangHuFangFa</span></li>
+            }
+            <li style="color:#ff6a00;display:none;"><span class="spanstyle">&nbsp;温馨提示：</span><span id="tisi"></span></li>
+
+            @if (ViewBag.Treattime != null)
+            {
+                <li>
+                    <span class="spanstyle">&nbsp;养护时间：</span>@ViewBag.Treattime.ToString("yyyy-MM-dd HH:mm:ss")
+                </li>
+            }
+            @if (ViewBag.Treattime != null)
+            {
                 <li>
                     <span class="spanstyle">&nbsp;预计下次养护时间：</span>@ViewBag.PlanTreatTime.ToString("yyyy-MM-dd HH:mm:ss")
-                </li>  
-                }
-            </ul>            
-        </div>     
-    
-        <div class="jb_canshu">
+                </li>
+            }
+        </ul>
+    </div>
+
+    <div class="jb_canshu">
         @if (ViewData["IsTourist"] == null)
         {
             if (ViewData["IsAllower"].ToString() == "1")
             {
-            <div>
-                <span style="font-size:15px;font-weight:600"></span>
-            </div>
-            @*<div class="layui-upload" style="text-align:center;">
-            <button type="button" class="layui-btn upload" id="test8">+上传图片</button>
-            <input type="button" id="test9" class="put"  value="提交花卉" />
-        ```</div>*@ <!--dom结构部分-->
-            <div id="serveraf" style="padding-top:10px">
-                <table style="width:100%">
-                    <thead>
-                        <tr><th>服务前</th><th>服务后</th><th></th></tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <span class="list">
-                                    <img src="" class="imgphoto" id="bphoto" width="80" height="80" />
-                                </span>
-                            </td>
-                            <td>
-                                <span class="list">
-                                    <img id="cphoto" src="~/FileCss/images/nopic.png" width="80" height="80" />
-                                </span>
-                            </td>
-                            <td>
-                                <span class="gh">
-                                    <em id="contentmsg">
-                                    </em>
-                                </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div id="serverbefor" style="padding-top:10px;height:200px;">
-                <textarea id="remarks" maxlength="12" style="margin: 0px auto;text-align:left; height: 105px; width: 98%;
-            border:0px solid #e6dddd; border-collapse:collapse; " placeholder="可填写：植物缺水枯萎、环境冷需撤离等"></textarea>
-                <div id="uploader-demo" style="">
-                    <!--用来存放item-->
-                    <div style="height:2px;"><img src="" /></div>
-                    <div id="fileList" class="uploader-list"></div>
-                    <div id="filePicker" style="width:28.4%; float: left;">
-                        <span class="icon iconfontzp icon-icon-zhaopian-shangchuan"></span>
-                    </div>
-                    <input type="button" id="test9" class="put" value="提交" />
-
+                <div>
+                    <span style="font-size:15px;font-weight:600"></span>
                 </div>
-            </div>
+                @*<div class="layui-upload" style="text-align:center;">
+                        <button type="button" class="layui-btn upload" id="test8">+上传图片</button>
+                        <input type="button" id="test9" class="put"  value="提交花卉" />
+                    ```</div>*@ <!--dom结构部分-->
+                <div id="serveraf" style="padding-top:10px">
+                    <table style="width:100%">
+                        <thead>
+                            <tr><th>服务前</th><th>服务后</th><th></th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span class="list">
+                                        <img src="" class="imgphoto" id="bphoto" width="80" height="80" />
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="list">
+                                        <div class="filePicker" style="float: left;">
+                                            <span class="icon iconfontzp icon-icon-zhaopian-shangchuan"></span>
+                                        </div>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="gh">
+                                        <em id="contentmsg">
+                                        </em>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="serverbefor" style="padding-top:10px;height:200px;">
+                    <textarea id="remarks" maxlength="12" style="margin: 0px auto;text-align:left; height: 105px; width: 98%;
+            border:0px solid #e6dddd; border-collapse:collapse; " placeholder="可填写：植物缺水枯萎、环境冷需撤离等"></textarea>
+                    <div id="uploader-demo" style="">
+                        <!--用来存放item-->
+                        <div style="height:2px;"><img src="" /></div>
+                        <div id="fileList" class="uploader-list"></div>
+                        <div id="filePicker" style="width:28.4%; float: left;">
+                            <span class="icon iconfontzp icon-icon-zhaopian-shangchuan"></span>
+                        </div>
+                        <input type="button" id="test9" class="put" value="提交" />
+
+                    </div>
+                </div>
 
             }
             else  //客户
             {
-        <div id="xyhh" style="padding-top:10px;height:200px;">
-            <textarea id="remarks" maxlength="12" style="margin: 0px auto;text-align:left; height: 105px; width: 98%;
+                <div id="xyhh" style="padding-top:10px;height:200px;">
+                    <textarea id="remarks" maxlength="12" style="margin: 0px auto;text-align:left; height: 105px; width: 98%;
                 border:0px solid #e6dddd; border-collapse:collapse; " placeholder="可填写：植物缺水枯萎、环境冷需撤离等"></textarea>
-            <div id="uploader-demo" style="">
-                <!--用来存放item-->
-                <div id="fileList" class="uploader-list"></div>
-                <div id="filePicker" style="width:28.4%; float: left;">
-                    <span class="icon iconfontzp icon-icon-zhaopian-shangchuan"></span>
-                </div>
-                <input type="button" id="test9" class="put" value="提交" />
+                    <div id="uploader-demo" style="">
+                        <!--用来存放item-->
+                        <div id="fileList" class="uploader-list"></div>
+                        <div id="filePicker" style="width:28.4%; float: left;">
+                            <span class="icon iconfontzp icon-icon-zhaopian-shangchuan"></span>
+                        </div>
+                        <input type="button" id="test9" class="put" value="提交" />
 
-            </div>
-        </div>
+                    </div>
+                </div>
             }
-         }
-       <input type="hidden" id="FlowerArrangementId" value="@Model.id" />
-        </div>    
+        }
+        <input type="hidden" id="FlowerArrangementId" value="@Model.id" />
+    </div>
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/uploadify/webuploader.html5only.min.js"></script>
-    <script src="~/FileCss/jq/silder-h5.js"></script>
+    @*<script src="~/FileCss/jq/silder-h5.js"></script>*@
     @Scripts.Render("~/Thems/js/layer/layer.js")
+    <script src="~/Scripts/Admin/MFlower.js?v=0"></script>
     <script>
         //
         $(function () {
@@ -320,7 +322,7 @@
             //图片正方形
             var width = $(".pro_img_box li img").width();
             $(".pro_img_box li img").height(width);
-            $(".product").height(width);//2019-1105第一栏白色区域高度          
+            $(".product").height(width);//2019-1105第一栏白色区域高度
             //数字变颜色
             var fangfa = $("#fangfa").html();
             if (fangfa != undefined) {
@@ -345,15 +347,15 @@
                 if (kt != "") {
                     kt = kt.substr(0, kt.length - 1);
                     $("#kly").text(kt);
-                }              
-                
+                }
+
             }
             //加载广告
             //onloadAdvlist();
-           
+
             //开始养护
             $(".ksyh").on('click', ksyh);
-           
+
             function ksyh()
             {
                 $this = $(".ksyh");
@@ -363,9 +365,9 @@
                      type: "get",
                      dataType: "json",
                      success: function (data, state) {
-                         if (data == "1") {  
+                         if (data == "1") {
                              var i = 10;
-                             //console.log('k', i);                           
+                             //console.log('k', i);
                              //设置定时器
                              var btnTimer = null;
                              btnTimer= setInterval(function () {
@@ -381,7 +383,7 @@
                                  }
                                  else { $this.text(i); }
                              }, 1000);
-                           
+
                          }
                          else if (data == "0") {
                              layer.open({
@@ -448,7 +450,7 @@
                     success: function (res, state) {
                         $(".iconfontdi").unbind('click');
                         if (res.data != "0") {
-                            layer.msg('提交成功');                          
+                            layer.msg('提交成功');
                             Appraisecount();
                         } else {
                             layer.msg('今日已评价');
@@ -456,7 +458,7 @@
                     },
                     error: function (m) { parent.layer.msg(m); }
                 });
-                
+
             });
             //差评
             $(".iconfontca").click(function () {
@@ -467,7 +469,7 @@
                     shade: 0.8,
                     area: ['300px;', '200px;'],
                     content: '/MFlower/SetFlowerBad?ArrangementId=@Model.id',
-                    end: function (res) { //层彻底关闭后执行的回调     
+                    end: function (res) { //层彻底关闭后执行的回调
                         console.log("rde", res);
                         Appraisecount();
                     }
@@ -525,7 +527,7 @@
             uploader.on('uploadComplete', function (file) {
                 $('#' + file.id).find('.progress').fadeOut();
             });
-            
+
             $list.on('click', '.upload-item .btn-delete', function () {
                 // 从文件队列中删除某个文件id
                 file_id = $(this).data('file_id');
@@ -537,7 +539,7 @@
                 });
                 console.log(uploader.getFiles('cancelled'));//获得打上文件被移除标记的
             });
-           
+
             // 当有文件添加进来的时候
             uploader.on('fileQueued', function (file) {
                 var $li = $(
@@ -606,7 +608,8 @@
 
         });
     </script>
- <script>            
+    <script>
+
      function onloadAdvlist() {
          var html="";
          $.ajax({
@@ -616,7 +619,7 @@
              async:true,
              success: function (data, state) {
                  var companylist = data;
-                 for (var i = 0; i < companylist.length; i++) {                      
+                 for (var i = 0; i < companylist.length; i++) {
                      html += ' <li><a href="' + companylist[i].Pictures + '"><img src="' + companylist[i].Picture + '" /></a></li>';
                  }
                  $(".imgbox ul").html(html);
@@ -625,7 +628,7 @@
                      auto: true,//自动切换
                      auto_wait_time: 3000,//轮播间隔
                      scroll_time: 300,//滚动时长
-                     callback: function (ind) {//这里传过来的是索引值                   
+                     callback: function (ind) {//这里传过来的是索引值
                      }
                  });
              },
@@ -639,7 +642,7 @@
              url: "/MFlower/GetAppraiseCount?ArrangementId=@Model.id",
              type: "get",
              dataType: "json",
-             success: function (res, state) {                
+             success: function (res, state) {
                  if (res.gcount != "0") {
                      $('.iconfontdi').text(res.gcount);
                  }
@@ -665,13 +668,13 @@
              error: function (m) { parent.layer.msg(m); }
          });
      }
-    
+
       //服务前图片
      function onloadServbefor()
      {
          if ('@ViewBag.Treattime'!='')
          {
-             //管理员             
+             //管理员
              $(".endyh").show();
              $(".ksyh").hide();
          }
@@ -690,21 +693,21 @@
                      //客户
                      $('.hehu div').text('正在维护中……');
                      $("#xyhh").html("植物问题已提交，请您耐心等待……");
-                     //管理员增加服务后图片
-                     $("#cphoto").click(function () {
-                         var arrangementid=$("#FlowerArrangementId").val();
-                         window.location.href = '/MFlower/AddServerPhoto?id='+res.data.id+'&ArrangementId='+arrangementid;
-                     });
+                     //管理员增加服务后图片                    
+                     $('.filePicker').attr('id', res.data.id);
+                     upload();
+                     layer.msg("上传成功");
+                     window.location.reload();
                  }
-                 else 
+                 else
                  {
                      $("#serverbefor").show();
-                     $("#serveraf").hide();                    
+                     $("#serveraf").hide();
                  }
              },
              error: function (m) { parent.layer.msg("error"); }
-         });    
-     }    
- </script>
+         });
+     }
+    </script>
 </body>
 </html>
