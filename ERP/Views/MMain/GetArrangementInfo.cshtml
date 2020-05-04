@@ -600,8 +600,7 @@
                     obj.FlowerArrangementId = $("#FlowerArrangementId").val();
                     obj.remarks = $("#remarks").val();
                     uploader.options.formData = obj;
-                    uploader.upload();
-                    console.log("上传成功");
+                    uploader.upload();                   
                 }
                 else { layer.msg('选择图片后上传'); }
             });
@@ -690,14 +689,15 @@
                      //$("#cphoto").attr('src', res.data.ChangePhoto);
                      $("#contentmsg").text(res.data.ContentMsg);
                      $("#serverbefor").hide();
-                     //客户
-                     $('.hehu div').text('正在维护中……');
-                     $("#xyhh").html("植物问题已提交，请您耐心等待……");
-                     //管理员增加服务后图片                    
-                     $('.filePicker').attr('id', res.data.id);
-                     upload();
-                     layer.msg("上传成功");
-                     window.location.reload();
+                     //客户 
+                     if ($("#xyhh").length>0) {
+                         $("#xyhh").html("植物问题已提交，请您耐心等待……");
+                     } else {
+                         //管理员增加服务后图片                    
+                         $('.filePicker').attr('id', res.data.id);
+                         upload();                        
+                     }
+                     
                  }
                  else
                  {
